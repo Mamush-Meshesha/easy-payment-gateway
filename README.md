@@ -49,8 +49,8 @@ flowchart TD
 
     %% External Systems
     PROVIDER_EXT[External Providers e.g. Telebirr, CBE]
-    PROVIDER <--> |API Calls| PROVIDER_EXT
-    TXN <-- |Async Webhooks| PROVIDER_EXT
+    PROVIDER <-->|API Calls| PROVIDER_EXT
+    PROVIDER_EXT -->|Async Webhooks| TXN
 ```
 
 ### Technology Stack
