@@ -20,7 +20,7 @@ flowchart TD
     
     CLIENTS --> GATEWAY
 
-    subgraph TS_Services [Express/TypeScript Services (Business Layer)]
+    subgraph TS_Services ["Express/TypeScript Services (Business Layer)"]
         AUTH[Auth Service]
         MERCHANT[Merchant Service]
         ADMIN[Admin Service]
@@ -29,7 +29,7 @@ flowchart TD
         REPORT[Reporting Service]
     end
 
-    subgraph Go_Services [Go Services (Financial Core)]
+    subgraph Go_Services ["Go Services (Financial Core)"]
         PAYMENT[Payment Service]
         PROVIDER[Provider Service]
         LEDGER[Ledger Service]
