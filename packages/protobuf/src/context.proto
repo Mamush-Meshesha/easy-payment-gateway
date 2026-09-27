@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package context;
+option go_package = "payment-gateway/go-grpc-auth/proto;grpccontext";
+
+message RequestContext {
+  string subject_id = 1;      // Human user ID (if any)
+  string merchant_id = 2;     // Tenant boundary
+  repeated string roles = 3;  
+  repeated string permissions = 4;
+  string session_id = 5;
+  string auth_type = 6;       // "USER", "SERVICE", "SYSTEM"
+  string caller_service = 7;  // The SPIFFE identity that initiated this specific RPC
+  int32 context_version = 8;
+  string environment = 9;     // 'TEST' or 'LIVE'
+}

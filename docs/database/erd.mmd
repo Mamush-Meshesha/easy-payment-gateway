@@ -1,0 +1,23 @@
+erDiagram
+    %% Core Payment Engine
+    PAYMENTS ||--o{ PAYMENT_STATE_HISTORY : has
+    PAYMENTS ||--o{ PAYMENT_ATTEMPTS : has
+    PAYMENTS ||--o{ OUTBOX_EVENTS : triggers
+    PAYMENTS ||--o| IDEMPOTENCY_KEYS : unique_by
+    PAYMENTS ||--o{ REFUNDS : has
+
+    %% Logical Relationships across services
+    MERCHANTS ||--o{ PAYMENTS : initiates
+    MERCHANTS ||--o{ API_KEYS : uses
+    PROVIDERS ||--o{ PAYMENTS : processes
+    PROVIDERS ||--o{ TRANSACTIONS : executes
+    PROVIDERS ||--o{ WEBHOOK_EVENTS : sends
+
+    PAYMENTS ||--o{ TRANSACTIONS : matches
+    PAYMENTS ||--o{ JOURNAL_ENTRIES : creates
+    REFUNDS ||--o{ JOURNAL_ENTRIES : creates
+    TRANSACTIONS ||--o{ RECONCILIATION_MISMATCHES : investigates
+
+    %% Ledger
+    JOURNAL_ENTRIES ||--o{ JOURNAL_LINES : contains
+    ACCOUNTS ||--o{ JOURNAL_LINES : balances

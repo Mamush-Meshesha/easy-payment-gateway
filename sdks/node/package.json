@@ -1,0 +1,22 @@
+{
+  "name": "@payment-gateway/node",
+  "version": "1.0.0",
+  "description": "Official Node.js SDK for the Payment Gateway",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^18.0.0"
+  },
+  "author": "Payment Gateway",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourgateway/payment-gateway-node"
+  }
+}

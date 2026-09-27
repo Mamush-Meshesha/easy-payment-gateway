@@ -1,0 +1,14 @@
+{
+  "name": "@payment-gateway/api-errors",
+  "version": "1.0.0",
+  "description": "Standardized API error codes and Express error handler middleware for all Payment Gateway Node.js services.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "PRIVATE"
+}

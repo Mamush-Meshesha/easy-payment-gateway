@@ -1,0 +1,477 @@
+version: '3.8'
+networks:
+  payment_network:
+    driver: bridge
+volumes:
+  postgres_data: null
+  redis_data: null
+  kafka_data: null
+  prometheus_data: null
+  grafana_data: null
+
+x-service-env: &service-env
+  DATABASE_URL: postgresql://postgres:postgres@postgres:5432/payment_gateway?sslmode=disable
+  REDIS_URL: redis://redis:6379
+  KAFKA_BROKERS: kafka:9092
+  LEDGER_SERVICE_ADDR: ledger-service:50053
+  MERCHANT_SERVICE_ADDR: merchant-service:50052
+  RISK_SERVICE_ADDR: risk-service:50054
+  PROVIDER_SERVICE_ADDR: provider-service:50055
+  AUTH_SERVICE_HOST: auth-service
+  AUTH_GRPC_PORT: 50051
+  MTLS_CA_CERT: /app/certs/ca.crt
+  MTLS_SERVER_CERT: /app/certs/server.crt
+  MTLS_SERVER_KEY: /app/certs/server.key
+
+x-service-depends: &service-depends
+  postgres:
+    condition: service_healthy
+  redis:
+    condition: service_healthy
+  kafka:
+    condition: service_healthy
+  kafka-init:
+    condition: service_completed_successfully
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: payment_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-payment_gateway}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - payment_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: payment_redis
+    restart: always
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/data
+    networks:
+      - payment_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  kafka:
+    image: apache/kafka:latest
+    container_name: payment_kafka
+    restart: always
+    ports:
+      - 9092:9092
+      - 9094:9094
+    environment:
+      - KAFKA_NODE_ID=1
+      - KAFKA_PROCESS_ROLES=controller,broker
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@kafka:9093
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,EXTERNAL://:9094,CONTROLLER://:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092,EXTERNAL://localhost:9094
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - payment_network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list || exit 0"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+
+  kafka-init:
+    image: apache/kafka:latest
+    container_name: payment_kafka_init
+    networks:
+      - payment_network
+    depends_on:
+      kafka:
+        condition: service_healthy
+    command: >
+      /bin/bash -c "
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic payment.events --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic transaction.events --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic provider.webhook.events --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic provider.normalized.event --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic payment.intent.created --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic transaction.status.updated --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic merchant.events --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092 &&
+      /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic ledger.events --partitions 3 --replication-factor 1 --bootstrap-server kafka:9092
+      "
+
+  migrate-auth:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+      network: host
+    container_name: migrate_auth
+    networks:
+      - payment_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
+    command: ["npx", "prisma", "migrate", "deploy"]
+
+  migrate-merchant:
+    build:
+      context: .
+      dockerfile: services/merchant-service/Dockerfile
+      network: host
+    container_name: migrate_merchant
+    networks:
+      - payment_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
+    command: ["npx", "prisma", "migrate", "deploy"]
+
+  migrate-notification:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    container_name: migrate_notification
+    networks:
+      - payment_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
+    command: ["npx", "prisma", "migrate", "deploy"]
+
+  migrate-reporting:
+    build:
+      context: .
+      dockerfile: services/reporting-service/Dockerfile
+    container_name: migrate_reporting
+    networks:
+      - payment_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
+    command: ["npx", "prisma", "migrate", "deploy"]
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: services/auth-service/Dockerfile
+      network: host
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/auth-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/auth-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on:
+      <<: *service-depends
+      migrate-auth:
+        condition: service_completed_successfully
+
+  merchant-service:
+    build:
+      context: .
+      dockerfile: services/merchant-service/Dockerfile
+      network: host
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/merchant-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/merchant-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      migrate-merchant:
+        condition: service_completed_successfully
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: services/notification-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/notification_db?schema=public
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USER: test
+      SMTP_PASS: test
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/notification-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/notification-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on:
+      <<: *service-depends
+      migrate-notification:
+        condition: service_completed_successfully
+
+  reporting-service:
+    build:
+      context: .
+      dockerfile: services/reporting-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/reporting-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/reporting-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on:
+      <<: *service-depends
+      migrate-reporting:
+        condition: service_completed_successfully
+
+  admin-service:
+    build:
+      context: .
+      dockerfile: services/admin-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/admin-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/admin-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  dashboard-service:
+    build:
+      context: .
+      dockerfile: services/dashboard-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/dashboard-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/dashboard-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  payment-service:
+    build:
+      context: .
+      dockerfile: services/payment-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/payment-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/payment-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  transaction-service:
+    build:
+      context: .
+      dockerfile: services/transaction-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/transaction-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/transaction-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  provider-service:
+    build:
+      context: .
+      dockerfile: services/provider-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    ports:
+      - "8087:3003"
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/provider-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/provider-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  webhook-service:
+    build:
+      context: .
+      dockerfile: services/webhook-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/webhook-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/webhook-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  ledger-service:
+    build:
+      context: .
+      dockerfile: services/ledger-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/ledger-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/ledger-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  reconciliation-service:
+    build:
+      context: .
+      dockerfile: services/reconciliation-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/reconciliation-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/reconciliation-service.key:/app/certs/server.key:ro
+    ports:
+      - "3015:3011"
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  settlement-service:
+    build:
+      context: .
+      dockerfile: services/settlement-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    ports:
+      - "3010:3010"
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/settlement-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/settlement-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  risk-service:
+    build:
+      context: .
+      dockerfile: services/risk-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/risk-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/risk-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI / API
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: payment_gateway
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./infra/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - payment_network
+    depends_on:
+      - auth-service
+      - merchant-service
+      - admin-service
+      - dashboard-service
+      - notification-service
+      - reporting-service
+      - payment-service
+      - transaction-service
+      - provider-service
+      - webhook-service
+      - ledger-service
+      - reconciliation-service
+      - settlement-service
+      - risk-service
+
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: dozzle
+    ports:
+      - "8765:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - payment_network
+    restart: always

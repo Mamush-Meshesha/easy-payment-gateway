@@ -1,0 +1,69 @@
+# IDE / Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Go Workspaces
+go.work
+go.work.sum
+
+# Environments
+.env
+.env.local
+
+# Infra / Docker / Data
+postgres-data/
+redis-data/
+kafka-data/
+zookeeper-data/
+
+# Certs (ignore generated keys/certs but keep the directory)
+infra/certs/*.pem
+infra/certs/*.key
+infra/certs/*.crt
+!infra/certs/.gitkeep
+certs/
+*.key
+*.pem
+*.crt
+
+# Temp / Build
+tmp/
+.tmp/
+dist/
+bin/
+build/
+node_modules/
+scratch/
+main
+server
+
+# Logs
+*.log
+logs/
+
+# Agent & System Metadata
+.agents/
+
+# Dummy & Temporary Testing Files
+test-dial.go
+test_main.go
+dummy-webhook.js
+fix_role.js
+get_merchants.js
+get_user.js
+apply-observability.js
+apply-observability-go.js
+seed-users.sh
+add_settings.sql
+
+# Misplaced Root Service Folders (Duplicates / Generators)
+ledger-service/
+notification-service/
+provider-service/
+risk-service/
+settlement-service/
+transaction-service/
+webhook-service/

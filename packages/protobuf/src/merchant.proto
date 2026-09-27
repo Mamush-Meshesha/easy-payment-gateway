@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package merchant;
+option go_package = "payment-gateway/payment-service/proto";
+
+service MerchantService {
+  rpc GetMerchant (GetMerchantRequest) returns (GetMerchantResponse);
+  rpc GetMerchantStatus (GetStatusRequest) returns (GetStatusResponse);
+  rpc ValidateApiKey (ValidateApiKeyRequest) returns (ValidateApiKeyResponse);
+  rpc GetMerchantConfig (GetMerchantConfigRequest) returns (GetMerchantConfigResponse);
+  rpc GetWebhookConfig (GetWebhookConfigRequest) returns (GetWebhookConfigResponse);
+  rpc GetPayoutDestination (GetPayoutDestinationRequest) returns (GetPayoutDestinationResponse);
+  
+  // Admin endpoints
+  rpc ListMerchants (ListMerchantsRequest) returns (ListMerchantsResponse);
+  rpc SuspendMerchant (SuspendMerchantRequest) returns (SuspendMerchantResponse);
+  rpc UpdateMerchantLimit (UpdateMerchantLimitRequest) returns (UpdateMerchantLimitResponse);
+  
+  // Provisioning
+  rpc ProvisionMerchant (ProvisionMerchantRequest) returns (ProvisionMerchantResponse);
+}
+
+message ProvisionMerchantRequest {
+  string merchant_id = 1;
+  string email = 2;
+  string business_name = 3;
+}
+
+message ProvisionMerchantResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+message ListMerchantsRequest {
+  int32 limit = 1;
+  int32 offset = 2;
+}
+
+message ListMerchantsResponse {
+  message MerchantInfo {
+    string id = 1;
+    string legal_name = 2;
+    string status = 3;
+    string created_at = 4;
+  }
+  repeated MerchantInfo merchants = 1;
+  int32 total = 2;
+}
+
+message SuspendMerchantRequest {
+  string merchant_id = 1;
+  string reason = 2;
+}
+
+message SuspendMerchantResponse {
+  bool success = 1;
+  string status = 2;
+}
+
+message UpdateMerchantLimitRequest {
+  string merchant_id = 1;
+  string currency = 2;
+  int64 min_amount = 3;
+  int64 max_amount = 4;
+}
+
+message UpdateMerchantLimitResponse {
+  bool success = 1;
+}
+
+message GetStatusRequest {
+  string merchantId = 1;
+}
+
+message GetStatusResponse {
+  string status = 1;
+  bool exists = 2;
+}
+
+message GetMerchantRequest {
+  string merchant_id = 1;
+}
+
+message GetMerchantResponse {
+  string id = 1;
+  string legal_name = 2;
+  string status = 3;
+}
+
+message ValidateApiKeyRequest {
+  string api_key = 1;
+}
+
+message ValidateApiKeyResponse {
+  bool is_valid = 1;
+  string merchant_id = 2;
+  string environment = 3; // e.g., 'test' or 'live'
+}
+
+message GetMerchantConfigRequest {
+  string merchant_id = 1;
+}
+
+message GetMerchantConfigResponse {
+  string merchant_id = 1;
+  int32 version = 2;
+  string fee_routing = 3;
+  repeated string enabled_payment_methods = 4;
+}
+
+message GetWebhookConfigRequest {
+  string merchant_id = 1;
+  string environment = 2; // e.g., 'TEST' or 'LIVE'
+}
+
+message GetWebhookConfigResponse {
+  string webhook_url = 1;
+  string hmac_secret = 2; // Protected in transit by mTLS
+}
+
+message GetPayoutDestinationRequest {
+  string merchant_id = 1;
+  string currency = 2;
+}
+
+message GetPayoutDestinationResponse {
+  string destination_token = 1; // Tokenized reference instead of raw bank details
+  string destination_bank = 2;
+  string provider_id = 3;
+}

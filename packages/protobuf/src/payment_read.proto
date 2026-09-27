@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package payment_read;
+option go_package = "payment-gateway/payment-service/proto;proto";
+
+// BFF Read APIs for the Payment Service.
+// All RPCs require RequestContext to be present in gRPC metadata.
+// Handlers MUST call RequireMerchant(ctx, req.merchant_id) before querying the DB.
+service PaymentReadService {
+  rpc GetPayments (GetPaymentsRequest) returns (GetPaymentsResponse);
+  rpc GetPayment (GetPaymentRequest) returns (GetPaymentResponse);
+  rpc GetPaymentStatusHistory (GetPaymentStatusHistoryRequest) returns (GetPaymentStatusHistoryResponse);
+  rpc GetRefunds (GetRefundsRequest) returns (GetRefundsResponse);
+}
+
+message PaymentFilter {
+  string status = 1;          // Optional: filter by status string
+  string currency = 2;        // Optional: filter by currency
+  string from_created_at = 3; // ISO8601 lower bound
+  string to_created_at = 4;   // ISO8601 upper bound
+}
+
+message GetPaymentsRequest {
+  string merchant_id = 1;   // Must match RequestContext.merchant_id
+  PaymentFilter filter = 2;
+  string after_cursor = 3;  // Cursor-based pagination
+  int32 limit = 4;          // Max results; server-side ceiling enforced
+}
+
+message PaymentSummary {
+  string payment_id = 1;
+  string status = 2;
+  int64 amount = 3;
+  string currency = 4;
+  string payment_method = 5;
+  string created_at = 6;
+  string updated_at = 7;
+  string customer_id = 8;
+  string merchant_reference = 9;
+  int64 refunded_amount = 10;
+}
+
+message GetPaymentsResponse {
+  repeated PaymentSummary payments = 1;
+  string next_cursor = 2;
+  bool has_more = 3;
+}
+
+message GetPaymentRequest {
+  string payment_id = 1;
+  string merchant_id = 2; // Must match RequestContext.merchant_id
+}
+
+message GetPaymentResponse {
+  PaymentSummary payment = 1;
+}
+
+message StatusHistoryEntry {
+  string status = 1;
+  string reason = 2;
+  string recorded_at = 3;
+}
+
+message GetPaymentStatusHistoryRequest {
+  string payment_id = 1;
+  string merchant_id = 2; // Must match RequestContext.merchant_id
+}
+
+message GetPaymentStatusHistoryResponse {
+  repeated StatusHistoryEntry entries = 1;
+}
+
+message GetRefundsRequest {
+  string merchant_id = 1;
+  string payment_id = 2; // Optional filter
+  int32 limit = 3;
+  int32 offset = 4;
+}
+
+message RefundSummary {
+  string id = 1;
+  string payment_id = 2;
+  string merchant_id = 3;
+  int64 amount = 4;
+  string currency = 5;
+  string status = 6;
+  string reason = 7;
+  string created_at = 8;
+  string updated_at = 9;
+}
+
+message GetRefundsResponse {
+  repeated RefundSummary refunds = 1;
+  int32 total = 2;
+}

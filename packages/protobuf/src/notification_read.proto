@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package notification_read;
+option go_package = "payment-gateway/notification-service/proto";
+
+service NotificationReadService {
+  rpc GetNotifications (GetNotificationsRequest) returns (GetNotificationsResponse);
+}
+
+message GetNotificationsRequest {
+  string merchant_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message NotificationLog {
+  string id = 1;
+  string merchant_id = 2;
+  string type = 3; // "EMAIL" or "SMS"
+  string recipient = 4;
+  string subject = 5;
+  string status = 6; // "SENT", "FAILED", "PENDING"
+  string error_details = 7;
+  string created_at = 8;
+}
+
+message GetNotificationsResponse {
+  repeated NotificationLog notifications = 1;
+  int32 total = 2;
+}

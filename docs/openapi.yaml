@@ -1,0 +1,779 @@
+openapi: 3.0.3
+
+info:
+  title: Payment Gateway API
+  description: |
+    Enterprise-grade payment processing API for Ethiopian and pan-African markets.
+
+    ## Authentication
+    All merchant API endpoints require an **API Key** passed via the `X-API-Key` header.
+    - Keys prefixed `sk_live_...` operate in **LIVE** mode — real money moves.
+    - Keys prefixed `sk_test_...` operate in **TEST** (Sandbox) mode — no real money moves, responses are mocked.
+
+    Generate API keys in the Merchant Dashboard under **Settings → API Keys**.
+
+    ## Idempotency
+    All mutating endpoints (`POST`) require an `Idempotency-Key` header.
+    - Use a unique value (e.g., UUID v4) per logical operation.
+    - Replaying the same `Idempotency-Key` with the **same payload** returns the original response safely.
+    - Replaying with a **different payload** returns `409 idempotency_key_mismatch`.
+
+    ## Error Format
+    All errors return the following JSON structure:
+    ```json
+    {
+      "error": "machine_readable_code",
+      "message": "Human-readable description",
+      "reference": "trace-id-for-support"
+    }
+    ```
+    SDKs **must** switch on the `error` field, never the `message`.
+
+    ## Environments
+    - **Sandbox Base URL**: `https://sandbox.api.yourgateway.com`
+    - **Live Base URL**: `https://api.yourgateway.com`
+
+  version: "1.0.0"
+  contact:
+    name: Payment Gateway Developer Support
+    email: support@yourgateway.com
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Local Development (via Nginx gateway)
+  - url: https://sandbox.api.yourgateway.com/api/v1
+    description: Sandbox Environment
+  - url: https://api.yourgateway.com/api/v1
+    description: Live Production
+
+tags:
+  - name: Payments
+    description: Create and manage payments
+  - name: Refunds
+    description: Refund a previously succeeded payment
+  - name: Checkout
+    description: Public endpoints used by the hosted checkout page
+  - name: Auth
+    description: Authentication and user management
+  - name: Merchants
+    description: Merchant onboarding and management
+  - name: API Keys
+    description: API key lifecycle management
+  - name: Webhooks
+    description: Webhook configuration
+
+# ─── SECURITY SCHEMES ────────────────────────────────────────────────────────
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: |
+        Your merchant API secret key. Format: `sk_live_...` (Live) or `sk_test_...` (Sandbox).
+
+  # ─── REUSABLE SCHEMAS ────────────────────────────────────────────────────────
+  schemas:
+
+    # Error response
+    APIError:
+      type: object
+      required: [error, message]
+      properties:
+        error:
+          type: string
+          description: Stable machine-readable error code. Switch on this, not `message`.
+          example: invalid_api_key
+          enum:
+            - missing_idempotency_key
+            - missing_api_key
+            - invalid_payload
+            - invalid_json
+            - validation_failed
+            - invalid_payment_id
+            - invalid_currency
+            - invalid_amount
+            - payment_method_disabled
+            - invalid_api_key
+            - unauthorized
+            - token_expired
+            - forbidden
+            - merchant_suspended
+            - insufficient_permissions
+            - payment_not_found
+            - merchant_not_found
+            - resource_not_found
+            - idempotency_key_mismatch
+            - duplicate_request
+            - email_already_registered
+            - risk_rejected
+            - refund_exceeds_payment_amount
+            - payment_not_refundable
+            - insufficient_funds
+            - invalid_state_transition
+            - provider_unavailable
+            - provider_timeout
+            - internal_error
+        message:
+          type: string
+          description: Human-readable error description. Do not parse programmatically.
+          example: The provided API key is invalid or has been revoked
+        reference:
+          type: string
+          description: Trace ID for support lookups.
+          example: "01HZT2FXBKR1234567890ABCDE"
+
+    # Payment states
+    PaymentStatus:
+      type: string
+      description: Current state of a payment in the state machine.
+      enum:
+        - CREATED
+        - INITIATED
+        - PROCESSING
+        - PENDING
+        - UNKNOWN
+        - COMPLETION_PENDING
+        - SUCCEEDED
+        - FAILED
+        - CANCELLED
+        - EXPIRED
+      example: SUCCEEDED
+
+    # Payment response
+    PaymentResponse:
+      type: object
+      required: [id, status]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique payment identifier.
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        reason:
+          type: string
+          description: Human-readable reason for the current status.
+          example: "Success"
+        merchantId:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        environment:
+          type: string
+          enum: [LIVE, TEST]
+          example: TEST
+        merchantReference:
+          type: string
+          description: Your unique reference for this payment.
+          example: "order-2024-abc123"
+        amount:
+          type: integer
+          description: Amount in the smallest currency denomination (e.g., ETB cents).
+          example: 5000
+        currency:
+          type: string
+          description: ISO 4217 3-letter currency code.
+          example: "ETB"
+        paymentMethod:
+          type: string
+          example: "TELEBIRR"
+        createdAt:
+          type: string
+          format: date-time
+          example: "2024-01-15T10:30:00Z"
+
+    # Create payment request body
+    CreatePaymentRequest:
+      type: object
+      required: [merchantReference, amount, currency, paymentMethod, providerId]
+      properties:
+        merchantReference:
+          type: string
+          description: Your unique reference for this payment. Used for idempotency on your side.
+          maxLength: 255
+          example: "order-2024-abc123"
+        amount:
+          type: integer
+          description: Amount in the smallest currency denomination (e.g., 5000 = 50.00 ETB).
+          minimum: 1
+          example: 5000
+        currency:
+          type: string
+          description: ISO 4217 3-letter currency code.
+          minLength: 3
+          maxLength: 3
+          example: "ETB"
+        customerId:
+          type: string
+          description: Your internal customer identifier.
+          example: "cust-abc123"
+        ipAddress:
+          type: string
+          description: Customer's IP address for fraud detection.
+          example: "196.188.1.1"
+        paymentMethod:
+          type: string
+          description: Payment method to use.
+          enum: [TELEBIRR, CBE_BIRR, CARD]
+          example: "TELEBIRR"
+        providerId:
+          type: string
+          format: uuid
+          description: ID of the provider record in provider-service.
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+
+    # Refund request body
+    RefundPaymentRequest:
+      type: object
+      required: [amount]
+      properties:
+        amount:
+          type: integer
+          description: Amount to refund in smallest denomination. Must not exceed original payment amount minus prior refunds.
+          minimum: 1
+          example: 2500
+        reason:
+          type: string
+          description: Optional reason for the refund.
+          example: "Customer requested cancellation"
+
+    # Refund response
+    RefundResponse:
+      type: object
+      required: [id, paymentId, status, amount]
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique refund identifier.
+          example: "7c9e6679-7425-40de-944b-e07fc1f90ae7"
+        paymentId:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [REQUESTED, PENDING, REFUNDED, FAILED, UNKNOWN]
+          example: REFUNDED
+        amount:
+          type: integer
+          example: 2500
+        reason:
+          type: string
+          example: "Customer requested cancellation"
+        createdAt:
+          type: string
+          format: date-time
+
+  # ─── REUSABLE PARAMETERS ─────────────────────────────────────────────────────
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Unique key for safe request replay. Use UUID v4. Same key + same payload = same response.
+      schema:
+        type: string
+      example: "01HZBK1234567890ABCDE"
+    PaymentId:
+      name: id
+      in: path
+      required: true
+      description: UUID of the payment.
+      schema:
+        type: string
+        format: uuid
+
+  # ─── REUSABLE RESPONSES ──────────────────────────────────────────────────────
+  responses:
+    Unauthorized:
+      description: Missing or invalid API key.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIError'
+          example:
+            error: invalid_api_key
+            message: The provided API key is invalid or has been revoked
+    NotFound:
+      description: Resource not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIError'
+          example:
+            error: payment_not_found
+            message: No payment found with the provided ID
+    Conflict:
+      description: Idempotency key was used with a different payload.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIError'
+          example:
+            error: idempotency_key_mismatch
+            message: The Idempotency-Key was already used with a different payload.
+    InternalError:
+      description: Unexpected internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/APIError'
+          example:
+            error: internal_error
+            message: An internal error occurred. Please contact support with your reference ID.
+            reference: "01HZBK1234567890ABCDE"
+
+# ─── PATHS ───────────────────────────────────────────────────────────────────
+paths:
+
+  # ── Payments ──────────────────────────────────────────────────────────────
+  /payments:
+    post:
+      tags: [Payments]
+      summary: Create a payment
+      description: |
+        Initiates a new payment. The response status indicates the initial state:
+        - `200 SUCCEEDED` — payment completed synchronously (sandbox/mock).
+        - `202 PENDING` / `PROCESSING` — payment is async, await webhook for final result.
+        - `422 FAILED` — payment was rejected immediately (e.g., risk, disabled method).
+      operationId: createPayment
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePaymentRequest'
+            example:
+              merchantReference: "order-2024-abc123"
+              amount: 5000
+              currency: "ETB"
+              customerId: "cust-001"
+              paymentMethod: "TELEBIRR"
+              providerId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      responses:
+        '200':
+          description: Payment succeeded synchronously.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '202':
+          description: Payment is async and pending provider confirmation. Listen for webhooks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+              examples:
+                missing_idempotency_key:
+                  value:
+                    error: missing_idempotency_key
+                    message: Idempotency-Key header is required
+                validation_failed:
+                  value:
+                    error: validation_failed
+                    message: "amount: must be greater than 0"
+                payment_method_disabled:
+                  value:
+                    error: payment_method_disabled
+                    message: CARD payments are not enabled for this merchant
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          description: Payment rejected (risk, insufficient funds, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+              examples:
+                risk_rejected:
+                  value:
+                    error: risk_rejected
+                    message: Payment blocked by risk evaluation
+                insufficient_funds:
+                  value:
+                    error: insufficient_funds
+                    message: Customer balance is insufficient for this transaction
+        '502':
+          description: Payment provider unavailable.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                error: provider_unavailable
+                message: The payment provider rejected the request
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /payments/{id}/refund:
+    post:
+      tags: [Payments, Refunds]
+      summary: Refund a payment
+      description: |
+        Initiates a refund against a `SUCCEEDED` payment. Partial refunds are supported.
+        The total refunded amount across all refund requests must not exceed the original payment amount.
+      operationId: refundPayment
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - $ref: '#/components/parameters/IdempotencyKey'
+        - $ref: '#/components/parameters/PaymentId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundPaymentRequest'
+            example:
+              amount: 2500
+              reason: Customer requested cancellation
+      responses:
+        '200':
+          description: Refund completed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+        '202':
+          description: Refund is async and pending provider confirmation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+        '400':
+          description: Validation error or bad request.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          description: Refund is not possible (payment not refundable, exceeds amount, etc.).
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+              examples:
+                refund_exceeds_amount:
+                  value:
+                    error: refund_exceeds_payment_amount
+                    message: Refund amount exceeds the remaining refundable amount for this payment
+                payment_not_refundable:
+                  value:
+                    error: payment_not_refundable
+                    message: Payment is not in a refundable state
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── Checkout (Public, no auth) ─────────────────────────────────────────────
+  /checkout/payments/{id}:
+    get:
+      tags: [Checkout]
+      summary: Get payment for hosted checkout
+      description: |
+        Returns public-safe payment details for the hosted checkout page.
+        This endpoint is unauthenticated — it is intended for the frontend checkout UI only.
+        It does NOT return sensitive merchant data.
+      operationId: getCheckoutPayment
+      parameters:
+        - $ref: '#/components/parameters/PaymentId'
+      responses:
+        '200':
+          description: Public payment details.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  amount:
+                    type: integer
+                    example: 5000
+                  currency:
+                    type: string
+                    example: ETB
+                  status:
+                    $ref: '#/components/schemas/PaymentStatus'
+                  merchantName:
+                    type: string
+                    example: Acme Coffee Shop
+                  paymentMethod:
+                    type: string
+                    example: TELEBIRR
+        '400':
+          description: Invalid payment ID format.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /checkout/payments/{id}/process:
+    post:
+      tags: [Checkout]
+      summary: Process checkout payment
+      description: |
+        Finalizes a payment from the hosted checkout page.
+        In LIVE mode, this submits payment credentials to the provider.
+        In TEST mode, the Mock adapter returns SUCCEEDED immediately.
+      operationId: processCheckoutPayment
+      parameters:
+        - $ref: '#/components/parameters/PaymentId'
+      responses:
+        '200':
+          description: Payment processed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: SUCCEEDED
+                  message:
+                    type: string
+                    example: Payment processed successfully
+        '400':
+          description: Invalid payment ID.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  # ── Auth ──────────────────────────────────────────────────────────────────
+  /auth/login:
+    post:
+      tags: [Auth]
+      summary: Log in
+      description: Authenticates a user and returns a JWT access token.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: merchant@acme.com
+                password:
+                  type: string
+                  format: password
+                  example: "supersecret123"
+      responses:
+        '200':
+          description: Login successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    description: JWT access token. Valid for 1 hour.
+                  refreshToken:
+                    type: string
+        '401':
+          description: Invalid credentials.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+              example:
+                error: unauthorized
+                message: Invalid email or password
+
+  # ── Merchants ─────────────────────────────────────────────────────────────
+  /merchants:
+    post:
+      tags: [Merchants]
+      summary: Create a merchant
+      description: Onboards a new merchant. Requires SUPER_ADMIN or ADMIN JWT.
+      operationId: createMerchant
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [legalName, displayName, country, defaultCurrency, ownerEmail]
+              properties:
+                legalName:
+                  type: string
+                  maxLength: 255
+                  example: "Acme Coffee PLC"
+                displayName:
+                  type: string
+                  maxLength: 255
+                  example: "Acme Coffee"
+                country:
+                  type: string
+                  description: ISO 3166-1 alpha-3 country code.
+                  example: "ETH"
+                defaultCurrency:
+                  type: string
+                  description: ISO 4217 3-letter currency code.
+                  example: "ETB"
+                ownerEmail:
+                  type: string
+                  format: email
+                  example: "owner@acmecoffee.com"
+      responses:
+        '201':
+          description: Merchant created.
+        '400':
+          description: Validation error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  # ── API Keys ──────────────────────────────────────────────────────────────
+  /merchants/{merchantId}/apikeys:
+    post:
+      tags: [API Keys]
+      summary: Generate an API key
+      description: |
+        Generates a new API key for a merchant.
+        **The raw key is returned ONCE and never stored.** Store it securely immediately.
+      operationId: generateApiKey
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: merchantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Production Key"
+                environment:
+                  type: string
+                  enum: [LIVE, TEST]
+                  default: LIVE
+                  example: TEST
+                keyType:
+                  type: string
+                  enum: [SECRET, PUBLISHABLE]
+                  default: SECRET
+      responses:
+        '201':
+          description: API key created. Raw key returned once — store immediately.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                  name:
+                    type: string
+                  environment:
+                    type: string
+                    enum: [LIVE, TEST]
+                  keyType:
+                    type: string
+                  rawKey:
+                    type: string
+                    description: The full API key. This is returned ONCE and never again.
+                    example: "sk_test_a1b2c3d4e5f6789012345678901234567890abcdef"
+                  createdAt:
+                    type: string
+                    format: date-time
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  # ── Webhooks ──────────────────────────────────────────────────────────────
+  /merchants/{merchantId}/webhooks:
+    post:
+      tags: [Webhooks]
+      summary: Configure a webhook endpoint
+      description: |
+        Sets a URL to receive payment event notifications via HTTP POST.
+        Webhook payloads are HMAC-SHA256 signed with your webhook secret.
+        Verify the `X-Webhook-Signature` header before processing any event.
+      operationId: createWebhookConfig
+      security:
+        - ApiKeyAuth: []
+      parameters:
+        - name: merchantId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [url]
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  example: "https://myshop.com/webhooks/payments"
+                events:
+                  type: array
+                  items:
+                    type: string
+                  example: ["payment.succeeded", "payment.failed", "refund.succeeded"]
+                isActive:
+                  type: boolean
+                  default: true
+      responses:
+        '201':
+          description: Webhook endpoint configured.
+        '400':
+          description: Invalid URL or configuration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'

@@ -1,0 +1,53 @@
+// This is the Prisma schema for the reporting-service.
+// CRITICAL: This is a READ MODEL (projection). It is NOT the financial source of truth.
+// It is populated from Kafka domain events and used for dashboard queries and CSV/PDF generation.
+// Reports MUST NOT bypass the owning service APIs and query other service databases directly.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Denormalized projection of payment events for fast reporting queries.
+model PaymentProjection {
+  id                String   @id @default(uuid())
+  paymentId         String   @unique @map("payment_id")
+  merchantId        String   @map("merchant_id")
+  merchantReference String   @map("merchant_reference")
+  status            String
+  amount            BigInt   @map("amount") // Minor units
+  currency          String
+  paymentMethod     String?  @map("payment_method")
+  customerId        String?  @map("customer_id")
+  createdAt         DateTime @map("created_at")
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
+  lastEventAt       DateTime @map("last_event_at")
+
+  @@index([merchantId, status])
+  @@index([merchantId, createdAt])
+  @@index([merchantId, currency])
+  @@map("payment_projections")
+}
+
+// Denormalized projection of transaction events.
+model TransactionProjection {
+  id                    String   @id @default(uuid())
+  transactionId         String   @unique @map("transaction_id")
+  paymentId             String   @map("payment_id")
+  merchantId            String   @map("merchant_id")
+  providerId            String   @map("provider_id")
+  providerTransactionId String?  @map("provider_transaction_id")
+  status                String
+  amount                BigInt
+  currency              String
+  createdAt             DateTime @map("created_at")
+  updatedAt             DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@index([merchantId, status])
+  @@index([merchantId, createdAt])
+  @@map("transaction_projections")
+}

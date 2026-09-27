@@ -1,0 +1,25 @@
+{
+  "name": "payment-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "services/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev:ts": "npm run dev --workspaces --if-present",
+    "proto:generate": "cd packages/protobuf && npm run build"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.14.5",
+    "enabled": "^2.0.0",
+    "kuler": "^2.0.0",
+    "winston": "^3.19.0"
+  }
+}

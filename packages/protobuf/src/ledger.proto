@@ -1,0 +1,128 @@
+syntax = "proto3";
+
+package ledger;
+option go_package = "payment-gateway/ledger-service/proto";
+
+service LedgerService {
+  rpc RecordJournalEntry (RecordJournalEntryRequest) returns (RecordJournalEntryResponse);
+  rpc GetLedgerEntriesByReferences (GetLedgerEntriesRequest) returns (GetLedgerEntriesResponse);
+  
+  // Settlement Financial Operations
+  rpc ReserveFunds (ReserveFundsRequest) returns (ReserveFundsResponse);
+  rpc ReleaseReservedFunds (ReleaseReservedFundsRequest) returns (ReleaseReservedFundsResponse);
+  rpc CompleteSettlement (CompleteSettlementRequest) returns (CompleteSettlementResponse);
+
+  // BFF Read APIs — caller MUST provide valid RequestContext with merchant_id
+  rpc GetLedgerBalances (GetLedgerBalancesRequest) returns (GetLedgerBalancesResponse);
+  rpc GetLedgerEntriesPaginated (GetLedgerEntriesPaginatedRequest) returns (GetLedgerEntriesPaginatedResponse);
+}
+
+message RecordJournalEntryRequest {
+  string reference_type = 1;
+  string reference_id = 2;
+  string currency = 3;
+  repeated JournalLineRequest lines = 4;
+  string provider_id = 5;
+  string provider_transaction_id = 6;
+  string environment = 7;
+}
+
+message JournalLineRequest {
+  string account_id = 1;
+  string direction = 2; // "DEBIT" or "CREDIT"
+  int64 amount = 3;
+}
+
+message RecordJournalEntryResponse {
+  bool success = 1;
+  string error = 2;
+  string journal_entry_id = 3;
+}
+
+message GetLedgerEntriesRequest {
+  string provider_id = 1;
+  repeated string provider_transaction_ids = 2;
+}
+
+message GetLedgerEntriesResponse {
+  repeated LedgerEntry entries = 1;
+}
+
+message ReserveFundsRequest {
+  string merchant_id = 1;
+  string currency = 2;
+  int64 amount = 3;
+  string reference_id = 4; // Settlement ID
+  string environment = 5;
+}
+
+message ReserveFundsResponse {
+  string status = 1;
+}
+
+message ReleaseReservedFundsRequest {
+  string merchant_id = 1;
+  string currency = 2;
+  int64 amount = 3;
+  string original_reference_id = 4; // Settlement ID
+  string environment = 5;
+}
+
+message ReleaseReservedFundsResponse {
+  string status = 1;
+}
+
+message CompleteSettlementRequest {
+  string merchant_id = 1;
+  string currency = 2;
+  int64 amount = 3;
+  string original_reference_id = 4; // Settlement ID
+  string environment = 5;
+}
+
+message CompleteSettlementResponse {
+  string status = 1;
+}
+
+message LedgerEntry {
+  string journal_entry_id = 1;
+  string reference_type = 2;
+  string reference_id = 3;
+  string provider_id = 4;
+  string provider_transaction_id = 5;
+  int64 amount = 6;
+  string currency = 7;
+  string effective_at = 8;
+}
+
+// BFF Read API Messages
+
+message GetLedgerBalancesRequest {
+  string merchant_id = 1; // Must match RequestContext.merchant_id
+  string currency = 2;    // Optional: filter by currency
+}
+
+message AccountBalance {
+  string account_id = 1;
+  string account_type = 2;
+  string account_group = 3;
+  string currency = 4;
+  int64 balance_minor_units = 5;
+}
+
+message GetLedgerBalancesResponse {
+  repeated AccountBalance balances = 1;
+}
+
+message GetLedgerEntriesPaginatedRequest {
+  string merchant_id = 1;     // Must match RequestContext.merchant_id
+  string currency = 2;        // Optional filter
+  string after_cursor = 3;    // Cursor-based pagination; empty = first page
+  int32 limit = 4;            // Max results per page; server enforces ceiling
+}
+
+message GetLedgerEntriesPaginatedResponse {
+  repeated LedgerEntry entries = 1;
+  string next_cursor = 2; // Empty if no more pages
+  bool has_more = 3;
+}

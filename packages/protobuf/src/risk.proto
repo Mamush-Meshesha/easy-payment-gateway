@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package risk;
+option go_package = "payment-gateway/risk-service/proto";
+
+service RiskService {
+  rpc CheckRisk (CheckRiskRequest) returns (CheckRiskResponse);
+}
+
+message CheckRiskRequest {
+  string payment_id = 1;
+  string merchant_id = 2;
+  int64 amount = 3;
+  string currency = 4;
+  string customer_id = 5;
+  string ip_address = 6;
+  string payment_method = 7;
+}
+
+message CheckRiskResponse {
+  string decision_id = 1;
+  string action = 2; // ALLOW, FLAG, REVIEW, BLOCK
+  string reason = 3;
+  repeated string triggered_rule_ids = 4;
+  string evaluation_status = 5; // SUCCESS, UNAVAILABLE, TIMEOUT, ERROR
+}

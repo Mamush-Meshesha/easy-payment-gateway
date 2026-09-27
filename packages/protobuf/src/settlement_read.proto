@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package settlement_read;
+option go_package = "payment-gateway/settlement-service/proto;proto";
+
+service SettlementReadService {
+  rpc GetSettlements (GetSettlementsRequest) returns (GetSettlementsResponse);
+}
+
+message GetSettlementsRequest {
+  string merchant_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message Settlement {
+  string id = 1;
+  string merchant_id = 2;
+  int64 amount = 3;
+  string currency = 4;
+  string status = 5;
+  string destination_account = 6;
+  string created_at = 7;
+  string updated_at = 8;
+}
+
+message GetSettlementsResponse {
+  repeated Settlement settlements = 1;
+  int32 total = 2;
+}

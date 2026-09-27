@@ -1,0 +1,11 @@
+**/node_modules/
+dist/
+coverage/
+.git/
+.env
+.idea/
+.vscode/
+scratch/
+*.log
+docs/
+infra/terraform/

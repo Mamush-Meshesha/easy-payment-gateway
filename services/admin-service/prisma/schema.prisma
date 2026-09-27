@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model PaymentProvider {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g., "TELEBIRR", "CBE_BIRR", "MPESA"
+  name        String   // e.g., "Telebirr", "CBE Birr", "M-Pesa"
+  type        String   @default("MOBILE_MONEY") // MOBILE_MONEY, CARD, BANK_TRANSFER
+  isActive    Boolean  @default(true)
+  description String?
+  logoUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

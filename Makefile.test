@@ -1,0 +1,2 @@
+test:
+	TEST_VAR=123 go run test_main.go & wait

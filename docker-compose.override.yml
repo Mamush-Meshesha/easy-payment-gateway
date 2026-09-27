@@ -1,0 +1,117 @@
+version: '3.8'
+
+# This override file enables Hot Reloading for all services.
+# When you run `docker compose up`, Docker merges this with docker-compose.yml.
+
+services:
+  # ==========================================
+  # Node.js TypeScript Services (nodemon)
+  # ==========================================
+  auth-service:
+    volumes:
+      - ./services/auth-service/src:/app/services/auth-service/src
+      - ./packages:/app/packages
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/app.ts"]
+    
+  merchant-service:
+    volumes:
+      - ./services/merchant-service/src:/app/services/merchant-service/src
+      - ./packages:/app/packages
+    environment:
+      - NODE_PATH=/app/services/merchant-service/node_modules
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/app.ts"]
+    
+  notification-service:
+    volumes:
+      - ./services/notification-service/src:/app/services/notification-service/src
+      - ./packages:/app/packages
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/app.ts"]
+
+  reporting-service:
+    volumes:
+      - ./services/reporting-service/src:/app/services/reporting-service/src
+      - ./packages:/app/packages
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/app.ts"]
+
+  admin-service:
+    volumes:
+      - ./services/admin-service/src:/app/services/admin-service/src
+      - ./packages:/app/packages
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/app.ts"]
+
+  dashboard-service:
+    volumes:
+      - ./services/dashboard-service/src:/app/services/dashboard-service/src
+      - ./packages:/app/packages
+    command: ["npx", "nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/app.ts"]
+
+  # ==========================================
+  # Go Lang Services
+  # (Bypasses Dockerfile multi-stage build)
+  # ==========================================
+  payment-service:
+    image: golang:alpine
+    working_dir: /app/services/payment-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  transaction-service:
+    image: golang:alpine
+    working_dir: /app/services/transaction-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  provider-service:
+    image: golang:alpine
+    working_dir: /app/services/provider-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  webhook-service:
+    image: golang:alpine
+    working_dir: /app/services/webhook-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  ledger-service:
+    image: golang:alpine
+    working_dir: /app/services/ledger-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  risk-service:
+    image: golang:alpine
+    working_dir: /app/services/risk-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  reconciliation-service:
+    image: golang:alpine
+    working_dir: /app/services/reconciliation-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+  settlement-service:
+    image: golang:alpine
+    working_dir: /app/services/settlement-service
+    volumes:
+      - .:/app
+      - go_mod_cache:/go/pkg/mod
+    command: ["sh", "-c", "go run ./cmd/server"]
+
+volumes:
+  go_mod_cache:

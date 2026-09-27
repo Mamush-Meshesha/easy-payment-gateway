@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Merchant {
+  id              String   @id @default(uuid())
+  legalName       String
+  displayName     String
+  status          String   @default("PENDING") // PENDING, ACTIVE, SUSPENDED, DISABLED
+  country         String   @db.VarChar(3)
+  defaultCurrency String   @db.VarChar(3)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  apiKeys         ApiKey[]
+  webhookConfigs  WebhookConfig[]
+  providerConfigs ProviderConfig[]
+  limits          MerchantLimit[]
+  preferences     MerchantPreference?
+  paymentMethods  MerchantPaymentMethod[]
+}
+
+model ApiKey {
+  id          String    @id @default(uuid())
+  merchantId  String
+  keyType     String    @default("SECRET") // SECRET, PUBLISHABLE
+  environment String    @default("LIVE") // TEST, LIVE
+  keyPrefix   String    @db.VarChar(50)
+  keyLast4    String    @db.VarChar(4)
+  keyHash     String    @unique @db.VarChar(255)
+  rawKey      String?   @db.VarChar(255) // Added for development/testing reveal feature
+  name        String?   @db.VarChar(100)
+  status      String    @default("ACTIVE") // ACTIVE, REVOKED, EXPIRED
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId])
+  @@index([keyPrefix])
+}
+
+model WebhookConfig {
+  id          String   @id @default(uuid())
+  merchantId  String
+  environment String   @default("LIVE") // TEST, LIVE
+  url         String
+  secretHash  String
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+}
+
+model OutboxEvent {
+  id            String    @id @default(uuid())
+  aggregateType String // e.g., "Merchant"
+  aggregateId   String // merchantId
+  eventType     String // e.g., "merchant.created"
+  payload       Json
+  published     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  publishedAt   DateTime?
+}
+
+model ProviderConfig {
+  id         String   @id @default(uuid())
+  merchantId String
+  providerId String // Logical Ref to provider_db
+  status     String   @default("ACTIVE")
+  configRef  String? // Reference to encrypted secrets in a vault
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, providerId])
+}
+
+model MerchantLimit {
+  id           String   @id @default(uuid())
+  merchantId   String
+  currency     String   @db.VarChar(3)
+  minAmount    BigInt
+  maxAmount    BigInt
+  dailyLimit   BigInt?
+  monthlyLimit BigInt?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, currency])
+}
+
+model MerchantPreference {
+  id         String   @id @default(uuid())
+  merchantId String   @unique
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  // Test Mode
+  isTestMode Boolean @default(true)
+
+  // Preferences
+  defaultCurrency      String  @default("ETB")
+  callbackUrl          String?
+  returnUrl            String?
+  refundWebhookUrl     String?
+  retryPaymentInterval Int     @default(60) // in minutes
+  redirectTimeout      Int     @default(0) // in seconds
+
+  // Customization
+  dashboardTheme String @default("CLASSIC") // CLASSIC, ADAPTIVE, ADVANCED
+
+  // Fee Routing
+  transactionFeePayer String @default("MERCHANT") // MERCHANT, CUSTOMER
+  transferFeePayer    String @default("MERCHANT") // MERCHANT, CUSTOMER
+
+  // Notifications
+  emailImportantNotifs   Boolean @default(true)
+  emailCustomerReceipts  Boolean @default(false)
+  transactionReceiptToMe Boolean @default(true)
+  financeEmail           String?
+
+  // Approvals
+  transferApprovalMethod String  @default("OTP") // OTP, URL
+  approvalUrl            String?
+  approvalSecret         String?
+
+  // Version Control (For Caching)
+  version   Int      @default(1)
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model MerchantPaymentMethod {
+  id         String  @id @default(uuid())
+  merchantId String
+  methodCode String // e.g. "TELEBIRR", "CBE_BIRR", "VISA"
+  isEnabled  Boolean @default(true)
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, methodCode])
+}

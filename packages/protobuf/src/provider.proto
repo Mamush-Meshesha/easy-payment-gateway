@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package provider;
+option go_package = "payment-gateway/provider-service/proto";
+
+service ProviderService {
+  rpc GetProviderStatus (ProviderStatusRequest) returns (ProviderStatusResponse);
+  rpc InitiatePayment (InitiatePaymentRequest) returns (InitiatePaymentResponse);
+  rpc InitiateRefund (InitiateRefundRequest) returns (InitiateRefundResponse);
+}
+
+message ProviderStatusRequest {
+  string provider_id = 1;
+}
+
+message ProviderStatusResponse {
+  bool is_active = 1;
+  string error = 2;
+}
+
+message InitiatePaymentRequest {
+  string payment_id = 1;
+  string provider_id = 2;
+  int64 amount = 3;
+  string currency = 4;
+  string environment = 5;
+}
+
+message InitiatePaymentResponse {
+  string status = 1; // SUCCESS, PENDING, FAILED, TIMEOUT
+}
+
+message InitiateRefundRequest {
+  string refund_id = 1;
+  string provider_id = 2;
+  int64 amount = 3;
+  string currency = 4;
+  optional string original_provider_id = 5;
+  string environment = 6;
+}
+
+message InitiateRefundResponse {
+  string status = 1; // SUCCESS, PENDING, FAILED, TIMEOUT
+}

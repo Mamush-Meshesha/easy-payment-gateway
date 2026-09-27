@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Dashboard Overview Specific Styles (Crisp Light)
+   ========================================================================== */
+
+.overview-page-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0 0 2rem 0;
+  letter-spacing: -1px;
+}
+
+.overview-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.overview-stat-card {
+  background: var(--surface-default);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.overview-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-subtle);
+}
+
+.overview-stat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.overview-stat-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.overview-stat-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overview-stat-icon--blue {
+  background: #e0e7ff;
+  color: #4f46e5;
+}
+
+.overview-stat-icon--emerald {
+  background: #d1fae5;
+  color: #059669;
+}
+
+.overview-stat-icon--purple {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
+.overview-stat-icon--amber {
+  background: #fef3c7;
+  color: #d97706;
+}
+
+.overview-stat-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+
+.overview-activity-section {
+  background: var(--surface-default);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-md);
+  position: relative;
+}
+
+.overview-activity-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  color: var(--text-primary);
+}
+
+.overview-activity-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.overview-activity-table th {
+  text-align: left;
+  padding: 1rem 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-default);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.overview-activity-table td {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.overview-activity-table tr:last-child td {
+  border-bottom: none;
+}
+
+.overview-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.overview-status-badge--success {
+  background: var(--status-success-bg);
+  color: var(--status-success-text);
+}
+
+.overview-status-badge--pending {
+  background: var(--status-warning-bg);
+  color: var(--status-warning-text);
+}
+
+.overview-status-badge--failed {
+  background: var(--status-danger-bg);
+  color: var(--status-danger-text);
+}

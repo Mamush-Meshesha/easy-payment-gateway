@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package transaction_read;
+option go_package = "payment-gateway/transaction-service/proto;proto";
+
+// BFF Read APIs for the Transaction Service.
+// All RPCs require RequestContext to be present in gRPC metadata.
+// Handlers MUST call RequireMerchant(ctx, req.merchant_id) before querying the DB.
+service TransactionReadService {
+  rpc GetTransactions (GetTransactionsRequest) returns (GetTransactionsResponse);
+  rpc GetTransaction (GetTransactionRequest) returns (GetTransactionResponse);
+}
+
+message TransactionFilter {
+  string status = 1;
+  string provider_id = 2;
+  string from_created_at = 3;
+  string to_created_at = 4;
+}
+
+message GetTransactionsRequest {
+  string merchant_id = 1;   // Must match RequestContext.merchant_id
+  TransactionFilter filter = 2;
+  string after_cursor = 3;
+  int32 limit = 4;
+}
+
+message TransactionSummary {
+  string transaction_id = 1;
+  string payment_id = 2;
+  string provider_id = 3;
+  string provider_transaction_id = 4;
+  string status = 5;
+  int64 amount = 6;
+  string currency = 7;
+  string created_at = 8;
+  string updated_at = 9;
+}
+
+message GetTransactionsResponse {
+  repeated TransactionSummary transactions = 1;
+  string next_cursor = 2;
+  bool has_more = 3;
+}
+
+message GetTransactionRequest {
+  string transaction_id = 1;
+  string merchant_id = 2; // Must match RequestContext.merchant_id
+}
+
+message GetTransactionResponse {
+  TransactionSummary transaction = 1;
+}
