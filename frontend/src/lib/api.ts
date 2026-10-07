@@ -33,7 +33,10 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
     requestHeaders.set('Content-Type', 'application/json');
   }
 
-  let response = await fetch(url, {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+  const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
+
+  let response = await fetch(fullUrl, {
     ...rest,
     headers: requestHeaders,
   });
@@ -45,7 +48,8 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
     
     if (refreshToken) {
       if (!refreshPromise) {
-        refreshPromise = fetch('/api/v1/auth/refresh', {
+        const refreshUrl = '/api/v1/auth/refresh'.startsWith('http') ? '/api/v1/auth/refresh' : `${baseUrl}/api/v1/auth/refresh`;
+        refreshPromise = fetch(refreshUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ refreshToken }),
@@ -127,7 +131,10 @@ export async function apiFetchBlob(url: string, options: FetchOptions = {}): Pro
     }
   }
 
-  let response = await fetch(url, {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+  const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
+
+  let response = await fetch(fullUrl, {
     ...rest,
     headers: requestHeaders,
   });

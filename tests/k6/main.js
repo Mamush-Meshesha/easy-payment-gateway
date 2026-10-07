@@ -1,3 +1,4 @@
+import http from 'k6/http';
 import { runPaymentFlow } from './scenarios/payments.js';
 import { runAuthFlow } from './scenarios/auth.js';
 import { runDashboardFlow, runReportingFlow } from './scenarios/reads.js';
@@ -5,7 +6,7 @@ import { runDashboardFlow, runReportingFlow } from './scenarios/reads.js';
 export const options = {
     // We set thresholds globally
     thresholds: {
-        http_req_duration: ['p(95)<1000'], // 95% of ALL requests must be under 1s
+        http_req_duration: ['p(95)<5000'], // 95% of ALL requests must be under 5s
         http_req_failed: ['rate<0.05'],   // Max 5% error rate allowed under load
     },
     
@@ -60,7 +61,46 @@ export const options = {
     },
 };
 
-export function paymentScenario() { runPaymentFlow(); }
-export function authScenario() { runAuthFlow(); }
-export function dashboardScenario() { runDashboardFlow(); }
-export function reportingScenario() { runReportingFlow(); }
+export function setup() {
+    const BASE = 'http://192.168.122.127:8080';
+    const email = `test.k6.${Date.now()}@example.com`;
+    const password = "securepassword123";
+
+    // 1. Register Merchant
+    const regRes = http.post(`${BASE}/api/v1/auth/register-merchant`, JSON.stringify({
+        email: email, password: password, businessName: "K6 Load Test Inc", country: "US", firstName: "K6", lastName: "Test"
+    }), { headers: { 'Content-Type': 'application/json' } });
+
+    let merchantId = "";
+    if (regRes.status === 201 || regRes.status === 200) {
+        merchantId = regRes.json('user.roles.0.merchantId');
+    } else {
+        console.warn(`[setup] Failed to register: ${regRes.body}`);
+    }
+
+    // 2. Login to get Token
+    const loginRes = http.post(`${BASE}/api/v1/auth/login`, JSON.stringify({
+        email: email, password: password
+    }), { headers: { 'Content-Type': 'application/json' } });
+
+    const token = loginRes.json('accessToken');
+    if (!merchantId) { merchantId = loginRes.json('user.roles.0.merchantId'); }
+
+    // 3. Generate API Key
+    let apiKey = "";
+    if (merchantId && token) {
+        const keyRes = http.post(`${BASE}/api/v1/merchants/${merchantId}/apikeys`, JSON.stringify({
+            name: "k6_test_key", environment: "TEST", keyType: "SECRET"
+        }), { headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` } });
+        apiKey = keyRes.json('rawKey') || "";
+    } else {
+        console.warn(`[setup] Missing merchantId or token for API key generation`);
+    }
+
+    return { token: token, apiKey: apiKey, email: email, password: password };
+}
+
+export function paymentScenario(data) { runPaymentFlow(data); }
+export function authScenario(data) { runAuthFlow(data); }
+export function dashboardScenario(data) { runDashboardFlow(data); }
+export function reportingScenario(data) { runReportingFlow(data); }

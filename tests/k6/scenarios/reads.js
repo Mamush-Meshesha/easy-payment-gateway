@@ -2,10 +2,10 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 import { BASE_URL, getHeaders, handleResponse } from '../common/utils.js';
 
-export function runDashboardFlow() {
+export function runDashboardFlow(data) {
     // Merchants constantly check their dashboard
-    const url = `${BASE_URL}/api/v1/dashboard/metrics`;
-    const headers = getHeaders('mock_auth_token_for_dashboard');
+    const url = `${BASE_URL}/api/v1/dashboard/payments`;
+    const headers = getHeaders(data ? data.token : null);
 
     const res = http.get(url, { headers });
 
@@ -17,10 +17,10 @@ export function runDashboardFlow() {
     sleep(Math.random() * 3 + 1); // Users read the dashboard for a few seconds
 }
 
-export function runReportingFlow() {
+export function runReportingFlow(data) {
     // Reporting is a heavier operation, simulate exporting a report
-    const url = `${BASE_URL}/api/v1/reporting/summary?timeframe=30d`;
-    const headers = getHeaders('mock_auth_token_for_reporting');
+    const url = `${BASE_URL}/api/v1/reporting/payments`;
+    const headers = getHeaders(data ? data.token : null);
 
     const res = http.get(url, { headers });
 

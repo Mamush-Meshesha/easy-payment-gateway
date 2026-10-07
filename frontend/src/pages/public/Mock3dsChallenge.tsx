@@ -27,7 +27,7 @@ const Mock3dsChallenge: React.FC = () => {
       // In a real system, the issuer would redirect the user back to the merchant's success URL
       // We simulate this by resolving the payment state and redirecting to the checkout page
       try {
-        await fetch(`/api/v1/checkout/payments/${paymentId}/process`, {
+        await apiFetch(`/api/v1/checkout/payments/${paymentId}/process`, {
           method: 'POST',
         });
       } catch (err) {
