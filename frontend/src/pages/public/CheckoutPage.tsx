@@ -17,9 +17,7 @@ const CheckoutPage: React.FC = () => {
   useEffect(() => {
     const fetchPaymentInfo = async () => {
       try {
-        const response = await fetch(`/api/v1/checkout/payments/${paymentId}`);
-        if (!response.ok) throw new Error('Payment not found');
-        const data = await response.json();
+        const data = await apiFetch(`/api/v1/checkout/payments/${paymentId}`);
         
         setPaymentData({
           amount: data.amount,

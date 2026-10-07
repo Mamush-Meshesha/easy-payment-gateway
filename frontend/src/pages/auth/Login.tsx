@@ -40,7 +40,8 @@ const Login: React.FC = () => {
 
     try {
       const isSignup = mode === 'signup';
-      const endpoint = isSignup ? '/api/v1/auth/register-merchant' : '/api/v1/auth/login';
+      const baseUrl = import.meta.env.VITE_API_BASE_URL || '';
+      const endpoint = baseUrl + (isSignup ? '/api/v1/auth/register-merchant' : '/api/v1/auth/login');
       const body = isSignup 
         ? { email, password, firstName, lastName, businessName }
         : { email, password };
