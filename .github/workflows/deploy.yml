@@ -1,0 +1,108 @@
+name: Payment Gateway CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-and-lint:
+    name: Run Tests & Linters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Run Go Tests
+        run: |
+          for dir in services/*/; do
+            if [ -f "$dir/go.mod" ]; then
+              cd $dir && go test ./... && cd ../../
+            fi
+          done
+
+      - name: Run Node Tests (Admin, Auth, Merchant)
+        run: |
+          for dir in services/*/; do
+            if [ -f "$dir/package.json" ]; then
+              cd $dir && npm install && npm test --if-present && cd ../../
+            fi
+          done
+
+  build-and-push:
+    name: Build Docker Images
+    needs: test-and-lint
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Log in to Container Registry (Simulated)
+        run: echo "Logging into AWS ECR or Docker Hub..."
+      
+      - name: Build Docker Compose Stack
+        run: docker compose -f docker-compose.yml build
+
+      - name: Push Images
+        run: echo "Pushing images to registry..."
+
+  deploy-to-production:
+    name: Deploy to Production (AWS EC2 / KVM)
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH Key
+        uses: webfactory/ssh-agent@v0.8.0
+        with:
+          ssh-private-key: ${{ secrets.PROD_SSH_KEY }}
+
+      - name: Add Server to Known Hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.PROD_SERVER_IP }} >> ~/.ssh/known_hosts
+
+      - name: Execute Deployment Script
+        env:
+          VM_IP: ${{ secrets.PROD_SERVER_IP }}
+        run: |
+          # 1. Sync the codebase to the production server
+          rsync -avz --exclude 'node_modules' \
+                     --exclude '.git' \
+                     --exclude 'logs' \
+                     --exclude 'venv' \
+                     --exclude '.env.local' \
+                     -e "ssh -o StrictHostKeyChecking=no" \
+                     ./ ubuntu@$VM_IP:/home/ubuntu/payment-gateway/
+
+          # 2. SSH in and run Docker Compose
+          ssh -o StrictHostKeyChecking=no ubuntu@$VM_IP << 'EOF'
+            set -e
+            cd /home/ubuntu/payment-gateway
+            
+            echo "Pulling latest images..."
+            # In a real pipeline, we would `docker pull` here, but since we rely on the host build:
+            sudo docker compose -f docker-compose.infra.yml up -d
+            
+            sleep 10
+            sudo docker compose -f docker-compose.yml up -d --build
+            
+            echo "✅ Deployment successful!"
+          EOF

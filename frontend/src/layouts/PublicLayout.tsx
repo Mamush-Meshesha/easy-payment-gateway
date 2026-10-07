@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { BookOpen, Code2, PlaySquare, Settings, Users, Terminal, Database, CreditCard, Link as LinkIcon, Smartphone, Shield, Laptop, Zap, PieChart, Globe, Building, ShoppingBag, Cloud, Rocket, LayoutDashboard } from 'lucide-react';
-
+import Footer from '@/components/layout/Footer';
 const PublicLayout: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
@@ -125,17 +125,17 @@ const PublicLayout: React.FC = () => {
           <div style={{ padding: '40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', letterSpacing: '1px', marginBottom: '24px' }}>DOCUMENTATION & GUIDES</div>
-              <div className="mega-menu-item"><div className="icon-box"><BookOpen size={18}/></div><div><h4>API Reference</h4><p>Complete RESTful endpoint documentation.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><PlaySquare size={18}/></div><div><h4>Quickstart Guide</h4><p>Get an integration live in minutes.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><Code2 size={18}/></div><div><h4>SDKs & Libraries</h4><p>Plug-ins for Python, Go, Node.js & React.</p></div></div>
+              <Link to="/docs/api" className="mega-menu-item"><div className="icon-box"><BookOpen size={18}/></div><div><h4>API Reference</h4><p>Complete RESTful endpoint documentation.</p></div></Link>
+              <Link to="/docs/quickstart" className="mega-menu-item"><div className="icon-box"><PlaySquare size={18}/></div><div><h4>Quickstart Guide</h4><p>Get an integration live in minutes.</p></div></Link>
+              <Link to="/docs/sdks" className="mega-menu-item"><div className="icon-box"><Code2 size={18}/></div><div><h4>SDKs & Libraries</h4><p>Plug-ins for Python, Go, Node.js & React.</p></div></Link>
             </div>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', letterSpacing: '1px', marginBottom: '24px' }}>DEVELOPER TOOLS</div>
-              <div className="mega-menu-item"><div className="icon-box"><Terminal size={18}/></div><div><h4>Sandbox</h4><p>Safe testing credentials and environments.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><Database size={18}/></div><div><h4>Webhooks</h4><p>Listen for real-time events and updates.</p></div></div>
+              <Link to="/docs/sandbox" className="mega-menu-item"><div className="icon-box"><Terminal size={18}/></div><div><h4>Sandbox</h4><p>Safe testing credentials and environments.</p></div></Link>
+              <Link to="/docs/webhooks" className="mega-menu-item"><div className="icon-box"><Database size={18}/></div><div><h4>Webhooks</h4><p>Listen for real-time events and updates.</p></div></Link>
               
               <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', letterSpacing: '1px', margin: '32px 0 24px' }}>COMMUNITY & SUPPORT</div>
-              <div className="mega-menu-item"><div className="icon-box"><Users size={18}/></div><div><h4>Developer Forum</h4><p>Community-driven technical support.</p></div></div>
+              <Link to="/community" className="mega-menu-item"><div className="icon-box"><Users size={18}/></div><div><h4>Developer Forum</h4><p>Community-driven technical support.</p></div></Link>
             </div>
           </div>
           <div style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', padding: '40px', color: 'white', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -168,15 +168,15 @@ const PublicLayout: React.FC = () => {
           <div style={{ padding: '40px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', letterSpacing: '1px', marginBottom: '24px' }}>PAYMENTS</div>
-              <div className="mega-menu-item"><div className="icon-box"><CreditCard size={18}/></div><div><h4>Online Checkout</h4><p>Accept cards and mobile money globally.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><LinkIcon size={18}/></div><div><h4>Payment Links</h4><p>Get paid via WhatsApp, SMS, or email.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><Smartphone size={18}/></div><div><h4>QR Payments</h4><p>In-person contactless payments.</p></div></div>
+              <Link to="/products/checkout" className="mega-menu-item"><div className="icon-box"><CreditCard size={18}/></div><div><h4>Online Checkout</h4><p>Accept cards and mobile money globally.</p></div></Link>
+              <Link to="/products/payment-links" className="mega-menu-item"><div className="icon-box"><LinkIcon size={18}/></div><div><h4>Payment Links</h4><p>Get paid via WhatsApp, SMS, or email.</p></div></Link>
+              <Link to="/products/qr-payments" className="mega-menu-item"><div className="icon-box"><Smartphone size={18}/></div><div><h4>QR Payments</h4><p>In-person contactless payments.</p></div></Link>
             </div>
             <div>
               <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#64748b', letterSpacing: '1px', marginBottom: '24px' }}>INFRASTRUCTURE</div>
-              <div className="mega-menu-item"><div className="icon-box"><Shield size={18}/></div><div><h4>Fraud Radar</h4><p>AI-powered protection against fraud.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><Settings size={18}/></div><div><h4>Core Ledger</h4><p>Immutable double-entry accounting.</p></div></div>
-              <div className="mega-menu-item"><div className="icon-box"><PieChart size={18}/></div><div><h4>Settlements</h4><p>Automated T+1 payouts to your bank.</p></div></div>
+              <Link to="/products/radar" className="mega-menu-item"><div className="icon-box"><Shield size={18}/></div><div><h4>Fraud Radar</h4><p>AI-powered protection against fraud.</p></div></Link>
+              <Link to="/products/ledger" className="mega-menu-item"><div className="icon-box"><Settings size={18}/></div><div><h4>Core Ledger</h4><p>Immutable double-entry accounting.</p></div></Link>
+              <Link to="/products/settlements" className="mega-menu-item"><div className="icon-box"><PieChart size={18}/></div><div><h4>Settlements</h4><p>Automated T+1 payouts to your bank.</p></div></Link>
             </div>
           </div>
           <div style={{ background: '#f8fafc', padding: '40px', borderLeft: '1px solid #f1f5f9', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -203,10 +203,10 @@ const PublicLayout: React.FC = () => {
         onMouseEnter={() => handleMouseEnter('solutions')}
         >
           <div style={{ padding: '40px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px' }}>
-            <div className="mega-menu-item"><div className="icon-box"><Building size={18}/></div><div><h4>Enterprise</h4><p>Custom integrations for large scale operations.</p></div></div>
-            <div className="mega-menu-item"><div className="icon-box"><ShoppingBag size={18}/></div><div><h4>Ecommerce</h4><p>Plug-and-play checkout for online stores.</p></div></div>
-            <div className="mega-menu-item"><div className="icon-box"><Cloud size={18}/></div><div><h4>SaaS</h4><p>Manage recurring billing and subscriptions.</p></div></div>
-            <div className="mega-menu-item"><div className="icon-box"><Rocket size={18}/></div><div><h4>Startups</h4><p>Launch fast with developer-friendly APIs.</p></div></div>
+            <Link to="/solutions/enterprise" className="mega-menu-item"><div className="icon-box"><Building size={18}/></div><div><h4>Enterprise</h4><p>Custom integrations for large scale operations.</p></div></Link>
+            <Link to="/solutions/ecommerce" className="mega-menu-item"><div className="icon-box"><ShoppingBag size={18}/></div><div><h4>Ecommerce</h4><p>Plug-and-play checkout for online stores.</p></div></Link>
+            <Link to="/solutions/saas" className="mega-menu-item"><div className="icon-box"><Cloud size={18}/></div><div><h4>SaaS</h4><p>Manage recurring billing and subscriptions.</p></div></Link>
+            <Link to="/solutions/startups" className="mega-menu-item"><div className="icon-box"><Rocket size={18}/></div><div><h4>Startups</h4><p>Launch fast with developer-friendly APIs.</p></div></Link>
           </div>
         </div>
 
@@ -224,10 +224,10 @@ const PublicLayout: React.FC = () => {
         onMouseEnter={() => handleMouseEnter('company')}
         >
           <div style={{ padding: '40px', display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '32px' }}>
-            <div className="mega-menu-item"><div className="icon-box"><Globe size={18}/></div><div><h4>About Us</h4><p>Our mission and story.</p></div></div>
-            <div className="mega-menu-item"><div className="icon-box"><Users size={18}/></div><div><h4>Careers</h4><p>Come build the future of finance.</p></div></div>
-            <div className="mega-menu-item"><div className="icon-box"><BookOpen size={18}/></div><div><h4>Blog</h4><p>News and engineering insights.</p></div></div>
-            <div className="mega-menu-item"><div className="icon-box"><Laptop size={18}/></div><div><h4>Contact</h4><p>Get in touch with our team.</p></div></div>
+            <Link to="/company/about" className="mega-menu-item"><div className="icon-box"><Globe size={18}/></div><div><h4>About Us</h4><p>Our mission and story.</p></div></Link>
+            <Link to="/company/careers" className="mega-menu-item"><div className="icon-box"><Users size={18}/></div><div><h4>Careers</h4><p>Come build the future of finance.</p></div></Link>
+            <Link to="/blog" className="mega-menu-item"><div className="icon-box"><BookOpen size={18}/></div><div><h4>Blog</h4><p>News and engineering insights.</p></div></Link>
+            <Link to="/contact" className="mega-menu-item"><div className="icon-box"><Laptop size={18}/></div><div><h4>Contact</h4><p>Get in touch with our team.</p></div></Link>
           </div>
         </div>
 
@@ -347,6 +347,7 @@ const PublicLayout: React.FC = () => {
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'var(--bg-primary)' }}>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 };

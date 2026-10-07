@@ -63,6 +63,9 @@ const authSlice = createSlice({
         refreshToken: state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }));
+      if (state.accessToken) {
+        localStorage.setItem('token', state.accessToken);
+      }
     },
     logout: (state) => {
       state.user = null;
@@ -71,6 +74,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.isInitialized = true;
       localStorage.removeItem('authState');
+      localStorage.removeItem('token');
     },
     setInitialized: (state) => {
       state.isInitialized = true;

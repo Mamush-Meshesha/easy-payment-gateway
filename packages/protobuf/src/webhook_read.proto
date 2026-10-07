@@ -5,6 +5,17 @@ option go_package = "payment-gateway/webhook-service/proto";
 
 service WebhookReadService {
   rpc GetWebhookDeliveries (GetWebhookDeliveriesRequest) returns (GetWebhookDeliveriesResponse);
+  rpc ReplayWebhookDelivery (ReplayWebhookDeliveryRequest) returns (ReplayWebhookDeliveryResponse);
+}
+
+message ReplayWebhookDeliveryRequest {
+  string merchant_id = 1;
+  string delivery_id = 2;
+}
+
+message ReplayWebhookDeliveryResponse {
+  bool success = 1;
+  string message = 2;
 }
 
 message GetWebhookDeliveriesRequest {

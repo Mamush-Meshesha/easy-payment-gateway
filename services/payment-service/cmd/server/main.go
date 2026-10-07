@@ -1,22 +1,25 @@
 package main
 
 import (
-	"payment-gateway/go-observability"
 	"context"
 	"log"
+	"net"
 	"os"
+	"time"
+	grpcauth "payment-gateway/go-grpc-auth"
+	"payment-gateway/go-observability"
 	"payment-gateway/payment-service/internal/domain"
 	"payment-gateway/payment-service/internal/handler/http"
+	"payment-gateway/payment-service/internal/infrastructure/cache"
 	"payment-gateway/payment-service/internal/infrastructure/grpcclient"
 	"payment-gateway/payment-service/internal/infrastructure/grpcserver"
 	"payment-gateway/payment-service/internal/infrastructure/kafka"
 	"payment-gateway/payment-service/internal/infrastructure/router"
-	"payment-gateway/payment-service/internal/infrastructure/cache"
+	"payment-gateway/payment-service/internal/infrastructure/workers"
 	"payment-gateway/payment-service/internal/repository"
 	"payment-gateway/payment-service/internal/service"
 	pb "payment-gateway/payment-service/proto"
-	grpcauth "payment-gateway/go-grpc-auth"
-	"net"
+
 	"google.golang.org/grpc"
 
 	"gorm.io/driver/postgres"
@@ -39,7 +42,7 @@ func main() {
 	// 1. Database Setup
 	dsn := os.Getenv("DATABASE_URL")
 	if dsn == "" {
-		dsn = "host=localhost user=postgres password=postgres dbname=payment_db port=5432 sslmode=disable"
+		dsn = "host=localhost user=postgres password=postgres dbname=payment_db port=5433 sslmode=disable"
 	}
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -72,6 +75,12 @@ func main() {
 		log.Fatalf("failed to connect to ledger service: %v", err)
 	}
 
+	pricingAddr := getEnv("PRICING_SERVICE_ADDR", "localhost:50064")
+	pricingClient, err := grpcclient.NewPricingClient(pricingAddr)
+	if err != nil {
+		log.Fatalf("failed to connect to pricing service: %v", err)
+	}
+
 	// 3. Dependency Injection
 	paymentRepo := repository.NewPaymentRepository(db)
 
@@ -81,7 +90,7 @@ func main() {
 		log.Printf("failed to initialize redis cache, continuing without cache: %v", err)
 	}
 
-	orchestrator := service.NewPaymentOrchestrator(paymentRepo, merchantClient, configCache, riskClient, providerClient, ledgerClient)
+	orchestrator := service.NewPaymentOrchestrator(paymentRepo, merchantClient, configCache, riskClient, providerClient, ledgerClient, pricingClient)
 	paymentHandler := http.NewPaymentHandler(orchestrator)
 
 	// 4. HTTP Router
@@ -89,7 +98,7 @@ func main() {
 
 	// 4.5 gRPC Server
 	grpcPort := getEnv("GRPC_PORT", "50051")
-	lis, err := net.Listen("tcp", ":"+grpcPort)
+	lis, err := net.Listen("tcp", "0.0.0.0:"+grpcPort)
 	if err != nil {
 		log.Fatalf("failed to listen on gRPC port: %v", err)
 	}
@@ -97,7 +106,7 @@ func main() {
 	caCert := os.Getenv("MTLS_CA_CERT")
 	serverCert := os.Getenv("MTLS_SERVER_CERT")
 	serverKey := os.Getenv("MTLS_SERVER_KEY")
-	
+
 	creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
 	if err != nil {
 		log.Fatalf("failed to load TLS credentials: %v", err)
@@ -107,9 +116,12 @@ func main() {
 		grpc.Creds(creds),
 		grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
 	)
-	
+
 	readGrpcHandler := grpcserver.NewPaymentReadGrpcServer(paymentRepo)
 	pb.RegisterPaymentReadServiceServer(grpcServer, readGrpcHandler)
+
+	writeGrpcHandler := grpcserver.NewPaymentWriteGrpcServer(paymentRepo, orchestrator)
+	pb.RegisterPaymentWriteServiceServer(grpcServer, writeGrpcHandler)
 
 	go func() {
 		log.Printf("gRPC server listening on port %s", grpcPort)
@@ -128,10 +140,18 @@ func main() {
 
 	outboxWorker := kafka.NewOutboxRelayWorker(db, kafkaBrokers, "payment.events")
 	go outboxWorker.Start(context.Background())
+
+	ledgerWorker := workers.NewLedgerRecoveryWorker(db, ledgerClient, pricingClient, orchestrator)
+	go ledgerWorker.Start(context.Background())
+	
+	importTime := time.Hour * 24 // 24 hours
+	prunerWorker := workers.NewIdempotencyPruner(paymentRepo, importTime, 30) // 30 days retention
+	go prunerWorker.Start(context.Background())
+	
 	port := getEnv("PORT", "8084")
 
 	log.Printf("Payment Service starting on port %s", port)
-	if err := r.Run(":" + port); err != nil {
+	if err := r.Run("0.0.0.0:" + port); err != nil {
 		log.Fatalf("failed to run server: %v", err)
 	}
 }

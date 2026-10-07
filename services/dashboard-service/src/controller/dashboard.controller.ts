@@ -57,10 +57,14 @@ export class DashboardController {
   async getPayments(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
-      if (!merchantId) {
+      let merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const isSuperAdmin = user?.roles?.some((r: any) => r.role === 'SUPER_ADMIN');
+      if (!merchantId && !isSuperAdmin) {
         res.status(403).json({ error: 'Forbidden: merchant context required' });
         return;
+      }
+      if (isSuperAdmin && !merchantId) {
+        merchantId = '';
       }
 
       const environment = (req.headers['x-environment'] as string)?.toUpperCase() || 'LIVE';
@@ -110,10 +114,14 @@ export class DashboardController {
   async getBalances(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
-      if (!merchantId) {
+      let merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const isSuperAdmin = user?.roles?.some((r: any) => r.role === 'SUPER_ADMIN');
+      if (!merchantId && !isSuperAdmin) {
         res.status(403).json({ error: 'Forbidden: merchant context required' });
         return;
+      }
+      if (isSuperAdmin && !merchantId) {
+        merchantId = '';
       }
 
       const environment = (req.headers['x-environment'] as string)?.toUpperCase() || 'LIVE';
@@ -146,10 +154,14 @@ export class DashboardController {
   async getTransactions(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
-      if (!merchantId) {
+      let merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const isSuperAdmin = user?.roles?.some((r: any) => r.role === 'SUPER_ADMIN');
+      if (!merchantId && !isSuperAdmin) {
         res.status(403).json({ error: 'Forbidden: merchant context required' });
         return;
+      }
+      if (isSuperAdmin && !merchantId) {
+        merchantId = '';
       }
 
       logger.info('Dashboard transaction query', { merchantId });
@@ -170,7 +182,19 @@ export class DashboardController {
           res.status(500).json({ error: 'Failed to fetch ledger entries' });
           return;
         }
-        res.json(response || {});
+        const resData = response || {};
+        if (resData.entries && Array.isArray(resData.entries)) {
+          resData.entries = resData.entries.map((e: any) => ({
+            ...e,
+            journalEntryId: e.journal_entry_id || e.journalEntryId,
+            referenceType: e.reference_type || e.referenceType,
+            referenceId: e.reference_id || e.referenceId,
+            providerId: e.provider_id || e.providerId,
+            providerTransactionId: e.provider_transaction_id || e.providerTransactionId,
+            effectiveAt: e.effective_at || e.effectiveAt,
+          }));
+        }
+        res.json(resData);
       });
     } catch (err) {
       next(err);

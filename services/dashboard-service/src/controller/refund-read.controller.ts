@@ -29,10 +29,14 @@ export class RefundReadController {
   async getRefunds(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
-      if (!merchantId) {
+      let merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const isSuperAdmin = user?.roles?.some((r: any) => r.role === 'SUPER_ADMIN');
+      if (!merchantId && !isSuperAdmin) {
         res.status(403).json({ error: 'Forbidden: merchant context required' });
         return;
+      }
+      if (isSuperAdmin && !merchantId) {
+        merchantId = '';
       }
 
       const paymentId = req.query.paymentId as string || '';
@@ -46,7 +50,7 @@ export class RefundReadController {
         try {
           if (err) {
             logger.error('gRPC GetRefunds error', { error: err.message });
-            res.status(500).json({ error: 'Internal Server Error' });
+            res.status(500).json({ error: 'Internal Server Error', details: err.message });
             return;
           }
           

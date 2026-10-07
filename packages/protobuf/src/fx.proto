@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package fx;
+
+option go_package = "payment-gateway/services/fx-service/proto;fx";
+
+// The FxService provides real-time Foreign Exchange rates and handles
+// Dynamic Currency Conversion (DCC) calculations for cross-border payments.
+service FxService {
+  // GetExchangeRate fetches the current exchange rate between two currencies.
+  rpc GetExchangeRate(GetExchangeRateRequest) returns (GetExchangeRateResponse);
+
+  // LockExchangeRate guarantees a rate for a specific transaction for a limited time (e.g. 15 mins).
+  rpc LockExchangeRate(LockExchangeRateRequest) returns (LockExchangeRateResponse);
+}
+
+message GetExchangeRateRequest {
+  string source_currency = 1; // e.g. USD
+  string target_currency = 2; // e.g. EUR
+}
+
+message GetExchangeRateResponse {
+  double rate = 1;            // e.g. 0.92
+  int64 timestamp = 2;        // Unix timestamp of the rate
+  string provider = 3;        // Source of the rate (e.g. "bloomberg", "fixer")
+}
+
+message LockExchangeRateRequest {
+  string source_currency = 1;
+  string target_currency = 2;
+  int64 amount = 3;           // Optional: lock for a specific amount
+}
+
+message LockExchangeRateResponse {
+  string lock_id = 1;         // Unique ID to reference this locked rate during settlement
+  double rate = 2;            // The guaranteed rate
+  int64 expires_at = 3;       // Unix timestamp when the lock expires
+}

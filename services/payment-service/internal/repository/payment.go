@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"strings"
+	"time"
 	"payment-gateway/payment-service/internal/domain"
 
 	"github.com/google/uuid"
@@ -101,7 +102,10 @@ func (r *PaymentRepositoryImpl) GetPaymentByID(ctx context.Context, id uuid.UUID
 
 func (r *PaymentRepositoryImpl) GetPaymentsPaginated(ctx context.Context, merchantID uuid.UUID, environment string, limit int, afterCursor *string) ([]*domain.Payment, error) {
 	var payments []*domain.Payment
-	query := r.db.WithContext(ctx).Where("merchant_id = ?", merchantID)
+	query := r.db.WithContext(ctx)
+	if merchantID != uuid.Nil {
+		query = query.Where("merchant_id = ?", merchantID)
+	}
 	if environment != "" {
 		query = query.Where("environment = ?", environment)
 	}
@@ -118,6 +122,13 @@ func (r *PaymentRepositoryImpl) GetPaymentsPaginated(ctx context.Context, mercha
 		return nil, err
 	}
 	return payments, nil
+}
+
+func (r *PaymentRepositoryImpl) PruneIdempotencyKeys(ctx context.Context, olderThan time.Time) (int64, error) {
+	// Execute raw SQL or GORM delete. We don't have RLS on idempotency keys (no merchant context needed),
+	// but it's safe to just delete by created_at.
+	res := r.db.WithContext(ctx).Where("created_at < ?", olderThan).Delete(&domain.IdempotencyKey{})
+	return res.RowsAffected, res.Error
 }
 
 func (r *PaymentRepositoryImpl) GetIdempotencyKey(ctx context.Context, merchantID uuid.UUID, key string) (*domain.IdempotencyKey, error) {
@@ -305,7 +316,10 @@ func (r *PaymentRepositoryImpl) GetRefundsPaginated(ctx context.Context, merchan
 
 func (r *PaymentRepositoryImpl) CountRefunds(ctx context.Context, merchantID uuid.UUID, environment string, paymentID *uuid.UUID) (int64, error) {
 	var count int64
-	query := r.db.WithContext(ctx).Model(&domain.Refund{}).Where("merchant_id = ?", merchantID)
+	query := r.db.WithContext(ctx).Model(&domain.Refund{})
+	if merchantID != uuid.Nil {
+		query = query.Where("merchant_id = ?", merchantID)
+	}
 	if environment != "" {
 		query = query.Where("environment = ?", environment)
 	}

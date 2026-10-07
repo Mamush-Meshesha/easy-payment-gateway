@@ -12,6 +12,8 @@ type ReconciliationRepository interface {
 	CreateException(ctx context.Context, exception *ReconciliationException) error
 	CreateExceptionAction(ctx context.Context, action *ReconciliationExceptionAction) error
 	UpdateExceptionStatus(ctx context.Context, exceptionID string, status ExceptionStatus) error
+	GetJobs(ctx context.Context, limit, offset int) ([]ReconciliationJob, error)
+	GetExceptions(ctx context.Context, jobID string, limit, offset int) ([]ReconciliationException, error)
 }
 
 type StatementSource interface {
@@ -21,6 +23,8 @@ type StatementSource interface {
 type ReconciliationService interface {
 	ProcessStatement(ctx context.Context, providerID string, fileName string, fileHash string, reader io.Reader) (string, error)
 	ResolveException(ctx context.Context, exceptionID string, resolvedBy string, reason string, reference string) error
+	GetJobs(ctx context.Context, limit, offset int) ([]ReconciliationJob, error)
+	GetExceptions(ctx context.Context, jobID string, limit, offset int) ([]ReconciliationException, error)
 }
 
 // LedgerClient is used by the Engine to fetch exact JournalEntries

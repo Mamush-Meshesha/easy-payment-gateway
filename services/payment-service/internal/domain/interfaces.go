@@ -22,9 +22,10 @@ type PaymentRequest struct {
 }
 
 type PaymentResponse struct {
-	PaymentID uuid.UUID    `json:"id"`
-	Status    PaymentState `json:"status"`
-	Reason    string       `json:"reason,omitempty"`
+	PaymentID   uuid.UUID    `json:"id"`
+	Status      PaymentState `json:"status"`
+	Reason      string       `json:"reason,omitempty"`
+	CheckoutURL string       `json:"checkout_url,omitempty"`
 }
 
 type RefundRequest struct {
@@ -47,6 +48,7 @@ type PaymentRepository interface {
 	GetPaymentByID(ctx context.Context, id uuid.UUID, environment string) (*Payment, error)
 	GetPaymentsPaginated(ctx context.Context, merchantID uuid.UUID, environment string, limit int, afterCursor *string) ([]*Payment, error)
 	GetIdempotencyKey(ctx context.Context, merchantID uuid.UUID, key string) (*IdempotencyKey, error)
+	PruneIdempotencyKeys(ctx context.Context, olderThan time.Time) (int64, error)
 	UpdatePaymentState(ctx context.Context, payment *Payment, history *PaymentStateHistory, outboxEvent *OutboxEvent) error
 	
 	// Refund Methods
@@ -84,7 +86,7 @@ type MerchantConfigCache interface {
 }
 
 type RiskClient interface {
-	CheckRisk(ctx context.Context, req *Payment) (action string, reason string, err error)
+	CheckRisk(ctx context.Context, req *Payment) (action string, reason string, requires3ds bool, err error)
 }
 
 type ProviderClient interface {
@@ -93,8 +95,19 @@ type ProviderClient interface {
 }
 
 type LedgerClient interface {
-	RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, providerID string, providerTransactionID string, amount int64, currency string, environment string) (status string, err error) // Status COMMITTED, TIMEOUT
+	RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, providerID string, providerTransactionID string, amount int64, merchantCut int64, platformCut int64, currency string, environment string) (status string, err error) // Status COMMITTED, TIMEOUT
 	RecordRefundJournalEntry(ctx context.Context, refundID uuid.UUID, paymentID uuid.UUID, amount int64, currency string, environment string) (status string, err error)
+}
+
+type PricingResponse struct {
+	TotalFee     int64
+	PlatformCut  int64
+	MerchantCut  int64
+	AppliedRules []string
+}
+
+type PricingClient interface {
+	CalculateFee(ctx context.Context, merchantID uuid.UUID, paymentMethod string, amount int64, currency string) (*PricingResponse, error)
 }
 
 type PaymentOrchestrator interface {

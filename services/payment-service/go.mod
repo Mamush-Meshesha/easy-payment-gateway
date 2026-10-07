@@ -12,8 +12,8 @@ require (
 	gorm.io/driver/postgres v1.6.3
 	gorm.io/driver/sqlite v1.6.0
 	gorm.io/gorm v1.31.2
-	payment-gateway/go-grpc-auth v0.0.0-00010101000000-000000000000
 	payment-gateway/go-apierrors v0.0.0-00010101000000-000000000000
+	payment-gateway/go-grpc-auth v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -93,6 +93,7 @@ require (
 	github.com/redis/go-redis/v9 v9.22.0
 	payment-gateway/go-observability v0.0.0-00010101000000-000000000000
 	payment-gateway/ledger-service v0.0.0-00010101000000-000000000000
+	payment-gateway/pricing-service v0.0.0-00010101000000-000000000000
 	payment-gateway/provider-service v0.0.0-00010101000000-000000000000
 	payment-gateway/risk-service v0.0.0-00010101000000-000000000000
 )
@@ -100,3 +101,5 @@ require (
 replace payment-gateway/go-observability => ../../packages/go-observability
 
 replace payment-gateway/go-apierrors => ../../packages/go-apierrors
+
+replace payment-gateway/pricing-service => ../../services/pricing-service

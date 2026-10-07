@@ -14,13 +14,17 @@ export interface WebhookEndpoint {
 
 export interface WebhookDelivery {
   id: string;
-  webhookEndpointId: string;
+  merchantId: string;
+  eventId: string;
   eventType: string;
-  payload: any;
-  status: 'SUCCESS' | 'FAILED' | 'PENDING';
-  statusCode?: number;
-  responseBody?: string;
+  status: 'SUCCESS' | 'FAILED' | 'PENDING' | 'RETRYING';
+  attemptCount: number;
+  responseStatusCode: number;
+  responseBody: string;
   createdAt: string;
+  nextRetryAt?: string;
+  lastError?: string;
+  payload: string;
 }
 
 export const webhookApi = baseApi.injectEndpoints({
@@ -51,6 +55,13 @@ export const webhookApi = baseApi.injectEndpoints({
       }),
       providesTags: ['Webhook'],
     }),
+    replayWebhookDelivery: builder.mutation<{ success: boolean, message: string }, string>({
+      query: (deliveryId) => ({
+        url: `/dashboard/webhooks/deliveries/${deliveryId}/replay`,
+        method: 'POST',
+      }),
+      invalidatesTags: ['Webhook'],
+    }),
   }),
 });
 
@@ -58,5 +69,6 @@ export const {
   useGetWebhookEndpointsQuery, 
   useCreateWebhookEndpointMutation, 
   useDeleteWebhookEndpointMutation,
-  useGetWebhookDeliveriesQuery 
+  useGetWebhookDeliveriesQuery,
+  useReplayWebhookDeliveryMutation
 } = webhookApi;

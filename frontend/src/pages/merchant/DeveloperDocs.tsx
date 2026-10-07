@@ -96,7 +96,7 @@ const gateway = new PaymentGateway('sk_test_a1b2c3d4e5f67890');`}</code>
                 <div className="api-link-content">
                   <h3>Interactive API Explorer</h3>
                   <p>View the full OpenAPI specification, including schemas, required fields, and test endpoints directly from your browser.</p>
-                  <a href="http://localhost:8080/api-docs" target="_blank" rel="noreferrer" className="dashboard-btn primary">
+                  <a href="http://192.168.122.127:8080/api-docs" target="_blank" rel="noreferrer" className="dashboard-btn primary">
                     Open API Docs
                   </a>
                 </div>

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package pricing.v1;
+
+option go_package = "payment-gateway/pricing-service/pb";
+
+service PricingService {
+    rpc CalculateFee(CalculateFeeRequest) returns (CalculateFeeResponse);
+}
+
+message CalculateFeeRequest {
+    string merchant_id = 1;
+    string payment_method = 2;
+    int64 amount = 3;
+    string currency = 4;
+}
+
+message CalculateFeeResponse {
+    int64 total_fee = 1;
+    int64 platform_cut = 2;
+    int64 merchant_cut = 3;
+    repeated string applied_rules = 4;
+}

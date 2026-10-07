@@ -21,6 +21,16 @@ import {
 
 export const protobufPackage = "webhook_read";
 
+export interface ReplayWebhookDeliveryRequest {
+  merchantId: string;
+  deliveryId: string;
+}
+
+export interface ReplayWebhookDeliveryResponse {
+  success: boolean;
+  message: string;
+}
+
 export interface GetWebhookDeliveriesRequest {
   merchantId: string;
   limit: number;
@@ -46,6 +56,186 @@ export interface GetWebhookDeliveriesResponse {
   deliveries: WebhookDelivery[];
   total: number;
 }
+
+function createBaseReplayWebhookDeliveryRequest(): ReplayWebhookDeliveryRequest {
+  return { merchantId: "", deliveryId: "" };
+}
+
+export const ReplayWebhookDeliveryRequest: MessageFns<ReplayWebhookDeliveryRequest> = {
+  encode(message: ReplayWebhookDeliveryRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.merchantId !== "") {
+      writer.uint32(10).string(message.merchantId);
+    }
+    if (message.deliveryId !== "") {
+      writer.uint32(18).string(message.deliveryId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReplayWebhookDeliveryRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const previousRecursionDepth = (reader as any).__tsProtoDecodeDepth ?? 0;
+    if (previousRecursionDepth >= 100) {
+      throw new globalThis.Error("protobuf decode recursion limit exceeded");
+    }
+    (reader as any).__tsProtoDecodeDepth = previousRecursionDepth + 1;
+    try {
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseReplayWebhookDeliveryRequest();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
+
+            message.merchantId = reader.string();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
+
+            message.deliveryId = reader.string();
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    } finally {
+      (reader as any).__tsProtoDecodeDepth = previousRecursionDepth;
+    }
+  },
+
+  fromJSON(object: any): ReplayWebhookDeliveryRequest {
+    return {
+      merchantId: isSet(object.merchantId)
+        ? globalThis.String(object.merchantId)
+        : isSet(object.merchant_id)
+        ? globalThis.String(object.merchant_id)
+        : "",
+      deliveryId: isSet(object.deliveryId)
+        ? globalThis.String(object.deliveryId)
+        : isSet(object.delivery_id)
+        ? globalThis.String(object.delivery_id)
+        : "",
+    };
+  },
+
+  toJSON(message: ReplayWebhookDeliveryRequest): unknown {
+    const obj: any = {};
+    if (message.merchantId !== "") {
+      obj.merchantId = message.merchantId;
+    }
+    if (message.deliveryId !== "") {
+      obj.deliveryId = message.deliveryId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReplayWebhookDeliveryRequest>, I>>(base?: I): ReplayWebhookDeliveryRequest {
+    return ReplayWebhookDeliveryRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReplayWebhookDeliveryRequest>, I>>(object: I): ReplayWebhookDeliveryRequest {
+    const message = createBaseReplayWebhookDeliveryRequest();
+    message.merchantId = object.merchantId ?? "";
+    message.deliveryId = object.deliveryId ?? "";
+    return message;
+  },
+};
+
+function createBaseReplayWebhookDeliveryResponse(): ReplayWebhookDeliveryResponse {
+  return { success: false, message: "" };
+}
+
+export const ReplayWebhookDeliveryResponse: MessageFns<ReplayWebhookDeliveryResponse> = {
+  encode(message: ReplayWebhookDeliveryResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    if (message.message !== "") {
+      writer.uint32(18).string(message.message);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ReplayWebhookDeliveryResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const previousRecursionDepth = (reader as any).__tsProtoDecodeDepth ?? 0;
+    if (previousRecursionDepth >= 100) {
+      throw new globalThis.Error("protobuf decode recursion limit exceeded");
+    }
+    (reader as any).__tsProtoDecodeDepth = previousRecursionDepth + 1;
+    try {
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseReplayWebhookDeliveryResponse();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 8) {
+              break;
+            }
+
+            message.success = reader.bool();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
+
+            message.message = reader.string();
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    } finally {
+      (reader as any).__tsProtoDecodeDepth = previousRecursionDepth;
+    }
+  },
+
+  fromJSON(object: any): ReplayWebhookDeliveryResponse {
+    return {
+      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
+      message: isSet(object.message) ? globalThis.String(object.message) : "",
+    };
+  },
+
+  toJSON(message: ReplayWebhookDeliveryResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    if (message.message !== "") {
+      obj.message = message.message;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ReplayWebhookDeliveryResponse>, I>>(base?: I): ReplayWebhookDeliveryResponse {
+    return ReplayWebhookDeliveryResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ReplayWebhookDeliveryResponse>, I>>(
+    object: I,
+  ): ReplayWebhookDeliveryResponse {
+    const message = createBaseReplayWebhookDeliveryResponse();
+    message.success = object.success ?? false;
+    message.message = object.message ?? "";
+    return message;
+  },
+};
 
 function createBaseGetWebhookDeliveriesRequest(): GetWebhookDeliveriesRequest {
   return { merchantId: "", limit: 0, offset: 0 };
@@ -546,10 +736,22 @@ export const WebhookReadServiceService = {
       Buffer.from(GetWebhookDeliveriesResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): GetWebhookDeliveriesResponse => GetWebhookDeliveriesResponse.decode(value),
   },
+  replayWebhookDelivery: {
+    path: "/webhook_read.WebhookReadService/ReplayWebhookDelivery" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ReplayWebhookDeliveryRequest): Buffer =>
+      Buffer.from(ReplayWebhookDeliveryRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ReplayWebhookDeliveryRequest => ReplayWebhookDeliveryRequest.decode(value),
+    responseSerialize: (value: ReplayWebhookDeliveryResponse): Buffer =>
+      Buffer.from(ReplayWebhookDeliveryResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ReplayWebhookDeliveryResponse => ReplayWebhookDeliveryResponse.decode(value),
+  },
 } as const;
 
 export interface WebhookReadServiceServer extends UntypedServiceImplementation {
   getWebhookDeliveries: handleUnaryCall<GetWebhookDeliveriesRequest, GetWebhookDeliveriesResponse>;
+  replayWebhookDelivery: handleUnaryCall<ReplayWebhookDeliveryRequest, ReplayWebhookDeliveryResponse>;
 }
 
 export interface WebhookReadServiceClient extends Client {
@@ -567,6 +769,21 @@ export interface WebhookReadServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: GetWebhookDeliveriesResponse) => void,
+  ): ClientUnaryCall;
+  replayWebhookDelivery(
+    request: ReplayWebhookDeliveryRequest,
+    callback: (error: ServiceError | null, response: ReplayWebhookDeliveryResponse) => void,
+  ): ClientUnaryCall;
+  replayWebhookDelivery(
+    request: ReplayWebhookDeliveryRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ReplayWebhookDeliveryResponse) => void,
+  ): ClientUnaryCall;
+  replayWebhookDelivery(
+    request: ReplayWebhookDeliveryRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ReplayWebhookDeliveryResponse) => void,
   ): ClientUnaryCall;
 }
 

@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { CreditCard, Smartphone, CheckCircle2, Lock, ChevronLeft } from 'lucide-react';
@@ -73,12 +74,15 @@ const CheckoutPage: React.FC = () => {
       const result = await response.json();
       if (result.status === 'SUCCEEDED') {
         setIsSuccess(true);
+      } else if (result.status === 'REQUIRES_ACTION' && result.checkout_url) {
+        // Redirect to the 3DS2 Challenge URL
+        window.location.href = result.checkout_url;
       } else {
-        alert('Payment is still pending or failed: ' + result.status);
+        toast.error('Payment is still pending or failed: ' + result.status);
       }
     } catch (err) {
       console.error(err);
-      alert('An error occurred while processing your payment. Please try again.');
+      toast.error('An error occurred while processing your payment. Please try again.');
     } finally {
       setIsProcessing(false);
     }

@@ -9,3 +9,7 @@ scratch/
 *.log
 docs/
 infra/terraform/
+tests/
+scripts/
+README.md
+*.md

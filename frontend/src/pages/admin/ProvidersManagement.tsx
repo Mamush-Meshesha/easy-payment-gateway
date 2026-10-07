@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React, { useState } from 'react';
 import { Server, Zap, Edit3, X, Save } from 'lucide-react';
 import '../merchant/DashboardShared.css';
@@ -28,7 +29,7 @@ const ProvidersManagement: React.FC = () => {
       setNewProviderName('');
     } catch (err) {
       console.error(err);
-      alert('Failed to create provider.');
+      toast.error('Failed to create provider.');
     }
   };
 

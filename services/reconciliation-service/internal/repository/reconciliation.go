@@ -48,3 +48,15 @@ func (r *ReconciliationRepositoryImpl) CreateExceptionAction(ctx context.Context
 func (r *ReconciliationRepositoryImpl) UpdateExceptionStatus(ctx context.Context, exceptionID string, status domain.ExceptionStatus) error {
 	return r.db.WithContext(ctx).Model(&domain.ReconciliationException{}).Where("id = ?", exceptionID).Update("status", status).Error
 }
+
+func (r *ReconciliationRepositoryImpl) GetJobs(ctx context.Context, limit, offset int) ([]domain.ReconciliationJob, error) {
+	var jobs []domain.ReconciliationJob
+	err := r.db.WithContext(ctx).Order("created_at desc").Limit(limit).Offset(offset).Find(&jobs).Error
+	return jobs, err
+}
+
+func (r *ReconciliationRepositoryImpl) GetExceptions(ctx context.Context, jobID string, limit, offset int) ([]domain.ReconciliationException, error) {
+	var exceptions []domain.ReconciliationException
+	err := r.db.WithContext(ctx).Where("job_id = ?", jobID).Order("created_at desc").Limit(limit).Offset(offset).Find(&exceptions).Error
+	return exceptions, err
+}

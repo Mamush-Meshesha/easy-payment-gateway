@@ -30,9 +30,13 @@ func (s *PaymentReadGrpcServer) GetPayment(ctx context.Context, req *pb.GetPayme
 		return nil, status.Error(codes.InvalidArgument, "invalid payment id")
 	}
 
-	merchantID, err := uuid.Parse(req.MerchantId)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid merchant id")
+	var merchantID uuid.UUID
+	if req.MerchantId != "" {
+		parsed, err := uuid.Parse(req.MerchantId)
+		if err != nil {
+			return nil, status.Error(codes.InvalidArgument, "invalid merchant id")
+		}
+		merchantID = parsed
 	}
 
 	reqCtx, _ := grpcauth.GetRequestContext(ctx)
@@ -74,9 +78,13 @@ func (s *PaymentReadGrpcServer) GetPayments(ctx context.Context, req *pb.GetPaym
 		return nil, status.Error(codes.PermissionDenied, "unauthorized access to merchant data")
 	}
 
-	merchantID, err := uuid.Parse(req.MerchantId)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid merchant id")
+	var merchantID uuid.UUID
+	if req.MerchantId != "" {
+		parsed, err := uuid.Parse(req.MerchantId)
+		if err != nil {
+			return nil, status.Error(codes.InvalidArgument, "invalid merchant id")
+		}
+		merchantID = parsed
 	}
 
 	limit := int(req.Limit)
@@ -140,9 +148,13 @@ func (s *PaymentReadGrpcServer) GetRefunds(ctx context.Context, req *pb.GetRefun
 		return nil, status.Error(codes.PermissionDenied, "unauthorized access to merchant data")
 	}
 
-	merchantID, err := uuid.Parse(req.MerchantId)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, "invalid merchant id")
+	var merchantID uuid.UUID
+	if req.MerchantId != "" {
+		parsed, err := uuid.Parse(req.MerchantId)
+		if err != nil {
+			return nil, status.Error(codes.InvalidArgument, "invalid merchant id")
+		}
+		merchantID = parsed
 	}
 
 	var paymentIDPtr *uuid.UUID

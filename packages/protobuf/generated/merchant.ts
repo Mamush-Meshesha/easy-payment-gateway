@@ -121,6 +121,8 @@ export interface GetWebhookConfigResponse {
   webhookUrl: string;
   /** Protected in transit by mTLS */
   hmacSecret: string;
+  secondaryHmacSecret: string;
+  secondaryHmacExpiresAt: string;
 }
 
 export interface GetPayoutDestinationRequest {
@@ -133,6 +135,15 @@ export interface GetPayoutDestinationResponse {
   destinationToken: string;
   destinationBank: string;
   providerId: string;
+}
+
+export interface ApproveMerchantRequest {
+  merchantId: string;
+}
+
+export interface ApproveMerchantResponse {
+  success: boolean;
+  status: string;
 }
 
 function createBaseProvisionMerchantRequest(): ProvisionMerchantRequest {
@@ -1804,7 +1815,7 @@ export const GetWebhookConfigRequest: MessageFns<GetWebhookConfigRequest> = {
 };
 
 function createBaseGetWebhookConfigResponse(): GetWebhookConfigResponse {
-  return { webhookUrl: "", hmacSecret: "" };
+  return { webhookUrl: "", hmacSecret: "", secondaryHmacSecret: "", secondaryHmacExpiresAt: "" };
 }
 
 export const GetWebhookConfigResponse: MessageFns<GetWebhookConfigResponse> = {
@@ -1814,6 +1825,12 @@ export const GetWebhookConfigResponse: MessageFns<GetWebhookConfigResponse> = {
     }
     if (message.hmacSecret !== "") {
       writer.uint32(18).string(message.hmacSecret);
+    }
+    if (message.secondaryHmacSecret !== "") {
+      writer.uint32(26).string(message.secondaryHmacSecret);
+    }
+    if (message.secondaryHmacExpiresAt !== "") {
+      writer.uint32(34).string(message.secondaryHmacExpiresAt);
     }
     return writer;
   },
@@ -1847,6 +1864,22 @@ export const GetWebhookConfigResponse: MessageFns<GetWebhookConfigResponse> = {
             message.hmacSecret = reader.string();
             continue;
           }
+          case 3: {
+            if (tag !== 26) {
+              break;
+            }
+
+            message.secondaryHmacSecret = reader.string();
+            continue;
+          }
+          case 4: {
+            if (tag !== 34) {
+              break;
+            }
+
+            message.secondaryHmacExpiresAt = reader.string();
+            continue;
+          }
         }
         if ((tag & 7) === 4 || tag === 0) {
           break;
@@ -1871,6 +1904,16 @@ export const GetWebhookConfigResponse: MessageFns<GetWebhookConfigResponse> = {
         : isSet(object.hmac_secret)
         ? globalThis.String(object.hmac_secret)
         : "",
+      secondaryHmacSecret: isSet(object.secondaryHmacSecret)
+        ? globalThis.String(object.secondaryHmacSecret)
+        : isSet(object.secondary_hmac_secret)
+        ? globalThis.String(object.secondary_hmac_secret)
+        : "",
+      secondaryHmacExpiresAt: isSet(object.secondaryHmacExpiresAt)
+        ? globalThis.String(object.secondaryHmacExpiresAt)
+        : isSet(object.secondary_hmac_expires_at)
+        ? globalThis.String(object.secondary_hmac_expires_at)
+        : "",
     };
   },
 
@@ -1882,6 +1925,12 @@ export const GetWebhookConfigResponse: MessageFns<GetWebhookConfigResponse> = {
     if (message.hmacSecret !== "") {
       obj.hmacSecret = message.hmacSecret;
     }
+    if (message.secondaryHmacSecret !== "") {
+      obj.secondaryHmacSecret = message.secondaryHmacSecret;
+    }
+    if (message.secondaryHmacExpiresAt !== "") {
+      obj.secondaryHmacExpiresAt = message.secondaryHmacExpiresAt;
+    }
     return obj;
   },
 
@@ -1892,6 +1941,8 @@ export const GetWebhookConfigResponse: MessageFns<GetWebhookConfigResponse> = {
     const message = createBaseGetWebhookConfigResponse();
     message.webhookUrl = object.webhookUrl ?? "";
     message.hmacSecret = object.hmacSecret ?? "";
+    message.secondaryHmacSecret = object.secondaryHmacSecret ?? "";
+    message.secondaryHmacExpiresAt = object.secondaryHmacExpiresAt ?? "";
     return message;
   },
 };
@@ -2098,6 +2149,164 @@ export const GetPayoutDestinationResponse: MessageFns<GetPayoutDestinationRespon
   },
 };
 
+function createBaseApproveMerchantRequest(): ApproveMerchantRequest {
+  return { merchantId: "" };
+}
+
+export const ApproveMerchantRequest: MessageFns<ApproveMerchantRequest> = {
+  encode(message: ApproveMerchantRequest, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.merchantId !== "") {
+      writer.uint32(10).string(message.merchantId);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ApproveMerchantRequest {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const previousRecursionDepth = (reader as any).__tsProtoDecodeDepth ?? 0;
+    if (previousRecursionDepth >= 100) {
+      throw new globalThis.Error("protobuf decode recursion limit exceeded");
+    }
+    (reader as any).__tsProtoDecodeDepth = previousRecursionDepth + 1;
+    try {
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseApproveMerchantRequest();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 10) {
+              break;
+            }
+
+            message.merchantId = reader.string();
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    } finally {
+      (reader as any).__tsProtoDecodeDepth = previousRecursionDepth;
+    }
+  },
+
+  fromJSON(object: any): ApproveMerchantRequest {
+    return {
+      merchantId: isSet(object.merchantId)
+        ? globalThis.String(object.merchantId)
+        : isSet(object.merchant_id)
+        ? globalThis.String(object.merchant_id)
+        : "",
+    };
+  },
+
+  toJSON(message: ApproveMerchantRequest): unknown {
+    const obj: any = {};
+    if (message.merchantId !== "") {
+      obj.merchantId = message.merchantId;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ApproveMerchantRequest>, I>>(base?: I): ApproveMerchantRequest {
+    return ApproveMerchantRequest.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ApproveMerchantRequest>, I>>(object: I): ApproveMerchantRequest {
+    const message = createBaseApproveMerchantRequest();
+    message.merchantId = object.merchantId ?? "";
+    return message;
+  },
+};
+
+function createBaseApproveMerchantResponse(): ApproveMerchantResponse {
+  return { success: false, status: "" };
+}
+
+export const ApproveMerchantResponse: MessageFns<ApproveMerchantResponse> = {
+  encode(message: ApproveMerchantResponse, writer: BinaryWriter = new BinaryWriter()): BinaryWriter {
+    if (message.success !== false) {
+      writer.uint32(8).bool(message.success);
+    }
+    if (message.status !== "") {
+      writer.uint32(18).string(message.status);
+    }
+    return writer;
+  },
+
+  decode(input: BinaryReader | Uint8Array, length?: number): ApproveMerchantResponse {
+    const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
+    const previousRecursionDepth = (reader as any).__tsProtoDecodeDepth ?? 0;
+    if (previousRecursionDepth >= 100) {
+      throw new globalThis.Error("protobuf decode recursion limit exceeded");
+    }
+    (reader as any).__tsProtoDecodeDepth = previousRecursionDepth + 1;
+    try {
+      const end = length === undefined ? reader.len : reader.pos + length;
+      const message = createBaseApproveMerchantResponse();
+      while (reader.pos < end) {
+        const tag = reader.uint32();
+        switch (tag >>> 3) {
+          case 1: {
+            if (tag !== 8) {
+              break;
+            }
+
+            message.success = reader.bool();
+            continue;
+          }
+          case 2: {
+            if (tag !== 18) {
+              break;
+            }
+
+            message.status = reader.string();
+            continue;
+          }
+        }
+        if ((tag & 7) === 4 || tag === 0) {
+          break;
+        }
+        reader.skip(tag & 7);
+      }
+      return message;
+    } finally {
+      (reader as any).__tsProtoDecodeDepth = previousRecursionDepth;
+    }
+  },
+
+  fromJSON(object: any): ApproveMerchantResponse {
+    return {
+      success: isSet(object.success) ? globalThis.Boolean(object.success) : false,
+      status: isSet(object.status) ? globalThis.String(object.status) : "",
+    };
+  },
+
+  toJSON(message: ApproveMerchantResponse): unknown {
+    const obj: any = {};
+    if (message.success !== false) {
+      obj.success = message.success;
+    }
+    if (message.status !== "") {
+      obj.status = message.status;
+    }
+    return obj;
+  },
+
+  create<I extends Exact<DeepPartial<ApproveMerchantResponse>, I>>(base?: I): ApproveMerchantResponse {
+    return ApproveMerchantResponse.fromPartial(base ?? ({} as any));
+  },
+  fromPartial<I extends Exact<DeepPartial<ApproveMerchantResponse>, I>>(object: I): ApproveMerchantResponse {
+    const message = createBaseApproveMerchantResponse();
+    message.success = object.success ?? false;
+    message.status = object.status ?? "";
+    return message;
+  },
+};
+
 export type MerchantServiceService = typeof MerchantServiceService;
 export const MerchantServiceService = {
   getMerchant: {
@@ -2184,6 +2393,17 @@ export const MerchantServiceService = {
       Buffer.from(SuspendMerchantResponse.encode(value).finish()),
     responseDeserialize: (value: Buffer): SuspendMerchantResponse => SuspendMerchantResponse.decode(value),
   },
+  approveMerchant: {
+    path: "/merchant.MerchantService/ApproveMerchant" as const,
+    requestStream: false as const,
+    responseStream: false as const,
+    requestSerialize: (value: ApproveMerchantRequest): Buffer =>
+      Buffer.from(ApproveMerchantRequest.encode(value).finish()),
+    requestDeserialize: (value: Buffer): ApproveMerchantRequest => ApproveMerchantRequest.decode(value),
+    responseSerialize: (value: ApproveMerchantResponse): Buffer =>
+      Buffer.from(ApproveMerchantResponse.encode(value).finish()),
+    responseDeserialize: (value: Buffer): ApproveMerchantResponse => ApproveMerchantResponse.decode(value),
+  },
   updateMerchantLimit: {
     path: "/merchant.MerchantService/UpdateMerchantLimit" as const,
     requestStream: false as const,
@@ -2219,6 +2439,7 @@ export interface MerchantServiceServer extends UntypedServiceImplementation {
   /** Admin endpoints */
   listMerchants: handleUnaryCall<ListMerchantsRequest, ListMerchantsResponse>;
   suspendMerchant: handleUnaryCall<SuspendMerchantRequest, SuspendMerchantResponse>;
+  approveMerchant: handleUnaryCall<ApproveMerchantRequest, ApproveMerchantResponse>;
   updateMerchantLimit: handleUnaryCall<UpdateMerchantLimitRequest, UpdateMerchantLimitResponse>;
   /** Provisioning */
   provisionMerchant: handleUnaryCall<ProvisionMerchantRequest, ProvisionMerchantResponse>;
@@ -2345,6 +2566,21 @@ export interface MerchantServiceClient extends Client {
     metadata: Metadata,
     options: Partial<CallOptions>,
     callback: (error: ServiceError | null, response: SuspendMerchantResponse) => void,
+  ): ClientUnaryCall;
+  approveMerchant(
+    request: ApproveMerchantRequest,
+    callback: (error: ServiceError | null, response: ApproveMerchantResponse) => void,
+  ): ClientUnaryCall;
+  approveMerchant(
+    request: ApproveMerchantRequest,
+    metadata: Metadata,
+    callback: (error: ServiceError | null, response: ApproveMerchantResponse) => void,
+  ): ClientUnaryCall;
+  approveMerchant(
+    request: ApproveMerchantRequest,
+    metadata: Metadata,
+    options: Partial<CallOptions>,
+    callback: (error: ServiceError | null, response: ApproveMerchantResponse) => void,
   ): ClientUnaryCall;
   updateMerchantLimit(
     request: UpdateMerchantLimitRequest,

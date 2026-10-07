@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { CreditCard, Search, Filter, Download, ArrowLeftRight, X, Eye, Loader2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -48,7 +49,7 @@ const PaymentsList: React.FC = () => {
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (err: any) {
-      alert(`Export failed: ${err.message}`);
+      toast.error(`Export failed: ${err.message}`);
     }
   };
 
@@ -243,7 +244,7 @@ const RefundModal: React.FC<{ payment: any, onClose: () => void, onSuccess: () =
           reason 
         })
       });
-      alert('Refund initiated successfully');
+      toast.success('Refund initiated successfully');
       onSuccess();
     } catch (err: any) {
       setError(err.message || 'Failed to process refund');
@@ -393,7 +394,7 @@ const CreatePaymentModal: React.FC<{ onClose: () => void, onSuccess: () => void 
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(paymentLink);
-    alert('Copied to clipboard');
+    toast('Copied to clipboard');
   };
 
   return (

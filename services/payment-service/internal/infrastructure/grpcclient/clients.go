@@ -102,7 +102,7 @@ func NewRiskClient(target string) (domain.RiskClient, error) {
 	return &RiskClientImpl{client: pbRisk.NewRiskServiceClient(conn)}, nil
 }
 
-func (c *RiskClientImpl) CheckRisk(ctx context.Context, p *domain.Payment) (string, string, error) {
+func (c *RiskClientImpl) CheckRisk(ctx context.Context, p *domain.Payment) (string, string, bool, error) {
 	req := &pbRisk.CheckRiskRequest{
 		PaymentId:     p.ID.String(),
 		MerchantId:    p.MerchantID.String(),
@@ -114,13 +114,13 @@ func (c *RiskClientImpl) CheckRisk(ctx context.Context, p *domain.Payment) (stri
 	}
 	res, err := c.client.CheckRisk(ctx, req)
 	if err != nil {
-		return "", "", err
+		return "", "", false, err
 	}
 	// Note: res.EvaluationStatus could be UNAVAILABLE
 	if res.EvaluationStatus != "SUCCESS" {
-		return "", "", fmt.Errorf("risk evaluation failed with status: %s", res.EvaluationStatus)
+		return "", "", false, fmt.Errorf("risk evaluation failed with status: %s", res.EvaluationStatus)
 	}
-	return res.Action, res.Reason, nil
+	return res.Action, res.Reason, res.Requires_3Ds, nil
 }
 
 // --- Provider Client ---
@@ -199,7 +199,7 @@ func NewLedgerClient(target string) (domain.LedgerClient, error) {
 	return &LedgerClientImpl{client: pbLedger.NewLedgerServiceClient(conn)}, nil
 }
 
-func (c *LedgerClientImpl) RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, providerID string, providerTransactionID string, amount int64, currency string, environment string) (string, error) {
+func (c *LedgerClientImpl) RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, providerID string, providerTransactionID string, amount int64, merchantCut int64, platformCut int64, currency string, environment string) (string, error) {
 	req := &pbLedger.RecordJournalEntryRequest{
 		ReferenceType:         "PAYMENT",
 		ReferenceId:           paymentID.String(),
@@ -209,14 +209,19 @@ func (c *LedgerClientImpl) RecordJournalEntry(ctx context.Context, paymentID uui
 		Environment:           environment,
 		Lines: []*pbLedger.JournalLineRequest{
 			{
-				AccountId: "11111111-1111-1111-1111-111111111111",
+				AccountId: "11111111-1111-1111-1111-111111111111", // Provider Receivable
 				Amount:    amount,
+				Direction: "DEBIT",
+			},
+			{
+				AccountId: "22222222-2222-2222-2222-222222222222", // Merchant Payable
+				Amount:    merchantCut,
 				Direction: "CREDIT",
 			},
 			{
-				AccountId: "22222222-2222-2222-2222-222222222222",
-				Amount:    amount,
-				Direction: "DEBIT",
+				AccountId: "33333333-3333-3333-3333-333333333333", // Platform Fee
+				Amount:    platformCut,
+				Direction: "CREDIT",
 			},
 		},
 	}

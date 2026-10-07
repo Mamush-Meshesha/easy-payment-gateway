@@ -7,8 +7,12 @@ const baseQuery = fetchBaseQuery({
   baseUrl: '/api/v1',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
+    const user = (getState() as RootState).auth.user;
     if (token) {
       headers.set('Authorization', `Bearer ${token}`);
+    }
+    if (user?.merchantId) {
+      headers.set('X-Merchant-Id', user.merchantId);
     }
     // Set a correlation ID if not present
     if (!headers.has('X-Request-ID')) {

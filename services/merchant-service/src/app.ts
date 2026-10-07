@@ -5,6 +5,8 @@ import { metricsMiddleware, metricsEndpoint } from '@payment-gateway/shared-obse
 import helmet from 'helmet';
 import cors from 'cors';
 import merchantRoutes from './routes/merchant.routes';
+import { kycRoutes } from './routes/kycRoutes';
+import { adminKycRoutes } from './routes/adminKycRoutes';
 import { errorHandler } from './middlewares/errorHandler.middleware';
 import { logger } from './utils/logger';
 import { OutboxPublisher } from './outbox/publisher';
@@ -16,12 +18,21 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+import { apiVersioningMiddleware } from './middleware/versioning';
+import { apiTransformerMiddleware } from './middleware/transformer';
+
 // Observability Metrics
 app.use(metricsMiddleware());
 app.get('/metrics', metricsEndpoint);
 
+// API Versioning Interceptor
+app.use(apiVersioningMiddleware);
+app.use(apiTransformerMiddleware);
+
 // Routes
+app.use('/api/v1/merchants/kyc', kycRoutes);
 app.use('/api/v1/merchants', merchantRoutes);
+app.use('/api/v1/admin/kyc', adminKycRoutes);
 
 // Error Handling
 app.use(errorHandler);
