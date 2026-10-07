@@ -4,7 +4,7 @@ import type { RootState } from '../../store/store';
 import { logout, setCredentials } from '../../store/slices/authSlice';
 // Base fetch query with automatic Authorization header injection
 const baseQuery = fetchBaseQuery({
-  baseUrl: '/api/v1',
+  baseUrl: import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/api/v1` : '/api/v1',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     const user = (getState() as RootState).auth.user;
