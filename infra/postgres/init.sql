@@ -13,3 +13,6 @@ CREATE DATABASE settlement_db;
 CREATE DATABASE risk_db;
 CREATE DATABASE notification_db;
 CREATE DATABASE reporting_db;
+CREATE DATABASE billing_db;
+CREATE DATABASE dispute_db;
+CREATE DATABASE pricing_db;

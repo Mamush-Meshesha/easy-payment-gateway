@@ -29,6 +29,10 @@ router.get('/webhooks/deliveries', requireRole(['MERCHANT_OWNER', 'MERCHANT_ADMI
   webhookController.getDeliveries(req, res, next)
 );
 
+router.post('/webhooks/deliveries/:id/replay', requireRole(['MERCHANT_OWNER', 'MERCHANT_ADMIN', 'MERCHANT_MEMBER', 'MERCHANT_DEV']) as any, (req, res, next) =>
+  webhookController.replayDelivery(req, res, next)
+);
+
 router.get('/refunds', requireRole(['MERCHANT_OWNER', 'MERCHANT_ADMIN', 'MERCHANT_MEMBER']) as any, (req, res, next) =>
   refundController.getRefunds(req, res, next)
 );

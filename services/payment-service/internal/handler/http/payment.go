@@ -117,7 +117,7 @@ func (h *PaymentHandler) HandleCreatePayment(c *gin.Context) {
 			return
 		}
 		log.Printf("[ERROR] ProcessPayment internal error: %v", err)
-		apierrors.InternalError(c, c.GetHeader("X-Trace-Id"))
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "internal_error", "message": err.Error()})
 		return
 	}
 
@@ -127,7 +127,7 @@ func (h *PaymentHandler) HandleCreatePayment(c *gin.Context) {
 		c.JSON(http.StatusOK, res)
 	case domain.StateFailed:
 		c.JSON(http.StatusUnprocessableEntity, res)
-	case domain.StateCreated, domain.StateInitiated, domain.StateProcessing, domain.StatePending, domain.StateUnknown, domain.StateCompletionPending:
+	case domain.StateCreated, domain.StateInitiated, domain.StateProcessing, domain.StatePending, domain.StateUnknown, domain.StateCompletionPending, domain.StateRequiresAction:
 		c.JSON(http.StatusAccepted, res)
 	default:
 		c.JSON(http.StatusOK, res)
@@ -319,7 +319,7 @@ func (h *PaymentHandler) HandleProcessPublicPayment(c *gin.Context) {
 	// In a real app, this endpoint would submit card details or phone number
 	// to the provider-service. Since provider-service is mocked to return PENDING,
 	// we simulate the async provider webhook callback here for the MVP.
-	if payment.Status == domain.StatePending || payment.Status == domain.StateUnknown {
+	if payment.Status == domain.StatePending || payment.Status == domain.StateUnknown || payment.Status == domain.StateRequiresAction {
 		// Simulate successful callback from provider
 		provID := "mock-prov-id"
 		if payment.ProviderID != nil {

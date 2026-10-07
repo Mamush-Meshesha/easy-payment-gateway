@@ -43,10 +43,14 @@ export class SettlementReadController {
   async getSettlements(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
-      if (!merchantId) {
+      let merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const isSuperAdmin = user?.roles?.some((r: any) => r.role === 'SUPER_ADMIN');
+      if (!merchantId && !isSuperAdmin) {
         res.status(403).json({ error: 'Forbidden: merchant context required' });
         return;
+      }
+      if (isSuperAdmin && !merchantId) {
+        merchantId = '';
       }
 
       const limit = parseInt(req.query.limit as string) || 50;
@@ -87,10 +91,14 @@ export class SettlementReadController {
   async getSettlementBalance(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
-      if (!merchantId) {
+      let merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const isSuperAdmin = user?.roles?.some((r: any) => r.role === 'SUPER_ADMIN');
+      if (!merchantId && !isSuperAdmin) {
         res.status(403).json({ error: 'Forbidden: merchant context required' });
         return;
+      }
+      if (isSuperAdmin && !merchantId) {
+        merchantId = '';
       }
 
       const environment = (req.headers['x-environment'] as string)?.toUpperCase() || 'LIVE';

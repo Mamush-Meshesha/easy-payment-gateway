@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package vault;
+
+option go_package = "payment-gateway/services/vault-service/proto;vault";
+
+// The VaultService is a highly isolated PCI-DSS Level 1 compliant enclave.
+// Its sole purpose is to securely tokenize raw Primary Account Numbers (PAN)
+// using envelope encryption (KMS) and detokenize them only for authorized internal callers.
+service VaultService {
+  // TokenizeCard accepts raw card data and returns a safe token (e.g. tok_123)
+  rpc TokenizeCard(TokenizeCardRequest) returns (TokenizeCardResponse);
+
+  // DetokenizeCard accepts a token and returns the raw PAN. 
+  // Restricted strictly to ProviderService for dispatching to acquiring banks.
+  rpc DetokenizeCard(DetokenizeCardRequest) returns (DetokenizeCardResponse);
+}
+
+message TokenizeCardRequest {
+  string pan = 1;         // Raw 16-19 digit card number
+  string exp_month = 2;   // MM
+  string exp_year = 3;    // YYYY or YY
+  string cvv = 4;         // Optional for vaulting, usually required for immediate charge
+}
+
+message TokenizeCardResponse {
+  string token = 1;       // Safe token string, e.g., tok_...
+  string last4 = 2;       // Last 4 digits for display purposes
+  string brand = 3;       // Card brand (visa, mastercard, etc)
+}
+
+message DetokenizeCardRequest {
+  string token = 1;
+}
+
+message DetokenizeCardResponse {
+  string pan = 1;
+  string exp_month = 2;
+  string exp_year = 3;
+  string cvv = 4;
+}

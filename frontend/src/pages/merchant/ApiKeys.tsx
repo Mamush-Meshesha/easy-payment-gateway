@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { Key, Copy, Plus, X, Trash2, Edit, Loader2, Eye, ShieldCheck } from 'lucide-react';
 import { useSelector } from 'react-redux';
@@ -57,7 +58,7 @@ const ApiKeys: React.FC = () => {
       setNewlyGeneratedKey(data.rawKey || data.key || data.apiKey || data.token); // Adjust based on actual backend response
       fetchApiKeys(); // Refresh list
     } catch (err: any) {
-      alert(err.message || 'Failed to generate API key');
+      toast.error(err.message || 'Failed to generate API key');
     } finally {
       setIsSubmitting(false);
     }
@@ -65,20 +66,29 @@ const ApiKeys: React.FC = () => {
 
   const handleRevokeKey = async (keyId: string) => {
     if (!merchantId) return;
-    if (!window.confirm('Are you sure you want to revoke this API key? This action cannot be undone.')) return;
-    try {
-      await apiFetch(`/api/v1/merchants/${merchantId}/apikeys/${keyId}`, {
-        method: 'DELETE'
-      });
-      fetchApiKeys(); // Refresh list
-    } catch (err: any) {
-      alert(err.message || 'Failed to revoke API key');
-    }
+    toast((t) => (
+      <div className="flex flex-col gap-2">
+        <span className="font-bold">Revoke API Key?</span>
+        <span className="text-sm">This action cannot be undone.</span>
+        <div className="flex gap-2 justify-end mt-2">
+          <button className="px-2 py-1 bg-slate-200 text-slate-800 rounded text-xs font-bold" onClick={() => toast.dismiss(t.id)}>Cancel</button>
+          <button className="px-2 py-1 bg-red-600 text-white rounded text-xs font-bold" onClick={async () => {
+            toast.dismiss(t.id);
+            try {
+              await apiFetch(`/api/v1/merchants/${merchantId}/apikeys/${keyId}`, { method: 'DELETE' });
+              fetchApiKeys();
+            } catch (err: any) {
+              toast.error(err.message || 'Failed to revoke API key');
+            }
+          }}>Revoke</button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert('Copied to clipboard');
+    toast('Copied to clipboard');
   };
 
   return (
@@ -286,11 +296,11 @@ const ApiKeys: React.FC = () => {
                     setNewlyGeneratedKey(keyToReveal.rawKey);
                     setIsCreateModalOpen(true); // Open the generate modal to reuse its success state UI to display the key
                   } else {
-                    alert('Raw key is not available for this key. It was generated before the reveal feature was added.');
+                    toast('Raw key is not available for this key. It was generated before the reveal feature was added.');
                   }
                   setIsRevealModalOpen(false);
                 } else {
-                  alert('Please enter a valid 6-digit code');
+                  toast('Please enter a valid 6-digit code');
                 }
               }}>
                 Verify & Reveal

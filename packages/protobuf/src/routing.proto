@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package routing;
+
+option go_package = "payment-gateway/services/routing-service/proto;routing";
+
+// The RoutingService is responsible for dynamically selecting the best acquiring
+// bank or provider based on BIN metadata, cost, and historical success rates.
+service RoutingService {
+  // DetermineRoute analyzes a card BIN and payment metadata to return the optimal provider route.
+  rpc DetermineRoute(DetermineRouteRequest) returns (DetermineRouteResponse);
+}
+
+message DetermineRouteRequest {
+  string bin = 1;              // The first 6-8 digits of the card (Bank Identification Number)
+  string currency = 2;         // Payment currency (e.g., USD, EUR, ETB)
+  int64 amount = 3;            // Payment amount in minor units
+  string merchant_id = 4;      // To check merchant specific routing rules/preferences
+}
+
+message DetermineRouteResponse {
+  string provider_id = 1;      // The selected provider ID (e.g. telebirr, stripe, adyen)
+  string route_reason = 2;     // Explanation for auditing (e.g. "lowest_cost", "fallback_routing")
+  int32 estimated_fee = 3;     // Estimated interchange/processing fee in minor units
+}

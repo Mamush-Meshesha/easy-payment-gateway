@@ -14,6 +14,7 @@ service MerchantService {
   // Admin endpoints
   rpc ListMerchants (ListMerchantsRequest) returns (ListMerchantsResponse);
   rpc SuspendMerchant (SuspendMerchantRequest) returns (SuspendMerchantResponse);
+  rpc ApproveMerchant (ApproveMerchantRequest) returns (ApproveMerchantResponse);
   rpc UpdateMerchantLimit (UpdateMerchantLimitRequest) returns (UpdateMerchantLimitResponse);
   
   // Provisioning
@@ -116,6 +117,8 @@ message GetWebhookConfigRequest {
 message GetWebhookConfigResponse {
   string webhook_url = 1;
   string hmac_secret = 2; // Protected in transit by mTLS
+  string secondary_hmac_secret = 3;
+  string secondary_hmac_expires_at = 4;
 }
 
 message GetPayoutDestinationRequest {
@@ -127,4 +130,13 @@ message GetPayoutDestinationResponse {
   string destination_token = 1; // Tokenized reference instead of raw bank details
   string destination_bank = 2;
   string provider_id = 3;
+}
+
+message ApproveMerchantRequest {
+  string merchant_id = 1;
+}
+
+message ApproveMerchantResponse {
+  bool success = 1;
+  string status = 2;
 }

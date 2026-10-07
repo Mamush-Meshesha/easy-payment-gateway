@@ -1,8 +1,10 @@
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { Webhook, Edit3, Trash2, Plus, X, Loader2 } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
 import { apiFetch } from '../../lib/api';
+import WebhookDeliveryLogs from './WebhookDeliveryLogs';
 import './DashboardShared.css';
 
 const WebhooksList: React.FC = () => {
@@ -52,7 +54,7 @@ const WebhooksList: React.FC = () => {
       setSelectedEvents(['payment.success', 'payment.failed']);
       fetchWebhooks();
     } catch (err: any) {
-      alert(err.message || 'Failed to add webhook');
+      toast.error(err.message || 'Failed to add webhook');
     } finally {
       setIsSubmitting(false);
     }
@@ -200,6 +202,9 @@ const WebhooksList: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Render the Delivery Logs beneath the Webhooks list */}
+      <WebhookDeliveryLogs />
     </div>
   );
 };

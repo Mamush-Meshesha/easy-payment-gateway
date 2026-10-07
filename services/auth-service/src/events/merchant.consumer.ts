@@ -21,6 +21,12 @@ export class MerchantConsumer {
 
     await this.consumer.start<EventEnvelope<any>>(async (msg) => {
       const payload = msg.payload;
+      
+      if (!payload || !payload.eventId) {
+        console.warn(`[MerchantConsumer] Received malformed event without eventId, skipping:`, payload);
+        return;
+      }
+
       // Idempotency check inside transaction
       await prisma.$transaction(async (tx) => {
         const alreadyProcessed = await tx.processedEvent.findUnique({

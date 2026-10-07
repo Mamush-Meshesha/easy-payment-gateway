@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 	"payment-gateway/payment-service/internal/domain"
 	"time"
 
@@ -18,9 +19,10 @@ type PaymentOrchestratorImpl struct {
 	risk     domain.RiskClient
 	provider domain.ProviderClient
 	ledger   domain.LedgerClient
+	pricing  domain.PricingClient
 }
 
-func NewPaymentOrchestrator(repo domain.PaymentRepository, m domain.MerchantClient, c domain.MerchantConfigCache, r domain.RiskClient, p domain.ProviderClient, l domain.LedgerClient) domain.PaymentOrchestrator {
+func NewPaymentOrchestrator(repo domain.PaymentRepository, m domain.MerchantClient, c domain.MerchantConfigCache, r domain.RiskClient, p domain.ProviderClient, l domain.LedgerClient, pr domain.PricingClient) domain.PaymentOrchestrator {
 	return &PaymentOrchestratorImpl{
 		repo:     repo,
 		merchant: m,
@@ -28,6 +30,7 @@ func NewPaymentOrchestrator(repo domain.PaymentRepository, m domain.MerchantClie
 		risk:     r,
 		provider: p,
 		ledger:   l,
+		pricing:  pr,
 	}
 }
 
@@ -119,7 +122,7 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 	}
 
 	// 2. Create Payment & Idempotency Lock
-	paymentID := uuid.New()
+	paymentID := uuid.Must(uuid.NewV7())
 	payment := &domain.Payment{
 		ID:                paymentID,
 		MerchantID:        req.MerchantID,
@@ -136,7 +139,7 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 	}
 
 	history := &domain.PaymentStateHistory{
-		ID:         uuid.New(),
+		ID:         uuid.Must(uuid.NewV7()),
 		PaymentID:  paymentID,
 		FromStatus: "",
 		ToStatus:   domain.StateCreated,
@@ -144,7 +147,7 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 	}
 
 	idem := &domain.IdempotencyKey{
-		ID:             uuid.New(),
+		ID:             uuid.Must(uuid.NewV7()),
 		MerchantID:     req.MerchantID,
 		IdempotencyKey: req.IdempotencyKey,
 		Status:         "PROCESSING",
@@ -168,7 +171,7 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 	}
 
 	// 3. Risk Evaluation
-	action, riskReason, err := o.risk.CheckRisk(ctx, p)
+	action, riskReason, requires3ds, err := o.risk.CheckRisk(ctx, p)
 	if err != nil {
 		// "The Payment Service must handle risk-service failures according to explicit policy."
 		// Fail-closed policy for Risk unavailability.
@@ -177,6 +180,22 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 
 	if action == "BLOCK" {
 		return o.failPayment(ctx, p, fmt.Sprintf("Risk Block: %s", riskReason))
+	}
+
+	if requires3ds || action == "CHALLENGE" {
+		// 3DS2 Challenge Fallback
+		outbox := o.buildOutboxEvent(p, "PaymentRequiresAction")
+		if err := o.transitionState(ctx, p, domain.StateRequiresAction, "3DS2 Challenge Required", outbox); err != nil {
+			return nil, err
+		}
+		// Mock 3DS Issuer URL for frontend to render in an iframe or redirect
+		mock3dsURL := fmt.Sprintf("/mock-issuer/3ds2/challenge?payment_id=%s", p.ID)
+		return &domain.PaymentResponse{
+			PaymentID:   p.ID,
+			Status:      domain.StateRequiresAction,
+			Reason:      "SCA Challenge Required",
+			CheckoutURL: mock3dsURL,
+		}, nil
 	}
 
 	// 4. Update to INITIATED
@@ -197,6 +216,12 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 		return &domain.PaymentResponse{PaymentID: p.ID, Status: domain.StateUnknown, Reason: err.Error()}, nil
 	}
 
+	var checkoutURL string
+	if strings.HasPrefix(provStatus, "REDIRECT:") {
+		checkoutURL = strings.TrimPrefix(provStatus, "REDIRECT:")
+		provStatus = "PENDING"
+	}
+
 	switch provStatus {
 	case "SUCCESS":
 		// 6. Ledger Execution
@@ -208,7 +233,20 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 		if p.ProviderID != nil {
 			provIDStr = p.ProviderID.String()
 		}
-		ledgerStatus, err := o.ledger.RecordJournalEntry(ctx, p.ID, provIDStr, "", p.Amount, p.Currency, p.Environment)
+		// Calculate Pricing Fee dynamically via gRPC
+		pricingRes, err := o.pricing.CalculateFee(ctx, p.MerchantID, p.PaymentMethod, p.Amount, p.Currency)
+		var merchantCut, platformCut int64
+		if err != nil {
+			log.Printf("Pricing calculation failed for payment %s (using defaults): %v", p.ID, err)
+			// Fallback if pricing service is down
+			platformCut = int64(float64(p.Amount)*0.029) + 30
+			merchantCut = p.Amount - platformCut
+		} else {
+			merchantCut = pricingRes.MerchantCut
+			platformCut = pricingRes.PlatformCut
+		}
+
+		ledgerStatus, err := o.ledger.RecordJournalEntry(ctx, p.ID, provIDStr, "", p.Amount, merchantCut, platformCut, p.Currency, p.Environment)
 		if err != nil || ledgerStatus == "TIMEOUT" {
 			// Ledger Timeout
 			// Recovery mechanism will retry this later
@@ -232,7 +270,7 @@ func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domai
 			log.Printf("Failed to transition to PENDING: %v", err)
 			return nil, err
 		}
-		return &domain.PaymentResponse{PaymentID: p.ID, Status: domain.StatePending, Reason: "Pending provider callback"}, nil
+		return &domain.PaymentResponse{PaymentID: p.ID, Status: domain.StatePending, Reason: "Pending provider callback", CheckoutURL: checkoutURL}, nil
 	default:
 		o.transitionState(ctx, p, domain.StateUnknown, "Unknown provider status", nil)
 		return &domain.PaymentResponse{PaymentID: p.ID, Status: domain.StateUnknown, Reason: provStatus}, nil
@@ -256,7 +294,7 @@ func (o *PaymentOrchestratorImpl) ResolvePaymentStatus(ctx context.Context, paym
 	}
 
 	// We only resolve if the payment is in a state waiting for provider confirmation
-	if p.Status != domain.StatePending && p.Status != domain.StateUnknown {
+	if p.Status != domain.StatePending && p.Status != domain.StateUnknown && p.Status != domain.StateRequiresAction {
 		// Already resolved
 		return nil
 	}
@@ -267,7 +305,19 @@ func (o *PaymentOrchestratorImpl) ResolvePaymentStatus(ctx context.Context, paym
 			return err
 		}
 
-		ledgerStatus, err := o.ledger.RecordJournalEntry(ctx, p.ID, providerID, providerTransactionID, p.Amount, p.Currency, p.Environment)
+		// Recalculate or retrieve fee for async resolution
+		pricingRes, err := o.pricing.CalculateFee(ctx, p.MerchantID, p.PaymentMethod, p.Amount, p.Currency)
+		var merchantCut, platformCut int64
+		if err != nil {
+			log.Printf("Pricing calculation failed for async payment %s (using defaults): %v", p.ID, err)
+			platformCut = int64(float64(p.Amount)*0.029) + 30
+			merchantCut = p.Amount - platformCut
+		} else {
+			merchantCut = pricingRes.MerchantCut
+			platformCut = pricingRes.PlatformCut
+		}
+
+		ledgerStatus, err := o.ledger.RecordJournalEntry(ctx, p.ID, providerID, providerTransactionID, p.Amount, merchantCut, platformCut, p.Currency, p.Environment)
 		if err != nil || ledgerStatus == "TIMEOUT" {
 			log.Printf("Ledger RecordJournalEntry failed for payment %s: err=%v, status=%s", p.ID, err, ledgerStatus)
 			return o.transitionState(ctx, p, domain.StateUnknown, "Ledger timeout during async resolution", nil)
@@ -287,7 +337,7 @@ func (o *PaymentOrchestratorImpl) ResolvePaymentStatus(ctx context.Context, paym
 
 func (o *PaymentOrchestratorImpl) transitionState(ctx context.Context, p *domain.Payment, nextState domain.PaymentState, reason string, outbox *domain.OutboxEvent) error {
 	history := &domain.PaymentStateHistory{
-		ID:         uuid.New(),
+		ID:         uuid.Must(uuid.NewV7()),
 		PaymentID:  p.ID,
 		FromStatus: p.Status,
 		ToStatus:   nextState,
@@ -313,7 +363,7 @@ func (o *PaymentOrchestratorImpl) transitionState(ctx context.Context, p *domain
 
 func (o *PaymentOrchestratorImpl) buildOutboxEvent(p *domain.Payment, eventType string) *domain.OutboxEvent {
 	return &domain.OutboxEvent{
-		ID:            uuid.New(),
+		ID:            uuid.Must(uuid.NewV7()),
 		AggregateType: "Payment",
 		AggregateID:   p.ID.String(),
 		EventType:     eventType,
@@ -352,7 +402,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 	}
 
 	// 2. Setup Refund domain object
-	refundID := uuid.New()
+	refundID := uuid.Must(uuid.NewV7())
 	refund := &domain.Refund{
 		ID:               refundID,
 		PaymentID:        req.PaymentID,
@@ -367,7 +417,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 	}
 
 	history := &domain.RefundStateHistory{
-		ID:         uuid.New(),
+		ID:         uuid.Must(uuid.NewV7()),
 		RefundID:   refundID,
 		FromStatus: "",
 		ToStatus:   domain.RefundStateRequested,
@@ -375,7 +425,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 	}
 
 	idem := &domain.IdempotencyKey{
-		ID:             uuid.New(),
+		ID:             uuid.Must(uuid.NewV7()),
 		MerchantID:     merchantID,
 		IdempotencyKey: req.IdempotencyKey,
 		Status:         "PROCESSING",
@@ -423,7 +473,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 
 		ref.Status = domain.RefundStateRefunded
 		hist := &domain.RefundStateHistory{
-			ID:         uuid.New(),
+			ID:         uuid.Must(uuid.NewV7()),
 			RefundID:   refundID,
 			FromStatus: domain.RefundStateRequested,
 			ToStatus:   domain.RefundStateRefunded,
@@ -431,7 +481,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 		}
 		
 		outboxEvent := &domain.OutboxEvent{
-			ID:            uuid.New(),
+			ID:            uuid.Must(uuid.NewV7()),
 			AggregateType: "Refund",
 			AggregateID:   refundID.String(),
 			EventType:     "refund.succeeded",
@@ -472,7 +522,7 @@ func (o *PaymentOrchestratorImpl) failRefund(ctx context.Context, ref *domain.Re
 	ref.Status = domain.RefundStateFailed
 	ref.Reason = reason
 	history := &domain.RefundStateHistory{
-		ID:         uuid.New(),
+		ID:         uuid.Must(uuid.NewV7()),
 		RefundID:   ref.ID,
 		FromStatus: domain.RefundStateRequested,
 		ToStatus:   domain.RefundStateFailed,
@@ -480,7 +530,7 @@ func (o *PaymentOrchestratorImpl) failRefund(ctx context.Context, ref *domain.Re
 	}
 	
 	outboxEvent := &domain.OutboxEvent{
-		ID:            uuid.New(),
+		ID:            uuid.Must(uuid.NewV7()),
 		AggregateType: "Refund",
 		AggregateID:   ref.ID.String(),
 		EventType:     "refund.failed",
@@ -504,7 +554,7 @@ func (o *PaymentOrchestratorImpl) handleRefundUnknown(ctx context.Context, ref *
 	ref.Status = domain.RefundStateUnknown
 	ref.Reason = reason
 	history := &domain.RefundStateHistory{
-		ID:         uuid.New(),
+		ID:         uuid.Must(uuid.NewV7()),
 		RefundID:   ref.ID,
 		FromStatus: domain.RefundStateRequested,
 		ToStatus:   domain.RefundStateUnknown,

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package payment_write;
+option go_package = "payment-gateway/payment-service/proto";
+
+service PaymentWriteService {
+  rpc ExecutePayment (ExecutePaymentRequest) returns (ExecutePaymentResponse);
+}
+
+message ExecutePaymentRequest {
+  string merchant_id = 1;
+  string payment_method_id = 2; // Can be empty if using default or redirect
+  int64 amount = 3;
+  string currency = 4;
+  string idempotency_key = 5;
+}
+
+message ExecutePaymentResponse {
+  string payment_id = 1;
+  string status = 2;
+}

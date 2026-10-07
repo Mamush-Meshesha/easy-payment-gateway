@@ -28,7 +28,8 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
   }
 
   // Automatically set Content-Type to JSON if sending a body and not already set
-  if (rest.body && !requestHeaders.has('Content-Type')) {
+  // Do NOT set it for FormData as the browser needs to set the multipart boundary
+  if (rest.body && !(rest.body instanceof FormData) && !requestHeaders.has('Content-Type')) {
     requestHeaders.set('Content-Type', 'application/json');
   }
 

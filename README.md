@@ -11,7 +11,7 @@ An enterprise-grade, highly resilient payment gateway designed for high-throughp
 
 ## 🏗 System Architecture Overview
 
-The system is composed of **14 isolated microservices** routed through an Nginx Gateway. It is split into two technology stacks based on operational requirements: **Go** for high-performance financial core logic, and **TypeScript/Express** for business management.
+The system is composed of **20 isolated microservices** routed through an Nginx Gateway. It is split into three technology stacks based on operational requirements: **Go** for high-performance financial core logic, **TypeScript/Express** for business management, and **Python** for machine learning inference.
 
 ```mermaid
 flowchart TD
@@ -27,6 +27,7 @@ flowchart TD
         DASHBOARD[Dashboard BFF]
         NOTIF[Notification Service]
         REPORT[Reporting Service]
+        COMPLIANCE[Compliance Worker]
     end
 
     subgraph Go_Services ["Go Services (Financial Core)"]
@@ -38,6 +39,14 @@ flowchart TD
         RECON[Reconciliation Service]
         SETTLE[Settlement Service]
         RISK[Risk Service]
+        ROUTING[Routing Service]
+        PRICING[Pricing Service]
+        DISPUTE[Dispute Service]
+        FX[FX Service]
+    end
+
+    subgraph Python_Services ["Python Services (ML Layer)"]
+        ML[Risk ML Worker]
     end
 
     GATEWAY --> AUTH
@@ -57,6 +66,7 @@ flowchart TD
 *   **API Gateway**: Nginx 
 *   **Business Services**: Node.js, Express, TypeScript, Prisma ORM
 *   **Financial Core**: Go, gRPC, GORM
+*   **Machine Learning**: Python, FastAPI/gRPC, scikit-learn
 *   **Databases**: PostgreSQL (Microservice Database-per-service pattern)
 *   **Message Broker**: Apache Kafka (Event-driven architecture & Outbox pattern)
 *   **Caching**: Redis
@@ -106,7 +116,7 @@ flowchart TD
 
 ## 💾 Database Architecture (Isolated Micro-Databases)
 
-The system utilizes 14 isolated PostgreSQL schemas. **Each service completely owns its data** and no cross-database JOINs are permitted. Data replication and references are handled logically.
+The system utilizes 20 isolated PostgreSQL schemas. **Each service completely owns its data** and no cross-database JOINs are permitted. Data replication and references are handled logically.
 
 ```mermaid
 erDiagram
@@ -134,6 +144,11 @@ erDiagram
     "ADMIN_DB" ||--o{ "PaymentProviders" : registers
     
     "RISK_DB" ||--o{ "FraudRules" : enforces
+    "COMPLIANCE_DB" ||--o{ "KYC_Records" : tracks
+    "PRICING_DB" ||--o{ "FeeSchedules" : calculates
+    "ROUTING_DB" ||--o{ "RoutingRules" : determines
+    "DISPUTE_DB" ||--o{ "Chargebacks" : manages
+    "FX_DB" ||--o{ "ExchangeRates" : converts
 ```
 
 ### Key Schemas Detailed:
@@ -265,3 +280,26 @@ src/
  ├── hooks/       # Custom React hooks (e.g., useAuth)
  └── utils/       # Helper functions and formatters (e.g., date-fns)
 ```
+
+---
+
+## ☁️ Infrastructure & Deployment
+
+The platform is designed to run seamlessly both locally for developers and in a highly available AWS cloud architecture for production.
+
+### Local Development (Docker Compose)
+For local development, the entire microservice ecosystem and its dependencies are orchestrated via `docker-compose.yml`. Running `make dev` starts the backend services and provisions mock versions of the production infrastructure:
+*   **PostgreSQL**: A single container hosts 20 isolated schemas, simulating a micro-database-per-service pattern.
+*   **Apache Kafka**: A local Zookeeper/Kafka broker is initialized with pre-configured topics (`payment.events`, `merchant.events`, `ledger.events`).
+*   **Redis**: Used universally by the microservices for configuration caching and enforcing strict Idempotency Keys across payment flows.
+*   **MailHog**: Traps all outbound SMTP emails sent by the `notification-service`.
+*   **Dozzle/Prometheus/Jaeger**: Local observability stack for log aggregation, tracing, and metrics.
+
+### Production (Terraform on AWS)
+Production infrastructure is declared strictly as Infrastructure-as-Code (IaC) using Terraform located in `infra/terraform/`. These definitions map local development concepts to managed AWS cloud-native resources:
+*   `rds.tf`: Provisions Amazon Aurora PostgreSQL clusters instead of a single instance, ensuring high availability for the partitioned Ledger and critical financial data.
+*   `elasticache.tf`: Provisions Amazon ElastiCache for Redis to handle distributed idempotency checks across thousands of concurrent payment orchestrator nodes.
+*   `msk.tf`: Deploys Amazon Managed Streaming for Apache Kafka (MSK) to provide a resilient, multi-AZ event bus for asynchronous webhooks and outbox pattern delivery.
+*   `vpc.tf` & `route53.tf`: Defines private subnets, NAT gateways, and DNS routing to enforce Zero-Trust network boundaries between the public-facing Nginx Gateway and the internal microservices.
+
+**Note:** Terraform state is managed remotely (e.g., via S3/DynamoDB) and executed via CI/CD pipelines. No `.terraform` state files are committed or executed locally.

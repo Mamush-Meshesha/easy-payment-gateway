@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, CreditCard, Loader2 } from 'lucide-react';
@@ -9,6 +10,10 @@ const PaymentDetails: React.FC = () => {
   const [payment, setPayment] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showRefundModal, setShowRefundModal] = useState(false);
+  const [refundAmount, setRefundAmount] = useState('');
+  const [refundReason, setRefundReason] = useState('Customer request');
+  const [refundApiKey, setRefundApiKey] = useState('');
 
   useEffect(() => {
     if (!id || id === 'undefined') {
@@ -75,27 +80,9 @@ const PaymentDetails: React.FC = () => {
           <button 
             className="dashboard-primary-btn" 
             style={{ background: 'var(--surface-default)', color: 'var(--text-primary)', border: '1px solid var(--border-default)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}
-            onClick={async () => {
-              const amount = prompt('Enter refund amount (in ETB):', ((Number(payment.amount) / 100).toFixed(2)));
-              if (!amount) return;
-              const reason = prompt('Enter refund reason:', 'Customer request');
-              if (!reason) return;
-              const apiKey = prompt('Enter your secret API Key to authorize this refund:');
-              if (!apiKey) return;
-              try {
-                await apiFetch(`/api/v1/payments/${payment.payment_id || payment.paymentId || payment.id}/refund`, {
-                  method: 'POST',
-                  headers: { 
-                    'Idempotency-Key': crypto.randomUUID(),
-                    'X-API-Key': apiKey.trim()
-                  },
-                  body: JSON.stringify({ amount: Math.round(parseFloat(amount) * 100), reason })
-                });
-                alert('Refund initiated successfully');
-                window.location.reload();
-              } catch (err: any) {
-                alert('Failed to process refund: ' + err.message);
-              }
+            onClick={() => {
+              setRefundAmount((Number(payment.amount) / 100).toFixed(2));
+              setShowRefundModal(true);
             }}
           >
             Issue Refund
@@ -160,6 +147,91 @@ const PaymentDetails: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {showRefundModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/20 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl overflow-hidden animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+            <div className="px-6 py-5 border-b border-slate-100 flex justify-between items-center bg-white">
+              <h2 className="text-base font-bold text-slate-900">Issue Refund</h2>
+              <button 
+                className="p-1.5 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+                onClick={() => setShowRefundModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="p-6 space-y-4">
+              <div className="space-y-1.5">
+                <label className="block text-[13px] font-semibold text-slate-700">Refund Amount (ETB) <span className="text-rose-500">*</span></label>
+                <input 
+                  type="number"
+                  step="0.01"
+                  className="w-full p-2.5 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none shadow-sm"
+                  value={refundAmount} 
+                  onChange={e => setRefundAmount(e.target.value)} 
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="block text-[13px] font-semibold text-slate-700">Reason <span className="text-rose-500">*</span></label>
+                <input 
+                  type="text"
+                  className="w-full p-2.5 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none shadow-sm"
+                  value={refundReason} 
+                  onChange={e => setRefundReason(e.target.value)} 
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="block text-[13px] font-semibold text-slate-700">Secret API Key (Authorization) <span className="text-rose-500">*</span></label>
+                <input 
+                  type="password"
+                  className="w-full p-2.5 rounded-lg bg-white border border-slate-200 text-slate-900 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all outline-none shadow-sm font-mono"
+                  value={refundApiKey} 
+                  onChange={e => setRefundApiKey(e.target.value)} 
+                  placeholder="sk_..."
+                />
+              </div>
+            </div>
+            
+            <div className="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-end gap-3">
+              <button 
+                type="button" 
+                className="px-4 py-2 text-sm font-semibold text-slate-600 bg-white hover:bg-slate-50 border border-slate-200 rounded-lg shadow-sm transition-all"
+                onClick={() => setShowRefundModal(false)}
+              >
+                Cancel
+              </button>
+              <button 
+                type="button" 
+                className="px-5 py-2 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition-all"
+                onClick={async () => {
+                  if (!refundAmount || !refundReason || !refundApiKey) {
+                    toast.error("Please fill all required fields");
+                    return;
+                  }
+                  try {
+                    await apiFetch(`/api/v1/payments/${payment.payment_id || payment.paymentId || payment.id}/refund`, {
+                      method: 'POST',
+                      headers: { 
+                        'Idempotency-Key': crypto.randomUUID(),
+                        'X-API-Key': refundApiKey.trim()
+                      },
+                      body: JSON.stringify({ amount: Math.round(parseFloat(refundAmount) * 100), reason: refundReason })
+                    });
+                    toast.success('Refund initiated successfully');
+                    setShowRefundModal(false);
+                    setTimeout(() => window.location.reload(), 1000);
+                  } catch (err: any) {
+                    toast.error('Failed to process refund: ' + err.message);
+                  }
+                }}
+              >
+                Process Refund
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

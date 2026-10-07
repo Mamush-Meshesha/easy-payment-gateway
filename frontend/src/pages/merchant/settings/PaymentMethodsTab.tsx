@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../store/store';
@@ -20,7 +21,7 @@ const PaymentMethodsTab: React.FC = () => {
       }).unwrap();
     } catch (err) {
       console.error('Failed to toggle method', err);
-      alert('Failed to update payment method.');
+      toast.error('Failed to update payment method.');
     }
   };
 

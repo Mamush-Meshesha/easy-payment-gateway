@@ -39,7 +39,7 @@ func (s *ReconciliationServiceImpl) ProcessStatement(ctx context.Context, provid
 
 	// 2. Create Statement (this guarantees duplicate prevention via fileHash UNIQUE constraint)
 	stmt := &domain.ReconciliationStatement{
-		ID:            uuid.New(),
+		ID:            uuid.Must(uuid.NewV7()),
 		ProviderID:    providerID,
 		StatementDate: time.Now().Truncate(24 * time.Hour), // Ideally parsed from file or API req
 		FileName:      fileName,
@@ -53,7 +53,7 @@ func (s *ReconciliationServiceImpl) ProcessStatement(ctx context.Context, provid
 
 	// 3. Create Job
 	job := &domain.ReconciliationJob{
-		ID:           uuid.New(),
+		ID:           uuid.Must(uuid.NewV7()),
 		StatementID:  stmt.ID,
 		Status:       domain.JobStatusPending,
 		TotalRecords: len(records),
@@ -85,7 +85,7 @@ func (s *ReconciliationServiceImpl) ResolveException(ctx context.Context, except
 
 	// 2. Create Action Log
 	action := &domain.ReconciliationExceptionAction{
-		ID:                  uuid.New(),
+		ID:                  uuid.Must(uuid.NewV7()),
 		ExceptionID:         eid,
 		Action:              domain.ActionResolved,
 		ResolvedBy:          resolvedBy,
@@ -99,4 +99,12 @@ func (s *ReconciliationServiceImpl) ResolveException(ctx context.Context, except
 
 	// 3. Update Status
 	return s.repo.UpdateExceptionStatus(ctx, exceptionID, domain.ExceptionStatusResolved)
+}
+
+func (s *ReconciliationServiceImpl) GetJobs(ctx context.Context, limit, offset int) ([]domain.ReconciliationJob, error) {
+	return s.repo.GetJobs(ctx, limit, offset)
+}
+
+func (s *ReconciliationServiceImpl) GetExceptions(ctx context.Context, jobID string, limit, offset int) ([]domain.ReconciliationException, error) {
+	return s.repo.GetExceptions(ctx, jobID, limit, offset)
 }

@@ -13,13 +13,15 @@ import (
 type LedgerRecoveryWorker struct {
 	db           *gorm.DB
 	ledger       domain.LedgerClient
+	pricing      domain.PricingClient
 	orchestrator domain.PaymentOrchestrator
 }
 
-func NewLedgerRecoveryWorker(db *gorm.DB, ledger domain.LedgerClient, orchestrator domain.PaymentOrchestrator) *LedgerRecoveryWorker {
+func NewLedgerRecoveryWorker(db *gorm.DB, ledger domain.LedgerClient, pricing domain.PricingClient, orchestrator domain.PaymentOrchestrator) *LedgerRecoveryWorker {
 	return &LedgerRecoveryWorker{
 		db:           db,
 		ledger:       ledger,
+		pricing:      pricing,
 		orchestrator: orchestrator,
 	}
 }
@@ -48,8 +50,20 @@ func (w *LedgerRecoveryWorker) processRecovery(ctx context.Context) {
 	}
 
 	for _, p := range payments {
+		// Calculate Fee again for ledger recovery
+		pricingRes, err := w.pricing.CalculateFee(ctx, p.MerchantID, p.PaymentMethod, p.Amount, p.Currency)
+		var merchantCut, platformCut int64
+		if err != nil {
+			log.Printf("Pricing calculation failed in ledger recovery for payment %s: %v", p.ID, err)
+			platformCut = int64(float64(p.Amount)*0.029) + 30
+			merchantCut = p.Amount - platformCut
+		} else {
+			merchantCut = pricingRes.MerchantCut
+			platformCut = pricingRes.PlatformCut
+		}
+
 		// Attempt to record journal entry again. Ledger service guarantees this is idempotent.
-		ledgerStatus, err := w.ledger.RecordJournalEntry(ctx, p.ID, "PAYMENT", p.ID.String(), p.Amount, p.Currency, p.Environment)
+		ledgerStatus, err := w.ledger.RecordJournalEntry(ctx, p.ID, "PAYMENT", p.ID.String(), p.Amount, merchantCut, platformCut, p.Currency, p.Environment)
 		if err != nil || ledgerStatus == "TIMEOUT" {
 			log.Printf("Ledger recovery still failing for payment %s: %v", p.ID, err)
 			continue

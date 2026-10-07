@@ -10,11 +10,12 @@ import { prisma } from '../dal/prisma';
 const S2S_POLICY: Record<string, string[]> = {
   '/merchant.MerchantService/ValidateApiKey': ['payment-service'],
   '/merchant.MerchantService/GetMerchantConfig': ['payment-service'],
-  '/merchant.MerchantService/GetMerchant': ['payment-service'],
+  '/merchant.MerchantService/GetMerchant': ['payment-service', 'admin-service'],
   '/merchant.MerchantService/GetWebhookConfig': ['webhook-service'],
   '/merchant.MerchantService/GetPayoutDestination': ['settlement-service'],
   '/merchant.MerchantService/ListMerchants': ['admin-service'],
   '/merchant.MerchantService/SuspendMerchant': ['admin-service'],
+  '/merchant.MerchantService/ApproveMerchant': ['admin-service'],
   '/merchant.MerchantService/UpdateMerchantLimit': ['admin-service'],
   '/merchant.MerchantService/ProvisionMerchant': ['auth-service'],
 };
@@ -147,7 +148,12 @@ const merchantServiceHandler: MerchantServiceServer = {
         callback({ code: grpc.status.NOT_FOUND, message: `Webhook config not found for environment: ${envFilter}` }, null);
         return;
       }
-      callback(null, { webhookUrl: config.url, hmacSecret: config.secretHash || 'dummy-secret-not-stored-raw' });
+      callback(null, { 
+        webhookUrl: config.url, 
+        hmacSecret: config.secretHash || 'dummy-secret-not-stored-raw',
+        secondaryHmacSecret: config.secondarySecret || '',
+        secondaryHmacExpiresAt: config.secondaryExpiresAt ? config.secondaryExpiresAt.toISOString() : ''
+      });
     } catch (error) {
       callback({ code: grpc.status.INTERNAL, message: 'Internal error' }, null);
     }
@@ -198,9 +204,36 @@ const merchantServiceHandler: MerchantServiceServer = {
         return;
       }
       
-      await prisma.merchant.update({
-        where: { id: merchantId },
-        data: { status: 'SUSPENDED' }
+      await prisma.$transaction(async (tx) => {
+        await tx.merchant.update({
+          where: { id: merchantId },
+          data: { status: 'SUSPENDED' }
+        });
+        
+        const event = {
+          eventId: require('crypto').randomUUID(),
+          eventType: 'merchant.status.changed',
+          eventVersion: 1,
+          occurredAt: new Date().toISOString(),
+          producer: 'merchant-service',
+          correlationId: call.request.correlationId || require('crypto').randomUUID(),
+          payload: {
+            merchantId: merchantId,
+            previousStatus: merchant.status,
+            newStatus: 'SUSPENDED',
+            changedAt: new Date().toISOString(),
+            reason: reason || 'Compliance Suspension'
+          }
+        };
+
+        await tx.outboxEvent.create({
+          data: {
+            aggregateType: 'merchant',
+            aggregateId: merchantId,
+            eventType: 'merchant.status.changed',
+            payload: event
+          }
+        });
       });
       
       logger.info('Merchant suspended', { merchantId, reason });
@@ -209,6 +242,27 @@ const merchantServiceHandler: MerchantServiceServer = {
       callback({ code: grpc.status.INTERNAL, message: 'Internal error' }, null);
     }
   }, authPolicy, '/merchant.MerchantService/SuspendMerchant'),
+
+  approveMerchant: applyAuthInterceptor<any, any>(async (call: any, callback: any) => {
+    try {
+      const { merchantId } = call.request;
+      const merchant = await prisma.merchant.findUnique({ where: { id: merchantId } });
+      if (!merchant) {
+        callback({ code: grpc.status.NOT_FOUND, message: 'Merchant not found' }, null);
+        return;
+      }
+      
+      await prisma.merchant.update({
+        where: { id: merchantId },
+        data: { status: 'ACTIVE' }
+      });
+      
+      logger.info('Merchant approved', { merchantId });
+      callback(null, { success: true, status: 'ACTIVE' });
+    } catch (error) {
+      callback({ code: grpc.status.INTERNAL, message: 'Internal error' }, null);
+    }
+  }, authPolicy, '/merchant.MerchantService/ApproveMerchant'),
 
   updateMerchantLimit: applyAuthInterceptor<UpdateMerchantLimitRequest, UpdateMerchantLimitResponse>(async (call: any, callback: any) => {
     try {

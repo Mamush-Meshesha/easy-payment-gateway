@@ -1,0 +1,356 @@
+/* ReconciliationUpload.css */
+
+.recon-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  animation: fadeIn 0.5s ease-out;
+  padding-bottom: 3rem;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recon-header {
+  background: linear-gradient(135deg, var(--brand-primary, #4f46e5) 0%, #818cf8 100%);
+  padding: 2.5rem 3rem;
+  border-radius: 16px;
+  color: white;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.recon-header::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.2) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.recon-header::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: url('data:image/svg+xml;utf8,<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="1.5" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+  transform: rotate(30deg);
+  pointer-events: none;
+}
+
+.recon-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -1px;
+  position: relative;
+  z-index: 1;
+}
+
+.recon-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+.recon-grid {
+  display: grid;
+  grid-template-columns: 1fr 2.2fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .recon-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recon-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recon-card:hover {
+  box-shadow: 0 15px 50px -10px rgba(0, 0, 0, 0.12);
+}
+
+.recon-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: #0f172a;
+}
+
+.recon-dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.recon-dropzone:hover {
+  border-color: var(--brand-primary, #4f46e5);
+  background: #e0e7ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+}
+
+.recon-dropzone.has-file {
+  border-color: #10b981;
+  background: #d1fae5;
+  border-style: solid;
+}
+
+.recon-dropzone-icon {
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
+  color: #94a3b8;
+}
+
+.recon-dropzone.has-file .recon-dropzone-icon {
+  color: #10b981;
+}
+
+.recon-dropzone:hover .recon-dropzone-icon {
+  transform: translateY(-5px);
+  color: var(--brand-primary, #4f46e5);
+}
+
+.recon-dropzone.has-file:hover .recon-dropzone-icon {
+  color: #059669;
+}
+
+.recon-table-wrapper {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px #e2e8f0;
+}
+
+.recon-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.recon-table th {
+  background: #f8fafc;
+  padding: 1rem 1.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.recon-table td {
+  padding: 1.25rem;
+  font-size: 0.95rem;
+  color: #334155;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.2s;
+  vertical-align: middle;
+}
+
+.recon-table tr:last-child td {
+  border-bottom: none;
+}
+
+.recon-table tr:hover td {
+  background: #f8fafc;
+}
+
+.recon-badge {
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.recon-badge.completed, .recon-badge.resolved { background: #d1fae5; color: #065f46; box-shadow: inset 0 0 0 1px #34d399; }
+.recon-badge.processing, .recon-badge.unresolved { background: #fef3c7; color: #92400e; box-shadow: inset 0 0 0 1px #fbbf24; }
+.recon-badge.failed, .recon-badge.completed_with_exceptions { background: #fee2e2; color: #991b1b; box-shadow: inset 0 0 0 1px #f87171; }
+
+.recon-exception-panel {
+  border-top: 4px solid #ef4444;
+  animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 0;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recon-resolve-row td {
+  background: #fef2f2 !important;
+  box-shadow: inset 0 0 0 1px #fecaca;
+  padding: 1.5rem !important;
+}
+
+.recon-resolve-form {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+  animation: expandDown 0.3s ease-out;
+}
+
+@keyframes expandDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.recon-btn {
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.recon-btn-primary {
+  background: var(--brand-primary, #4f46e5);
+  color: white;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+}
+
+.recon-btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+}
+
+.recon-btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.recon-btn-primary:disabled {
+  background: #94a3b8;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.recon-btn-secondary {
+  background: white;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.recon-btn-secondary:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #94a3b8;
+  color: #0f172a;
+}
+
+.recon-btn-sm {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.recon-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.recon-input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.recon-input {
+  width: 100%;
+  padding: 0.65rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: #0f172a;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.recon-input:focus {
+  outline: none;
+  border-color: var(--brand-primary, #4f46e5);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.recon-input:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
+}
+
+.recon-alert {
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  animation: slideInRight 0.3s ease-out;
+}
+
+.recon-alert-success {
+  background: #d1fae5;
+  color: #065f46;
+  border: 1px solid #34d399;
+}
+
+.recon-alert-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #f87171;
+}
+
+/* Spin animation for loading icons */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}

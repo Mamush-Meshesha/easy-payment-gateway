@@ -97,7 +97,7 @@ PAYMENT_RES=$(curl -s -X POST $PAYMENTS_URL \
   -H "Idempotency-Key: $IDEMPOTENCY_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "amount": 1000,
+    "amount": 100,
     "currency": "ETB",
     "providerId": "'"$PROVIDER_ID"'",
     "customer": {

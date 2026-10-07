@@ -1,195 +1,247 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Check, ShieldCheck, Zap, HelpCircle } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Check, ShieldCheck, Zap, HelpCircle, ArrowRight, Building2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { WaveBackground } from '@/components/ui/WaveBackground';
 
-const PricingPage: React.FC = () => {
+const fadeIn: any = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+};
+
+const staggerContainer: any = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
+};
+
+export default function PricingPage() {
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: '#fafafa', fontFamily: '"Inter", sans-serif' }}>
+    <div className="min-h-screen bg-[#fafafa] font-sans overflow-hidden">
       
       {/* HERO SECTION */}
-      <section style={{ 
-        padding: '160px 24px 100px', 
-        textAlign: 'center', 
-        background: 'white',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Subtle background glow */}
-        <div style={{ position: 'absolute', top: '-50%', left: '20%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(16,185,129,0.05) 0%, transparent 70%)', filter: 'blur(40px)', zIndex: 0 }}></div>
-
-        <div style={{ maxWidth: '800px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <div style={{ color: '#10b981', fontWeight: 800, letterSpacing: '1px', fontSize: '0.875rem', textTransform: 'uppercase', marginBottom: '24px' }}>
-            Transparent Pricing
-          </div>
-          <h1 style={{ fontSize: '4rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-2px', marginBottom: '24px', lineHeight: 1.1 }}>
-            Pay only for what you use.
-          </h1>
-          <p style={{ fontSize: '1.25rem', color: '#64748b', marginBottom: '0', lineHeight: 1.6 }}>
-            No setup fees, no monthly minimums, no hidden charges. Everything you need to manage your business for one simple rate.
-          </p>
+      <section className="relative pt-32 pb-24 md:pt-48 md:pb-32 bg-white border-b border-slate-100 overflow-hidden">
+        <WaveBackground color="text-emerald-500" opacity={0.3} className="opacity-70" />
+        
+        <div className="container mx-auto px-6 max-w-7xl relative z-10 text-center">
+          <motion.div initial="hidden" animate="visible" variants={staggerContainer} className="max-w-4xl mx-auto">
+            <motion.div variants={fadeIn} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold tracking-widest uppercase mb-6 shadow-sm border border-emerald-100">
+              <Zap size={14} /> Transparent Pricing
+            </motion.div>
+            
+            <motion.h1 variants={fadeIn} className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-slate-900 tracking-tight leading-[1.05] mb-8">
+              Pay only for <br className="hidden md:block"/> what you <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">use.</span>
+            </motion.h1>
+            
+            <motion.p variants={fadeIn} className="text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto">
+              No setup fees, no monthly minimums, no hidden charges. Everything you need to manage your business for one simple rate.
+            </motion.p>
+          </motion.div>
         </div>
       </section>
 
       {/* PRICING CARDS */}
-      <section style={{ padding: '0 24px 120px', background: 'white' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
-          
-          {/* Standard Pay-as-you-go */}
-          <div style={{ background: 'white', borderRadius: '24px', padding: '48px', border: '1px solid #e2e8f0', boxShadow: '0 20px 40px rgba(0,0,0,0.05)', position: 'relative', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '4px', background: '#10b981' }}></div>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>Pay as you go</h3>
-            <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: 1.5, marginBottom: '32px' }}>For businesses of all sizes wanting to process payments online instantly.</p>
+      <section className="py-24 px-6 bg-slate-50 relative -mt-10">
+        <div className="container mx-auto max-w-5xl">
+          <div className="grid md:grid-cols-2 gap-8 relative z-20">
             
-            <div style={{ marginBottom: '40px' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ fontSize: '3.5rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-1px' }}>2.5%</span>
-              </div>
-              <div style={{ color: '#64748b', fontSize: '0.9rem', fontWeight: 600 }}>per successful transaction</div>
-            </div>
-
-            <Link to="/login" style={{ display: 'block', width: '100%', textAlign: 'center', background: '#0f172a', color: 'white', padding: '16px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', marginBottom: '40px', transition: 'background 0.2s' }}>
-              Create free account
-            </Link>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>What's included</div>
-              {[
-                'Local Cards (Awash, Dashen, CBE)',
-                'Mobile Money (Telebirr, M-Pesa)',
-                'Next-day automatic settlements',
-                'Advanced fraud protection radar',
-                'Real-time webhook notifications',
-                '24/7 dedicated email support'
-              ].map(feature => (
-                <div key={feature} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#475569', fontSize: '0.95rem' }}>
-                  <div style={{ background: '#f0fdf4', padding: '2px', borderRadius: '50%', display: 'flex' }}><Check size={16} color="#10b981" /></div>
-                  {feature}
+            {/* Standard Pay-as-you-go */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="bg-white rounded-3xl p-10 border border-slate-200 shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 right-0 h-1.5 bg-emerald-500"></div>
+              <h3 className="text-2xl font-extrabold text-slate-900 mb-4">Pay as you go</h3>
+              <p className="text-slate-600 text-lg leading-relaxed mb-8">For businesses of all sizes wanting to process payments online instantly.</p>
+              
+              <div className="mb-10">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-6xl font-black text-slate-900 tracking-tight">2.5%</span>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Enterprise */}
-          <div style={{ background: '#0f172a', borderRadius: '24px', padding: '48px', color: 'white', position: 'relative', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
-            <h3 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'white', marginBottom: '16px' }}>Enterprise</h3>
-            <p style={{ color: '#94a3b8', fontSize: '1rem', lineHeight: 1.5, marginBottom: '32px' }}>For businesses processing large volumes or requiring custom payment flows.</p>
-            
-            <div style={{ marginBottom: '40px' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                <span style={{ fontSize: '3.5rem', fontWeight: 900, color: 'white', letterSpacing: '-1px' }}>Custom</span>
+                <div className="text-slate-500 font-medium mt-2 uppercase tracking-wide text-sm">per successful transaction</div>
               </div>
-              <div style={{ color: '#94a3b8', fontSize: '0.9rem', fontWeight: 600 }}>volume-based pricing</div>
-            </div>
 
-            <a href="#sales" style={{ display: 'block', width: '100%', textAlign: 'center', background: 'white', color: '#0f172a', padding: '16px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', marginBottom: '40px' }}>
-              Contact Sales
-            </a>
+              <Button size="lg" className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-xl h-14 font-bold text-lg mb-10 shadow-lg">
+                <Link to="/login" className="w-full">Create free account</Link>
+              </Button>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              <div style={{ fontWeight: 700, color: 'white', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>Everything in standard, plus:</div>
-              {[
-                'Volume-based rate discounts',
-                'Custom settlement timelines',
-                'Dedicated Technical Account Manager',
-                'SLA guaranteed 99.999% uptime',
-                'Custom integrations and bespoke flows',
-                'Direct Slack channel support'
-              ].map(feature => (
-                <div key={feature} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#cbd5e1', fontSize: '0.95rem' }}>
-                  <div style={{ background: 'rgba(255,255,255,0.1)', padding: '2px', borderRadius: '50%', display: 'flex' }}><Check size={16} color="white" /></div>
-                  {feature}
+              <div className="space-y-4">
+                <div className="font-bold text-slate-900 uppercase tracking-widest text-xs mb-6">What's included</div>
+                {[
+                  'Local Cards (Awash, Dashen, CBE)',
+                  'Mobile Money (Telebirr, M-Pesa)',
+                  'Next-day automatic settlements',
+                  'Advanced fraud protection radar',
+                  'Real-time webhook notifications',
+                  '24/7 dedicated email support'
+                ].map(feature => (
+                  <div key={feature} className="flex items-start gap-3 text-slate-600">
+                    <div className="bg-emerald-50 p-1 rounded-full mt-0.5"><Check size={14} className="text-emerald-600" /></div>
+                    <span className="leading-snug">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Enterprise */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="bg-slate-900 rounded-3xl p-10 text-white border border-slate-800 shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl"></div>
+
+              <h3 className="text-2xl font-extrabold text-white mb-4 relative z-10">Enterprise</h3>
+              <p className="text-slate-400 text-lg leading-relaxed mb-8 relative z-10">For businesses processing large volumes or requiring custom payment flows.</p>
+              
+              <div className="mb-10 relative z-10">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-6xl font-black text-white tracking-tight">Custom</span>
                 </div>
-              ))}
-            </div>
-          </div>
+                <div className="text-slate-400 font-medium mt-2 uppercase tracking-wide text-sm">volume-based pricing</div>
+              </div>
 
+              <Button size="lg" className="w-full bg-white hover:bg-slate-100 text-slate-900 rounded-xl h-14 font-bold text-lg mb-10 shadow-lg relative z-10">
+                <Link to="/company/contact" className="w-full">Contact Sales</Link>
+              </Button>
+
+              <div className="space-y-4 relative z-10">
+                <div className="font-bold text-white uppercase tracking-widest text-xs mb-6">Everything in standard, plus:</div>
+                {[
+                  'Volume-based rate discounts',
+                  'Custom settlement timelines',
+                  'Dedicated Technical Account Manager',
+                  'SLA guaranteed 99.999% uptime',
+                  'Custom integrations and bespoke flows',
+                  'Direct Slack channel support'
+                ].map(feature => (
+                  <div key={feature} className="flex items-start gap-3 text-slate-300">
+                    <div className="bg-white/10 p-1 rounded-full mt-0.5"><Check size={14} className="text-white" /></div>
+                    <span className="leading-snug">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
       {/* DETAILED BREAKDOWN */}
-      <section style={{ padding: '100px 24px', background: '#fafafa', borderTop: '1px solid #f1f5f9' }}>
-        <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <h2 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-1px' }}>Payment Methods</h2>
-            <p style={{ color: '#64748b', fontSize: '1.125rem', marginTop: '16px' }}>A unified fee structure across all major local payment channels.</p>
+      <section className="py-32 px-6 bg-white border-t border-slate-100">
+        <div className="container mx-auto max-w-4xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Payment Methods</h2>
+            <p className="text-lg text-slate-600">A unified fee structure across all major local payment channels.</p>
           </div>
 
-          <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', padding: '24px 32px', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', fontWeight: 700, color: '#475569', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-              <div>Method</div>
-              <div>Domestic Rate</div>
-              <div>International Rate</div>
+          <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+            <div className="grid grid-cols-1 md:grid-cols-3 p-6 md:p-8 bg-slate-50 border-b border-slate-200 font-bold text-slate-500 uppercase tracking-widest text-xs gap-4 hidden md:grid">
+              <div className="col-span-2">Method</div>
+              <div>Rate</div>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', padding: '32px', borderBottom: '1px solid #f1f5f9', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <div style={{ width: 48, height: 48, background: '#eff6ff', color: '#3b82f6', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Zap size={24} /></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 p-6 md:p-8 border-b border-slate-100 items-center gap-6">
+              <div className="col-span-2 flex items-center gap-5">
+                <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center shrink-0">
+                  <Zap size={28} />
+                </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.1rem' }}>Mobile Money</div>
-                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>Telebirr, M-Pesa, CBE Birr</div>
+                  <div className="font-bold text-slate-900 text-xl mb-1">Mobile Money</div>
+                  <div className="text-slate-500 text-sm">Telebirr, M-Pesa, CBE Birr</div>
                 </div>
               </div>
-              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.25rem' }}>2.5%</div>
-              <div style={{ color: '#94a3b8' }}>—</div>
+              <div>
+                <div className="md:hidden text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Rate</div>
+                <div className="font-black text-slate-900 text-3xl">2.5%</div>
+              </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', padding: '32px', alignItems: 'center' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                <div style={{ width: 48, height: 48, background: '#fdf4ff', color: '#d946ef', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><ShieldCheck size={24} /></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 p-6 md:p-8 items-center gap-6">
+              <div className="col-span-2 flex items-center gap-5">
+                <div className="w-14 h-14 bg-fuchsia-50 text-fuchsia-600 rounded-2xl flex items-center justify-center shrink-0">
+                  <ShieldCheck size={28} />
+                </div>
                 <div>
-                  <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.1rem' }}>Cards</div>
-                  <div style={{ color: '#64748b', fontSize: '0.85rem' }}>Visa, Mastercard, Local ATM</div>
+                  <div className="font-bold text-slate-900 text-xl mb-1">Local Cards</div>
+                  <div className="text-slate-500 text-sm">Awash, Dashen, CBE ATM Cards</div>
                 </div>
               </div>
-              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.25rem' }}>3.5%</div>
-              <div style={{ fontWeight: 700, color: '#0f172a', fontSize: '1.25rem' }}>4.5%</div>
+              <div>
+                <div className="md:hidden text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Rate</div>
+                <div className="font-black text-slate-900 text-3xl">3.5%</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* FAQ */}
-      <section style={{ padding: '100px 24px', background: 'white' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <h2 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0f172a', letterSpacing: '-1px', marginBottom: '64px', textAlign: 'center' }}>Frequently Asked Questions</h2>
+      <section className="py-32 px-6 bg-slate-50 border-t border-slate-100">
+        <div className="container mx-auto max-w-3xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-4">Frequently Asked Questions</h2>
+          </div>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-            <div>
-              <h4 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.125rem', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}><HelpCircle size={20} color="#10b981" /> When do I get paid?</h4>
-              <p style={{ color: '#64748b', lineHeight: 1.6, paddingLeft: '32px' }}>We process settlements automatically on a T+1 schedule (the next business day). Funds are deposited directly into your linked bank account without any manual intervention.</p>
+          <div className="space-y-8">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+              <h4 className="flex items-center gap-3 text-xl font-bold text-slate-900 mb-4">
+                <HelpCircle className="text-emerald-500 shrink-0" /> When do I get paid?
+              </h4>
+              <p className="text-slate-600 leading-relaxed ml-9 text-lg">
+                We process settlements automatically on a T+1 schedule (the next business day). Funds are deposited directly into your linked corporate bank account without any manual intervention.
+              </p>
             </div>
-            <div>
-              <h4 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.125rem', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}><HelpCircle size={20} color="#10b981" /> Are there any hidden fees?</h4>
-              <p style={{ color: '#64748b', lineHeight: 1.6, paddingLeft: '32px' }}>No. We charge a flat percentage based on the transaction type. There are absolutely no setup fees, monthly minimums, refund fees, or hidden costs.</p>
+            
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+              <h4 className="flex items-center gap-3 text-xl font-bold text-slate-900 mb-4">
+                <HelpCircle className="text-emerald-500 shrink-0" /> Are there any hidden fees?
+              </h4>
+              <p className="text-slate-600 leading-relaxed ml-9 text-lg">
+                No. We charge a flat percentage based on the transaction type. There are absolutely no setup fees, monthly minimums, refund fees, or hidden costs.
+              </p>
             </div>
-            <div>
-              <h4 style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '1.125rem', fontWeight: 700, color: '#0f172a', marginBottom: '12px' }}><HelpCircle size={20} color="#10b981" /> Can I negotiate my rate?</h4>
-              <p style={{ color: '#64748b', lineHeight: 1.6, paddingLeft: '32px' }}>Yes. If you process more than 1,000,000 ETB per month, please contact our sales team to discuss custom Enterprise pricing volume discounts.</p>
+            
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+              <h4 className="flex items-center gap-3 text-xl font-bold text-slate-900 mb-4">
+                <HelpCircle className="text-emerald-500 shrink-0" /> Can I negotiate my rate?
+              </h4>
+              <p className="text-slate-600 leading-relaxed ml-9 text-lg">
+                Yes. If you process more than 1,000,000 ETB per month, please contact our sales team to discuss custom Enterprise pricing volume discounts.
+              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer style={{ background: '#090e17', color: 'white', padding: '60px 24px', textAlign: 'center' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '1.25rem', color: '#10b981' }}>
-            <div style={{ width: '24px', height: '24px', background: '#10b981', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: 'white', fontSize: '0.9rem', lineHeight: 1 }}>E</span>
-            </div>
-            EasyPay
-          </div>
-          <div style={{ color: '#64748b', fontSize: '0.85rem' }}>
-            © 2026 EasyPay Financial Technologies. All rights reserved.
-          </div>
-          <div style={{ display: 'flex', gap: '32px', fontSize: '0.85rem', color: '#64748b' }}>
-            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Terms of Service</a>
-            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }}>Privacy Policy</a>
+      {/* CTA SECTION */}
+      <section className="relative py-32 bg-slate-900 text-white overflow-hidden text-center">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] pointer-events-none"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none"></div>
+        
+        <div className="container mx-auto px-6 max-w-3xl relative z-10">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">Ready to scale your business?</h2>
+          <p className="text-xl text-slate-400 mb-10 leading-relaxed">
+            Join thousands of Ethiopian businesses using EasyPay to process payments globally.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Button size="lg" className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full px-10 h-16 font-extrabold text-lg shadow-xl shadow-emerald-500/20 group">
+              <Link to="/login" className="flex items-center">
+                Create Account
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </Button>
+            <Button size="lg" variant="outline" className="border-slate-700 text-slate-300 hover:bg-slate-800 rounded-full px-10 h-16 font-bold text-lg">
+              <Link to="/company/contact">Contact Sales</Link>
+            </Button>
           </div>
         </div>
-      </footer>
+      </section>
+      
     </div>
   );
-};
-
-export default PricingPage;
+}

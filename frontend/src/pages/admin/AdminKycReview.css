@@ -1,0 +1,315 @@
+/* ================================================================
+   Admin KYC Review – Component Styles
+   ================================================================ */
+
+/* Filter bar */
+.kyc-filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.kyc-filter-btn {
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.kyc-filter-btn:hover {
+  border-color: #4f46e5;
+  color: #4f46e5;
+}
+
+.kyc-filter-btn.active {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #fff;
+}
+
+/* Master-detail layout */
+.kyc-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 1.5rem;
+  min-height: 600px;
+  align-items: start;
+}
+
+/* Left panel — profile list */
+.kyc-list-panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.kyc-list-item {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+.kyc-list-item:last-child {
+  border-bottom: none;
+}
+
+.kyc-list-item:hover {
+  background: #f8fafc;
+}
+
+.kyc-list-item.selected {
+  background: #eef2ff;
+  border-left: 3px solid #4f46e5;
+}
+
+.kyc-list-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.kyc-merchant-name {
+  font-weight: 600;
+  font-size: 0.9375rem;
+  color: #0f172a;
+}
+
+.kyc-list-item-meta {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+/* Right panel — detail view */
+.kyc-detail-panel {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.kyc-section {
+  padding: 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.kyc-section:last-child {
+  border-bottom: none;
+}
+
+.kyc-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.kyc-section-header h2 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+/* Details grid */
+.kyc-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 0.75rem 1.5rem;
+  margin: 0;
+}
+
+.kyc-detail-grid dt {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  align-self: center;
+}
+
+.kyc-detail-grid dd {
+  font-size: 0.9375rem;
+  color: #0f172a;
+  margin: 0;
+  align-self: center;
+}
+
+/* Document grid */
+.kyc-docs-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.kyc-doc-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  align-items: flex-start;
+}
+
+.kyc-doc-icon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.kyc-doc-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.kyc-doc-info strong {
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.kyc-doc-rejection {
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin: 0;
+  font-style: italic;
+}
+
+.kyc-doc-link {
+  font-size: 0.8125rem;
+  color: #4f46e5;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.kyc-doc-link:hover {
+  text-decoration: underline;
+}
+
+/* Actions footer */
+.kyc-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.kyc-approve-btn {
+  background: #16a34a;
+  color: white;
+  padding: 0.625rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.25);
+}
+
+.kyc-approve-btn:hover:not(:disabled) {
+  background: #15803d;
+  transform: translateY(-1px);
+}
+
+.kyc-approve-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.kyc-reject-btn {
+  background: #fff;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  padding: 0.625rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.kyc-reject-btn:hover:not(:disabled) {
+  background: #fef2f2;
+}
+
+.kyc-reject-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Empty state — detail */
+.kyc-detail-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 400px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  color: #94a3b8;
+  font-size: 0.9375rem;
+}
+
+.kyc-detail-empty-icon {
+  font-size: 3rem;
+}
+
+/* Toast */
+.kyc-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 0.875rem 1.5rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  z-index: 9999;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kyc-toast--success {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #bbf7d0;
+}
+
+.kyc-toast--error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .kyc-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kyc-list-panel {
+    max-height: 300px;
+  }
+}

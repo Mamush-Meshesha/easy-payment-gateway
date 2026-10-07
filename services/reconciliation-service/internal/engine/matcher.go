@@ -129,7 +129,7 @@ func (e *ReconciliationEngine) Run(ctx context.Context, jobID uuid.UUID, provide
 
 func (e *ReconciliationEngine) recordException(ctx context.Context, jobID uuid.UUID, providerTxID string, paymentID *uuid.UUID, exType domain.ExceptionType, pAmt *int64, pCur *string, lAmt *int64, lCur *string) error {
 	ex := &domain.ReconciliationException{
-		ID:                    uuid.New(),
+		ID:                    uuid.Must(uuid.NewV7()),
 		JobID:                 jobID,
 		ProviderTransactionID: providerTxID,
 		InternalPaymentID:     paymentID,

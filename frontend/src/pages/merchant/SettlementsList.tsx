@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Banknote, Search, Download, CheckCircle2, AlertTriangle, X, Calendar, Loader2 } from 'lucide-react';
@@ -197,7 +198,7 @@ const SettlementsList: React.FC = () => {
             <div className="dashboard-modal-footer">
               <button className="dashboard-btn-secondary" onClick={() => setIsEarlySettlementModalOpen(false)}>Cancel</button>
               <button className="dashboard-primary-btn" onClick={() => {
-                alert('Early settlement requested. (This triggers a background processing job).');
+                toast('Early settlement requested. (This triggers a background processing job).');
                 setIsEarlySettlementModalOpen(false);
               }}>Confirm Request</button>
             </div>

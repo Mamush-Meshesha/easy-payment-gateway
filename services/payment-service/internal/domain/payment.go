@@ -13,6 +13,7 @@ const (
 	StateCreated           PaymentState = "CREATED"
 	StateInitiated         PaymentState = "INITIATED"
 	StateProcessing        PaymentState = "PROCESSING"
+	StateRequiresAction    PaymentState = "REQUIRES_ACTION"
 	StatePending           PaymentState = "PENDING"
 	StateUnknown           PaymentState = "UNKNOWN"
 	StateCompletionPending PaymentState = "COMPLETION_PENDING"

@@ -922,11 +922,13 @@ func (x *GetWebhookConfigRequest) GetEnvironment() string {
 }
 
 type GetWebhookConfigResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	WebhookUrl    string                 `protobuf:"bytes,1,opt,name=webhook_url,json=webhookUrl,proto3" json:"webhook_url,omitempty"`
-	HmacSecret    string                 `protobuf:"bytes,2,opt,name=hmac_secret,json=hmacSecret,proto3" json:"hmac_secret,omitempty"` // Protected in transit by mTLS
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	WebhookUrl             string                 `protobuf:"bytes,1,opt,name=webhook_url,json=webhookUrl,proto3" json:"webhook_url,omitempty"`
+	HmacSecret             string                 `protobuf:"bytes,2,opt,name=hmac_secret,json=hmacSecret,proto3" json:"hmac_secret,omitempty"` // Protected in transit by mTLS
+	SecondaryHmacSecret    string                 `protobuf:"bytes,3,opt,name=secondary_hmac_secret,json=secondaryHmacSecret,proto3" json:"secondary_hmac_secret,omitempty"`
+	SecondaryHmacExpiresAt string                 `protobuf:"bytes,4,opt,name=secondary_hmac_expires_at,json=secondaryHmacExpiresAt,proto3" json:"secondary_hmac_expires_at,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
 }
 
 func (x *GetWebhookConfigResponse) Reset() {
@@ -969,6 +971,20 @@ func (x *GetWebhookConfigResponse) GetWebhookUrl() string {
 func (x *GetWebhookConfigResponse) GetHmacSecret() string {
 	if x != nil {
 		return x.HmacSecret
+	}
+	return ""
+}
+
+func (x *GetWebhookConfigResponse) GetSecondaryHmacSecret() string {
+	if x != nil {
+		return x.SecondaryHmacSecret
+	}
+	return ""
+}
+
+func (x *GetWebhookConfigResponse) GetSecondaryHmacExpiresAt() string {
+	if x != nil {
+		return x.SecondaryHmacExpiresAt
 	}
 	return ""
 }
@@ -1085,6 +1101,102 @@ func (x *GetPayoutDestinationResponse) GetProviderId() string {
 	return ""
 }
 
+type ApproveMerchantRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	MerchantId    string                 `protobuf:"bytes,1,opt,name=merchant_id,json=merchantId,proto3" json:"merchant_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApproveMerchantRequest) Reset() {
+	*x = ApproveMerchantRequest{}
+	mi := &file_merchant_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApproveMerchantRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApproveMerchantRequest) ProtoMessage() {}
+
+func (x *ApproveMerchantRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_merchant_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApproveMerchantRequest.ProtoReflect.Descriptor instead.
+func (*ApproveMerchantRequest) Descriptor() ([]byte, []int) {
+	return file_merchant_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ApproveMerchantRequest) GetMerchantId() string {
+	if x != nil {
+		return x.MerchantId
+	}
+	return ""
+}
+
+type ApproveMerchantResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Status        string                 `protobuf:"bytes,2,opt,name=status,proto3" json:"status,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ApproveMerchantResponse) Reset() {
+	*x = ApproveMerchantResponse{}
+	mi := &file_merchant_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ApproveMerchantResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ApproveMerchantResponse) ProtoMessage() {}
+
+func (x *ApproveMerchantResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_merchant_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ApproveMerchantResponse.ProtoReflect.Descriptor instead.
+func (*ApproveMerchantResponse) Descriptor() ([]byte, []int) {
+	return file_merchant_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ApproveMerchantResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *ApproveMerchantResponse) GetStatus() string {
+	if x != nil {
+		return x.Status
+	}
+	return ""
+}
+
 type ListMerchantsResponse_MerchantInfo struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -1097,7 +1209,7 @@ type ListMerchantsResponse_MerchantInfo struct {
 
 func (x *ListMerchantsResponse_MerchantInfo) Reset() {
 	*x = ListMerchantsResponse_MerchantInfo{}
-	mi := &file_merchant_proto_msgTypes[20]
+	mi := &file_merchant_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1109,7 +1221,7 @@ func (x *ListMerchantsResponse_MerchantInfo) String() string {
 func (*ListMerchantsResponse_MerchantInfo) ProtoMessage() {}
 
 func (x *ListMerchantsResponse_MerchantInfo) ProtoReflect() protoreflect.Message {
-	mi := &file_merchant_proto_msgTypes[20]
+	mi := &file_merchant_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1231,12 +1343,14 @@ const file_merchant_proto_rawDesc = "" +
 	"\x17GetWebhookConfigRequest\x12\x1f\n" +
 	"\vmerchant_id\x18\x01 \x01(\tR\n" +
 	"merchantId\x12 \n" +
-	"\venvironment\x18\x02 \x01(\tR\venvironment\"\\\n" +
+	"\venvironment\x18\x02 \x01(\tR\venvironment\"\xcb\x01\n" +
 	"\x18GetWebhookConfigResponse\x12\x1f\n" +
 	"\vwebhook_url\x18\x01 \x01(\tR\n" +
 	"webhookUrl\x12\x1f\n" +
 	"\vhmac_secret\x18\x02 \x01(\tR\n" +
-	"hmacSecret\"Z\n" +
+	"hmacSecret\x122\n" +
+	"\x15secondary_hmac_secret\x18\x03 \x01(\tR\x13secondaryHmacSecret\x129\n" +
+	"\x19secondary_hmac_expires_at\x18\x04 \x01(\tR\x16secondaryHmacExpiresAt\"Z\n" +
 	"\x1bGetPayoutDestinationRequest\x12\x1f\n" +
 	"\vmerchant_id\x18\x01 \x01(\tR\n" +
 	"merchantId\x12\x1a\n" +
@@ -1245,7 +1359,13 @@ const file_merchant_proto_rawDesc = "" +
 	"\x11destination_token\x18\x01 \x01(\tR\x10destinationToken\x12)\n" +
 	"\x10destination_bank\x18\x02 \x01(\tR\x0fdestinationBank\x12\x1f\n" +
 	"\vprovider_id\x18\x03 \x01(\tR\n" +
-	"providerId2\x8c\a\n" +
+	"providerId\"9\n" +
+	"\x16ApproveMerchantRequest\x12\x1f\n" +
+	"\vmerchant_id\x18\x01 \x01(\tR\n" +
+	"merchantId\"K\n" +
+	"\x17ApproveMerchantResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x16\n" +
+	"\x06status\x18\x02 \x01(\tR\x06status2\xe4\a\n" +
 	"\x0fMerchantService\x12J\n" +
 	"\vGetMerchant\x12\x1c.merchant.GetMerchantRequest\x1a\x1d.merchant.GetMerchantResponse\x12L\n" +
 	"\x11GetMerchantStatus\x12\x1a.merchant.GetStatusRequest\x1a\x1b.merchant.GetStatusResponse\x12S\n" +
@@ -1254,7 +1374,8 @@ const file_merchant_proto_rawDesc = "" +
 	"\x10GetWebhookConfig\x12!.merchant.GetWebhookConfigRequest\x1a\".merchant.GetWebhookConfigResponse\x12e\n" +
 	"\x14GetPayoutDestination\x12%.merchant.GetPayoutDestinationRequest\x1a&.merchant.GetPayoutDestinationResponse\x12P\n" +
 	"\rListMerchants\x12\x1e.merchant.ListMerchantsRequest\x1a\x1f.merchant.ListMerchantsResponse\x12V\n" +
-	"\x0fSuspendMerchant\x12 .merchant.SuspendMerchantRequest\x1a!.merchant.SuspendMerchantResponse\x12b\n" +
+	"\x0fSuspendMerchant\x12 .merchant.SuspendMerchantRequest\x1a!.merchant.SuspendMerchantResponse\x12V\n" +
+	"\x0fApproveMerchant\x12 .merchant.ApproveMerchantRequest\x1a!.merchant.ApproveMerchantResponse\x12b\n" +
 	"\x13UpdateMerchantLimit\x12$.merchant.UpdateMerchantLimitRequest\x1a%.merchant.UpdateMerchantLimitResponse\x12\\\n" +
 	"\x11ProvisionMerchant\x12\".merchant.ProvisionMerchantRequest\x1a#.merchant.ProvisionMerchantResponseB'Z%payment-gateway/payment-service/protob\x06proto3"
 
@@ -1270,7 +1391,7 @@ func file_merchant_proto_rawDescGZIP() []byte {
 	return file_merchant_proto_rawDescData
 }
 
-var file_merchant_proto_msgTypes = make([]protoimpl.MessageInfo, 21)
+var file_merchant_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
 var file_merchant_proto_goTypes = []any{
 	(*ProvisionMerchantRequest)(nil),           // 0: merchant.ProvisionMerchantRequest
 	(*ProvisionMerchantResponse)(nil),          // 1: merchant.ProvisionMerchantResponse
@@ -1292,10 +1413,12 @@ var file_merchant_proto_goTypes = []any{
 	(*GetWebhookConfigResponse)(nil),           // 17: merchant.GetWebhookConfigResponse
 	(*GetPayoutDestinationRequest)(nil),        // 18: merchant.GetPayoutDestinationRequest
 	(*GetPayoutDestinationResponse)(nil),       // 19: merchant.GetPayoutDestinationResponse
-	(*ListMerchantsResponse_MerchantInfo)(nil), // 20: merchant.ListMerchantsResponse.MerchantInfo
+	(*ApproveMerchantRequest)(nil),             // 20: merchant.ApproveMerchantRequest
+	(*ApproveMerchantResponse)(nil),            // 21: merchant.ApproveMerchantResponse
+	(*ListMerchantsResponse_MerchantInfo)(nil), // 22: merchant.ListMerchantsResponse.MerchantInfo
 }
 var file_merchant_proto_depIdxs = []int32{
-	20, // 0: merchant.ListMerchantsResponse.merchants:type_name -> merchant.ListMerchantsResponse.MerchantInfo
+	22, // 0: merchant.ListMerchantsResponse.merchants:type_name -> merchant.ListMerchantsResponse.MerchantInfo
 	10, // 1: merchant.MerchantService.GetMerchant:input_type -> merchant.GetMerchantRequest
 	8,  // 2: merchant.MerchantService.GetMerchantStatus:input_type -> merchant.GetStatusRequest
 	12, // 3: merchant.MerchantService.ValidateApiKey:input_type -> merchant.ValidateApiKeyRequest
@@ -1304,20 +1427,22 @@ var file_merchant_proto_depIdxs = []int32{
 	18, // 6: merchant.MerchantService.GetPayoutDestination:input_type -> merchant.GetPayoutDestinationRequest
 	2,  // 7: merchant.MerchantService.ListMerchants:input_type -> merchant.ListMerchantsRequest
 	4,  // 8: merchant.MerchantService.SuspendMerchant:input_type -> merchant.SuspendMerchantRequest
-	6,  // 9: merchant.MerchantService.UpdateMerchantLimit:input_type -> merchant.UpdateMerchantLimitRequest
-	0,  // 10: merchant.MerchantService.ProvisionMerchant:input_type -> merchant.ProvisionMerchantRequest
-	11, // 11: merchant.MerchantService.GetMerchant:output_type -> merchant.GetMerchantResponse
-	9,  // 12: merchant.MerchantService.GetMerchantStatus:output_type -> merchant.GetStatusResponse
-	13, // 13: merchant.MerchantService.ValidateApiKey:output_type -> merchant.ValidateApiKeyResponse
-	15, // 14: merchant.MerchantService.GetMerchantConfig:output_type -> merchant.GetMerchantConfigResponse
-	17, // 15: merchant.MerchantService.GetWebhookConfig:output_type -> merchant.GetWebhookConfigResponse
-	19, // 16: merchant.MerchantService.GetPayoutDestination:output_type -> merchant.GetPayoutDestinationResponse
-	3,  // 17: merchant.MerchantService.ListMerchants:output_type -> merchant.ListMerchantsResponse
-	5,  // 18: merchant.MerchantService.SuspendMerchant:output_type -> merchant.SuspendMerchantResponse
-	7,  // 19: merchant.MerchantService.UpdateMerchantLimit:output_type -> merchant.UpdateMerchantLimitResponse
-	1,  // 20: merchant.MerchantService.ProvisionMerchant:output_type -> merchant.ProvisionMerchantResponse
-	11, // [11:21] is the sub-list for method output_type
-	1,  // [1:11] is the sub-list for method input_type
+	20, // 9: merchant.MerchantService.ApproveMerchant:input_type -> merchant.ApproveMerchantRequest
+	6,  // 10: merchant.MerchantService.UpdateMerchantLimit:input_type -> merchant.UpdateMerchantLimitRequest
+	0,  // 11: merchant.MerchantService.ProvisionMerchant:input_type -> merchant.ProvisionMerchantRequest
+	11, // 12: merchant.MerchantService.GetMerchant:output_type -> merchant.GetMerchantResponse
+	9,  // 13: merchant.MerchantService.GetMerchantStatus:output_type -> merchant.GetStatusResponse
+	13, // 14: merchant.MerchantService.ValidateApiKey:output_type -> merchant.ValidateApiKeyResponse
+	15, // 15: merchant.MerchantService.GetMerchantConfig:output_type -> merchant.GetMerchantConfigResponse
+	17, // 16: merchant.MerchantService.GetWebhookConfig:output_type -> merchant.GetWebhookConfigResponse
+	19, // 17: merchant.MerchantService.GetPayoutDestination:output_type -> merchant.GetPayoutDestinationResponse
+	3,  // 18: merchant.MerchantService.ListMerchants:output_type -> merchant.ListMerchantsResponse
+	5,  // 19: merchant.MerchantService.SuspendMerchant:output_type -> merchant.SuspendMerchantResponse
+	21, // 20: merchant.MerchantService.ApproveMerchant:output_type -> merchant.ApproveMerchantResponse
+	7,  // 21: merchant.MerchantService.UpdateMerchantLimit:output_type -> merchant.UpdateMerchantLimitResponse
+	1,  // 22: merchant.MerchantService.ProvisionMerchant:output_type -> merchant.ProvisionMerchantResponse
+	12, // [12:23] is the sub-list for method output_type
+	1,  // [1:12] is the sub-list for method input_type
 	1,  // [1:1] is the sub-list for extension type_name
 	1,  // [1:1] is the sub-list for extension extendee
 	0,  // [0:1] is the sub-list for field type_name
@@ -1334,7 +1459,7 @@ func file_merchant_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_merchant_proto_rawDesc), len(file_merchant_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   21,
+			NumMessages:   23,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

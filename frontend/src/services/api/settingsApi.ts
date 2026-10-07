@@ -36,7 +36,7 @@ export const settingsApi = baseApi.injectEndpoints({
     }),
     createGlobalProvider: builder.mutation<any, { code: string; name: string }>({
       query: (data) => ({
-        url: `/providers`,
+        url: `/admin/providers`,
         method: 'POST',
         body: data,
       }),

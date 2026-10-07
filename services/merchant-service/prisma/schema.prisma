@@ -23,6 +23,7 @@ model Merchant {
   limits          MerchantLimit[]
   preferences     MerchantPreference?
   paymentMethods  MerchantPaymentMethod[]
+  kycProfile      KycProfile?
 }
 
 model ApiKey {
@@ -51,11 +52,13 @@ model WebhookConfig {
   id          String   @id @default(uuid())
   merchantId  String
   environment String   @default("LIVE") // TEST, LIVE
-  url         String
-  secretHash  String
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  url                   String
+  secretHash            String
+  secondarySecret       String?
+  secondaryExpiresAt    DateTime?
+  isActive              Boolean   @default(true)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
 
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 }
@@ -149,4 +152,46 @@ model MerchantPaymentMethod {
   merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
 
   @@unique([merchantId, methodCode])
+}
+
+model KycProfile {
+  id             String    @id @default(uuid())
+  merchantId     String    @unique
+  businessName   String?
+  registrationNo String?
+  taxId          String?
+  businessType   String?
+  
+  // Enterprise KYC Fields
+  websiteUrl         String?
+  supportEmail       String?
+  addressLine1       String?
+  city               String?
+  state              String?
+  postalCode         String?
+  country            String?
+  expectedVolume     String?
+  representativeName String?
+  representativeDob  String?
+
+  status         String    @default("PENDING") // PENDING, UNDER_REVIEW, VERIFIED, REJECTED
+  verifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  merchant  Merchant      @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  documents KycDocument[]
+}
+
+model KycDocument {
+  id                 String   @id @default(uuid())
+  kycProfileId       String
+  documentType       String // ID_CARD, PASSPORT, UTILITY_BILL, BUSINESS_REGISTRATION
+  s3Uri              String
+  verificationStatus String   @default("PENDING") // PENDING, VERIFIED, REJECTED
+  rejectionReason    String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  kycProfile KycProfile @relation(fields: [kycProfileId], references: [id], onDelete: Cascade)
 }

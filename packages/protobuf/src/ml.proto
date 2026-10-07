@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package ml;
+
+option go_package = "payment-gateway/services/risk-service/proto/ml;ml";
+
+// The RiskMLService provides predictive ML scoring (TensorFlow/XGBoost)
+service RiskMLService {
+  rpc EvaluateFraudProbability(EvaluateFraudRequest) returns (EvaluateFraudResponse);
+}
+
+message EvaluateFraudRequest {
+  string ip_address = 1;
+  string device_fingerprint = 2;
+  int64 amount = 3;
+  string currency = 4;
+  string customer_id = 5;
+  string bin = 6;
+  string merchant_id = 7;
+}
+
+message EvaluateFraudResponse {
+  float probability_score = 1; // 0.0 (safe) to 1.0 (fraud)
+  repeated string risk_factors = 2; // e.g. ["high_velocity", "ip_distance_anomaly"]
+}

@@ -33,12 +33,16 @@ export interface CheckRiskRequest {
 
 export interface CheckRiskResponse {
   decisionId: string;
-  /** ALLOW, FLAG, REVIEW, BLOCK */
+  /** ALLOW, FLAG, REVIEW, BLOCK, CHALLENGE */
   action: string;
   reason: string;
   triggeredRuleIds: string[];
   /** SUCCESS, UNAVAILABLE, TIMEOUT, ERROR */
   evaluationStatus: string;
+  /** ML Probability score (0.0 to 1.0) */
+  riskScore: number;
+  /** Strong Customer Authentication flag */
+  requires3ds: boolean;
 }
 
 function createBaseCheckRiskRequest(): CheckRiskRequest {
@@ -227,7 +231,15 @@ export const CheckRiskRequest: MessageFns<CheckRiskRequest> = {
 };
 
 function createBaseCheckRiskResponse(): CheckRiskResponse {
-  return { decisionId: "", action: "", reason: "", triggeredRuleIds: [], evaluationStatus: "" };
+  return {
+    decisionId: "",
+    action: "",
+    reason: "",
+    triggeredRuleIds: [],
+    evaluationStatus: "",
+    riskScore: 0,
+    requires3ds: false,
+  };
 }
 
 export const CheckRiskResponse: MessageFns<CheckRiskResponse> = {
@@ -246,6 +258,12 @@ export const CheckRiskResponse: MessageFns<CheckRiskResponse> = {
     }
     if (message.evaluationStatus !== "") {
       writer.uint32(42).string(message.evaluationStatus);
+    }
+    if (message.riskScore !== 0) {
+      writer.uint32(53).float(message.riskScore);
+    }
+    if (message.requires3ds !== false) {
+      writer.uint32(56).bool(message.requires3ds);
     }
     return writer;
   },
@@ -303,6 +321,22 @@ export const CheckRiskResponse: MessageFns<CheckRiskResponse> = {
             message.evaluationStatus = reader.string();
             continue;
           }
+          case 6: {
+            if (tag !== 53) {
+              break;
+            }
+
+            message.riskScore = reader.float();
+            continue;
+          }
+          case 7: {
+            if (tag !== 56) {
+              break;
+            }
+
+            message.requires3ds = reader.bool();
+            continue;
+          }
         }
         if ((tag & 7) === 4 || tag === 0) {
           break;
@@ -334,6 +368,16 @@ export const CheckRiskResponse: MessageFns<CheckRiskResponse> = {
         : isSet(object.evaluation_status)
         ? globalThis.String(object.evaluation_status)
         : "",
+      riskScore: isSet(object.riskScore)
+        ? globalThis.Number(object.riskScore)
+        : isSet(object.risk_score)
+        ? globalThis.Number(object.risk_score)
+        : 0,
+      requires3ds: isSet(object.requires3ds)
+        ? globalThis.Boolean(object.requires3ds)
+        : isSet(object.requires_3ds)
+        ? globalThis.Boolean(object.requires_3ds)
+        : false,
     };
   },
 
@@ -354,6 +398,12 @@ export const CheckRiskResponse: MessageFns<CheckRiskResponse> = {
     if (message.evaluationStatus !== "") {
       obj.evaluationStatus = message.evaluationStatus;
     }
+    if (message.riskScore !== 0) {
+      obj.riskScore = message.riskScore;
+    }
+    if (message.requires3ds !== false) {
+      obj.requires3ds = message.requires3ds;
+    }
     return obj;
   },
 
@@ -367,6 +417,8 @@ export const CheckRiskResponse: MessageFns<CheckRiskResponse> = {
     message.reason = object.reason ?? "";
     message.triggeredRuleIds = object.triggeredRuleIds?.map((e) => e) || [];
     message.evaluationStatus = object.evaluationStatus ?? "";
+    message.riskScore = object.riskScore ?? 0;
+    message.requires3ds = object.requires3ds ?? false;
     return message;
   },
 };

@@ -316,6 +316,25 @@ This phase ensures complete operational resilience and feature completeness befo
 7. **[x] Final Backend Security Audit**: (Documented) Exhaustive security review (mTLS, RBAC, signatures, replay protection).
 8. **[x] Production-Readiness Audit**: (Documented) Finalize infrastructure configurations (Migrations, Partitions, Observability, Vault/Encryption).
 
+## Phase 20: PCI-DSS Core & Tokenization (COMPLETED)
+- **`vault-service`**: Created a highly isolated Go microservice acting as a PCI-DSS Level 1 compliant enclave.
+- **Envelope Encryption**: Implemented AES-256-GCM encryption stub (KMS) to securely vault PANs before tokenizing.
+- **gRPC Contract**: Defined `vault.proto` with `TokenizeCard` and `DetokenizeCard`.
+- **Zero-Trust Access**: Updated `policy.go` to strictly restrict `DetokenizeCard` to `provider-service` and `TokenizeCard` to `payment-service`/`dashboard-service`.
+- **mTLS Integration**: Generated `vault-service` PKI certificates and integrated them into the `Makefile` local development stack.
+
+## Phase 21: Smart Routing & Treasury (COMPLETED)
+- **`routing-service`**: Created dynamic Go orchestrator to determine the best acquiring provider based on BIN heuristics and target currency, optimizing interchange costs.
+- **`fx-service`**: Created FX service for real-time Dynamic Currency Conversion (DCC), supporting `GetExchangeRate` and `LockExchangeRate` to freeze treasury liabilities.
+- **gRPC Contracts**: Defined `routing.proto` and `fx.proto` providing precise RPC definitions.
+- **Zero-Trust Access**: Registered `DetermineRoute`, `GetExchangeRate`, and `LockExchangeRate` into the `go-grpc-auth` S2S mTLS policy matrix.
+- **mTLS Integration**: Generated dedicated internal PKI certificates for both microservices and wired them into the `make dev` local scaling pipeline.
+
+## Phase 22: ML Risk Pipeline & 3DS2 Fallback (COMPLETED)
+- **`risk-ml-worker`**: Created a Python worker using gRPC to perform real-time fraud probability scoring using simulated ML features (IP anomalies, velocity, amount).
+- **3DS2 Integration**: Upgraded the `payment-service` and `risk-service` to support `REQUIRES_ACTION` and `CHALLENGE` triggers, which automatically intercept high-risk traffic and return a simulated 3DS2 Challenge URL via HTTP 202 Accepted.
+- **Protobuf Evolution**: Expanded `risk.proto` and introduced `ml.proto` to support predictive scoring in a strongly-typed manner across language barriers (Go -> Python).
+
 *The backend is now considered functionally complete. Moving to Phase 18: Frontend Implementation.*
 
 ## Phase 18: Frontend Implementation
@@ -351,8 +370,8 @@ This phase ensures complete operational resilience and feature completeness befo
 - **SettlementsList.tsx**: 
   - Dynamically calculates the "Total Settled (30d)" from fetched data.
   - Wired the "Early Settlement Modal" to calculate the exact 1.5% fee based on the merchant's real-time available balance.
-- **ProvidersManagement.tsx**: Stubbed visually (No backend API available in API Gateway for `GET /api/v1/admin/providers`).
-- **Reconciliation Upload UI**: Skipped (UI component and backend API are not yet implemented in Phase 17).
+- **ProvidersManagement.tsx**: Wired `useGetGlobalProvidersQuery` and `useCreateGlobalProviderMutation` to correctly point to `/api/v1/admin/providers`.
+- **Reconciliation Upload UI**: Created `ReconciliationUpload.tsx` in the Admin Dashboard. Implemented `FormData` multipart uploading, fixed `apiFetch` to seamlessly support `multipart/form-data`, and exposed `/api/v1/reconciliation` through the local Nginx API Gateway to route to the Go `reconciliation-service`. Added UI and API endpoints (`GetJobs`, `GetExceptions`) for viewing Jobs, viewing Exceptions, and Resolving Exceptions.
 
 > **Frontend Integration Complete**: All functional routes exposed via `dashboard-service`, `auth-service`, `merchant-service`, `payment-service`, and `admin-service` have been mapped into the React views.
 
@@ -439,3 +458,148 @@ This phase ensures complete operational resilience and feature completeness befo
 - **Payment Service Public API**: Upgraded `HandleGetPublicPayment` in `payment-service` to dynamically fetch `allowedPaymentMethods` via the `PaymentOrchestrator` interface and return it in the public API response.
 - **Frontend Checkout Dynamic Rendering**: Updated `CheckoutPage.tsx` to read the `allowedPaymentMethods` and dynamically map the available payment methods (Card, Telebirr) to the UI tabs, hiding any options the merchant has disabled. Ensures the first available method is automatically selected.
 - **Admin Service Port Binding Fix**: Identified a discrepancy in `admin-service` falling back to port `3010` instead of `3003` which was mapped in `nginx.local.conf`. Re-aligned the default PORT to `3003` to restore the API Gateway proxy pipeline.
+
+### Phase 18.11: Admin-to-Merchant Approval Flow (COMPLETED)
+- **Merchant Proto Extension**: Added `ApproveMerchant` RPC to `merchant.proto` and compiled bindings.
+- **Merchant Service Update**: Implemented `approveMerchant` in `merchant-service` to update merchant status to `APPROVED` and added it to the S2S zero-trust policy.
+- **Admin Service Implementation**: Exposed `PATCH /api/v1/admin/merchants/:id/approve` and wired it via gRPC to the Merchant Service.
+- **Frontend Approval Modal**: Built `ApproveModal` inside `MerchantsManagement.tsx` for Super Admins to manually verify KYC and trigger live processing access.
+
+## Phase 19: Frontend UI/UX Overhaul & Feature Parity
+**Status: 🚧 In Progress**
+
+### Phase 19.1: Foundation & Design System Setup (COMPLETED)
+- **Tailwind CSS V3**: Replaced inline CSS and custom stylesheets with utility-first Tailwind CSS.
+- **Component Library**: Initialized and integrated `shadcn/ui` based on Radix primitives, establishing an enterprise-grade design system utilizing an OKLCH color palette (Zinc default).
+- **Core Visual Tooling**: Installed `framer-motion` for micro-animations and `recharts` for financial dashboards.
+- **Project Structure Fixes**: Ensured `tsconfig.app.json` and `vite.config.ts` path aliases (`@/*`) were correctly configured to support the shadcn architecture.
+
+### Phase 19.2: The "Wow" Factor - Public & Auth Pages (COMPLETED)
+- **Landing Page Redesign**: Radically overhauled `LandingPage.tsx` using `framer-motion` and `shadcn/ui` components. Implemented a responsive Hero Section with an animated code-block terminal, modern mesh gradients, and robust bento-box feature highlight cards.
+- **Authentication Flow Overhaul**: Consolidated and modernized `Login.tsx` into a responsive split-screen layout with abstract glassmorphic backgrounds and conditional side-panels that adapt to the auth mode (Merchant, Developer, Admin). Dropped `Login.css` dependency completely.
+
+### Phase 19.3: Enterprise Marketing Pages (COMPLETED)
+- **Marketing Page Generation**: Built out 20+ bespoke landing pages covering Products, Solutions, Company, and Developers using high-fidelity Framer Motion animations, Lucide React icons, and complex layout grids.
+- **Chapa-Inspired Aesthetics**: Ensured the product showcase pages (`OnlineCheckout`, `FraudRadar`, `CoreLedger`, `PaymentLinks`, `QrPayments`, `Settlements`) meet industry-standard enterprise requirements with rich visualizations, 3D perspective UI mockups, API previews, and glassmorphism.
+- **Global Footer Navigation**: Replaced the non-existent footer with a robust, enterprise-grade `<Footer />` component mounted directly in `PublicLayout.tsx` for consistent global navigation across all public routes.
+- **Type Safety**: Verified syntax and Framer Motion animation `Variants` typings across all frontend components using `tsc -b`.
+
+## Phase 18: Reconciliation Service — Backend & UI Completion
+**Status: ✅ Completed**
+
+### Phase 18.9: Backend Engine (COMPLETED — prior session)
+- **Domain Layer**: Defined all models (`ReconciliationStatement`, `ReconciliationJob`, `ReconciliationException`, `ReconciliationExceptionAction`) with correct GORM annotations, including a `UNIQUE` constraint on `FileHash` (`idx_statement_hash`) for idempotent upload deduplication.
+- **Repository Layer** (`repository/reconciliation.go`): Implemented `CreateStatement`, `CreateJob`, `UpdateJob`, `CreateException`, `CreateExceptionAction`, `UpdateExceptionStatus`. Added `GetJobs` (paginated, ordered by `created_at DESC`) and `GetExceptions` (filtered by `job_id`, paginated).
+- **Service Layer** (`service/reconciliation.go`): `ProcessStatement` — parses CSV, creates Statement (handles `ErrDuplicateStatement` on unique violation), creates Job, fires background engine goroutine. `ResolveException` — creates audit action, updates status. `GetJobs` and `GetExceptions` delegate directly to repository.
+- **Matching Engine** (`engine/`): Deterministic matching against ledger journal entries via gRPC. Creates typed exceptions for all discrepancy categories.
+- **gRPC Ledger Client** (`infrastructure/grpcclient/`): Calls Ledger Service to fetch `JournalEntries` by `providerTransactionID` batch for authoritative matching.
+
+### Phase 18.10: HTTP Handler Layer (COMPLETED)
+- **`handler/http/upload.go`**: `ReconciliationHandler` struct with `NewReconciliationHandler` constructor. `HandleUploadStatement` — validates `provider_id` form field, reads multipart file, SHA-256 hashes for dedup, resets seek pointer, delegates to service. Returns `202 Accepted` with `job_id`.
+- **`handler/http/resolve.go`**: `HandleResolveException` — binds `ResolveRequest` JSON body (requires `resolved_by`, `reason`; optional `reference`), delegates to service.
+- **`handler/http/read.go`**: `HandleGetJobs` — reads `limit`/`offset` query params (defaults 50/0), returns paginated job list. `HandleGetExceptions` — extracts `:id` path param, returns paginated exceptions for that job.
+- **Route Registration**: All 4 routes registered under `/api/v1/reconciliation` prefix: `POST /upload`, `POST /exceptions/:id/resolve`, `GET /jobs`, `GET /jobs/:id/exceptions`.
+
+### Phase 18.11: Infrastructure & Bug Fixes (COMPLETED)
+- **Nginx Production Config Bug Fix** (`infra/nginx/nginx.conf`): Corrected `reconciliation_service` upstream from `reconciliation-service:3015` (incorrect host-mapped port) to `reconciliation-service:3011` (correct container-internal port). In Docker networking, containers communicate on the service's internal listen port, not the host-published port.
+- **Nginx Upload Limit** (`infra/nginx/nginx.conf`): Added `client_max_body_size 50M` to the `/api/v1/reconciliation` location block to allow large CSV statement file uploads (matching the already-existing local config).
+- **Go Build Verified**: `go build ./...` passes cleanly across the reconciliation service (`cmd/server`, all internal packages).
+
+### Phase 18.12: Frontend Admin UI (COMPLETED)
+- **`ReconciliationUpload.tsx`**: Full-featured admin reconciliation command center with:
+  - Provider dropdown (fed from `useGetGlobalProvidersQuery`).
+  - Drag-click CSV dropzone with `has-file` visual feedback state.
+  - `handleUpload` — posts `multipart/form-data` with `provider_id` + `file`; displays success alert with returned `job_id`; auto-refreshes jobs list after 1s.
+  - Jobs table — columns: Date/Time, Status badge, Matched/Total records, Exceptions count with color coding, Inspect action button. Refresh button with spinner.
+  - Exceptions inline panel — animated slide-up on job selection. Inline resolve form expands per-row with reason (required) + reference ticket fields. Handles RESOLVED status display.
+- **`ReconciliationUpload.css`**: Enterprise-grade stylesheet with glassmorphism cards, gradient header, dashed dropzone with hover/file-present states, paginated table, animated badges, exception panel with red border accent, inline resolve form.
+animations to `ReconciliationUpload.css`. These were referenced i- **CSS Bug Fix**: Added missing `.spin` CSS class and `@keyframes spin` / `@keyframes slideInRight` n the TSX (`className="spin"`) but not defined, causing loading spinners to render as static icons.
+- **TypeScript Verified**: `npx tsc --noEmit` passes with zero errors across the entire frontend codebase.
+
+### Phase 18.13: Webhook Delivery Logs UI (COMPLETED)
+- **API Interface Alignment**: Updated `WebhookDelivery` interface in `webhookApi.ts` to perfectly match the gRPC properties (like `attemptCount`, `lastError`, `nextRetryAt`, `payload`).
+- **Enterprise Logs Component**: Created `WebhookDeliveryLogs.tsx` featuring a glassmorphic data table with conditional color-coded badges for statuses (`SUCCESS`, `FAILED`, `PENDING`) and HTTP codes.
+- **Payload Inspector Modal**: Built a slide-out drawer where developers can inspect the raw JSON Payload alongside the exact HTTP Response Body and Error Message their server returned, complete with a "Copy to Clipboard" utility.
+- **Integration**: Mounted `<WebhookDeliveryLogs />` directly into the existing `WebhooksList.tsx` for a seamless Developer Experience.
+
+### Phase 19: V2 Enterprise Module — Billing, Disputes, KYC & Fraud Radar (COMPLETED)
+
+#### Phase 19.1: Billing Service (COMPLETED)
+- **`billing-service`**: Full Go microservice scaffolded with `billing_db` PostgreSQL, domain models for `Subscription` and `Invoice`, HTTP handler (`billing.go`), Kafka consumer for payment status updates, and gRPC client to `payment-service`.
+- **Routes**: `GET /api/v1/billing/subscriptions`, `POST /api/v1/billing/subscriptions/cancel/:id`.
+- **mTLS**: `billing-service.crt/key` generated and added to `infra/certs`.
+- **Unit Tests**: `billing_test.go` — `BillingOrchestrator` fully tested.
+
+#### Phase 19.2: Dispute Service (COMPLETED)
+- **`dispute-service`**: Full Go microservice scaffolded with `dispute_db`, domain models for `Dispute`, `Evidence`, and `EvidenceType`, `DisputeOrchestrator` with lifecycle logic.
+- **Ledger Integration**: mTLS gRPC `LedgerClient` implemented to freeze/release/reverse funds automatically on dispute trigger/resolution.
+- **Routes**: `GET /api/v1/disputes`, `POST /api/v1/disputes/:id/evidence`.
+- **Unit Tests**: `dispute_test.go` — orchestrator fully tested.
+
+#### Phase 19.3: KYC & AML Compliance Vault (COMPLETED)
+- **Prisma Schema**: Added `KycProfile` and `KycDocument` models to `merchant-service` and pushed to `merchant_db`.
+- **Controller**: `kycController.ts` — 3 endpoints: `GET /api/v1/merchants/kyc`, `POST /api/v1/merchants/kyc/documents` (returns pre-signed S3 URL), `POST /api/v1/merchants/kyc/submit`.
+- **Auth**: Endpoints secured with `authenticateJWT` + `requireRole(['MERCHANT_OWNER', 'SUPER_ADMIN'])`.
+- **Build verified**: `npm run build` passes with zero errors.
+
+#### Phase 19.4: Fraud Radar Engine (COMPLETED)
+- **Rule CRUD**: Added `CreateRule` to `RiskService` interface and `RiskServiceImpl`. Cache is auto-reloaded after every rule creation.
+- **HTTP Endpoint**: `POST /api/v1/risk/rules` registered in `router.go`.
+- **NGINX**: `risk_service` upstream added; `/api/v1/risk` proxied through the gateway.
+- **Build verified**: `go build ./...` in `risk-service` passes cleanly.
+
+#### Phase 19.5: Frontend Dashboard UI (COMPLETED)
+- **`RadarRules.tsx`**: Merchant can view and create Fraud Radar rules with a live form (field/operator/value/action). Rules appear in a sortable table with color-coded action badges.
+- **`KycOnboarding.tsx`**: Split-panel page — left for business info form submission, right for document upload with type selector and S3 URL flow simulation.
+- **`DisputesList.tsx`**: Table of all open/closed disputes with counter-evidence submission modal. Color-coded Due Date (red if past deadline).
+- **`SubscriptionsList.tsx`**: Lists all merchant customer subscriptions with cancel action button.
+- **Sidebar**: Added `Subscriptions`, `Disputes`, `Fraud Radar`, and `KYC Onboarding` nav links with `lucide-react` icons under appropriate groupings.
+- **Router**: All 5 new pages (`radar`, `kyc`, `disputes`, `subscriptions`, `webhooks/deliveries`) registered under `/dashboard`.
+- **Shared CSS**: Extended `DashboardShared.css` with ~290 lines of generic utility classes (`dashboard-container`, `card`, `primary-btn`, `secondary-btn`, `status-badge` variants, `modal-overlay`, `form-group`, `form-row`, `code-badge`, `empty-state`, `loading-state`).
+- **TypeScript**: `npx tsc --noEmit` passes with zero errors.
+
+### Phase 19.6: Admin KYC Review (COMPLETED)
+- **Backend (`merchant-service`)**: Added `adminKycController.ts` handling `listProfiles` (with pagination and status filtering), `getProfile`, `approveProfile` (transactionally marks profile+docs as VERIFIED and activates merchant), and `rejectProfile` (supports rejecting whole profile + specific document reason).
+- **Backend Routes**: Registered routes under `/api/v1/admin/kyc` secured by `SUPER_ADMIN` role.
+- **Frontend (`AdminKycReview.tsx`)**: Built a master-detail React UI for admins. Left pane lists KYC profiles with filter tabs; right pane displays full business details and documents. Admins can approve (which activates the merchant) or reject (which prompts for a reason + document).
+- **Styles**: Added `AdminKycReview.css` with dedicated CSS for master-detail layouts and toast notifications.
+- **Routing & NGINX**: Added `AdminKycReview` to `AdminLayout` sidebar and `router.tsx`. NGINX configuration updated to explicitly proxy `/api/v1/admin/kyc` to `merchant_service`.
+
+### Phase 20: Dynamic Pricing Engine (`pricing-service`)
+- **Initialization**: Created a new Go module (`payment-gateway/pricing-service`).
+- **Domain Models**: Defined `PricingProfile` and `FeeRule` models for the database with tiered rate configuration fields.
+- **PostgreSQL**: Registered `pricing_db` in `infra/postgres/init.sql`, created the database in the running container, and wired up GORM schemas.
+- **gRPC Interface**: Designed `CalculateFee` in `pricing.proto`, generated TS and Go bindings via protobuf.
+- **Engine Logic**: Built `internal/service/pricing_engine.go` to extract percentage vs fixed rates dynamically and handle method/volume condition matching.
+- **Service Registration**: Added mTLS certs and linked the service in `Makefile` (`dev-go` target) to run on `PORT=3018` and `GRPC_PORT=50064`.
+- **Payment Service Integration**: Injected `PricingClient` into `PaymentOrchestrator` and `LedgerRecoveryWorker`. Modified `LedgerClient.RecordJournalEntry` to accept separate `merchantCut` and `platformCut` splits, breaking out the fee into correct double-entry ledger accounts.
+
+### Phase 21: Smart Routing & Treasury Operations (COMPLETED)
+- **`routing-service` (Go)**: Implemented BIN Lookup to determine card type, issuing bank, and country, dynamically routing transactions for best interchange and success rates.
+- **`fx-service` (Go)**: Added real-time Forex fetching and Dynamic Currency Conversion (DCC).
+
+### Phase 22: Advanced Risk & 3DS2 Engine (COMPLETED)
+- **ML Worker**: Developed a Python/TensorFlow microservice that flags suspicious non-standard IPs with a 0.40 penalty, triggering `REQUIRES_ACTION`.
+- **3DS2 Fallback**: Built a frontend mock interceptor to navigate to a biometric/OTP challenge, shifting liability to the issuer on success.
+
+### Phase 23: Global Compliance & Continuous AML (COMPLETED)
+- **`compliance-worker` (Node.js)**: Created a cron worker fetching active merchants and verifying against simulated OFAC/sanctions lists. Automatically suspends high-confidence matches.
+- **Outbox Event Integration**: Enhanced `SuspendMerchant` gRPC handler in `merchant-service` to publish `merchant.status.changed` via Outbox Pattern.
+- **Automated Ledger Freezing**: Registered a `kafka-go` consumer in `ledger-service` listening for merchant suspensions to instantly trigger `FreezeAccounts`, halting all financial settlement.
+
+### Phase 24: Dispute Automation Network Integrations (COMPLETED)
+- **`dispute-worker` / Network Integrations**: Built `NetworkWorker` in `dispute-service` (Go) that continuously polls for "UNDER_REVIEW" disputes and simulates Visa Resolve Online (VROL) / MasterCom network decisions.
+- **Automated Evidence Submission**: Enabled merchants to map internal logs and submit evidence via `POST /api/v1/disputes/:id/evidence` which programmatically advances the dispute to "UNDER_REVIEW".
+### Phase 25: Hyper-Scale Database Architecture (COMPLETED)
+- **Row-Level Security (RLS)**: Implemented strict PostgreSQL RLS policies on `payments`, `journal_lines`, and `refunds` using `current_setting('app.merchant_id')` to ensure tenant isolation at the database engine level.
+- **Table Partitioning**: Migrated `journal_lines` and `payment_state_history` to use `PARTITION BY RANGE (created_at)` for monthly partitions.
+- **Automated Partition Cron**: Developed `partition_cron.sh` bash script to automatically generate the next two months of partition tables.
+
+### Phase 26: Developer Experience V2 (COMPLETED)
+- **Webhook Secret Rolling**: Updated `webhook-service` to support storing two active HMAC secrets (`Primary` and `Secondary`) with an expiration date on the secondary. The Dispatcher automatically signs outgoing payloads with both active secrets.
+- **Idempotency Pruning**: Implemented a background worker (`IdempotencyPruner`) in `payment-service` to periodically delete idempotency keys older than 30 days to prevent unbounded database growth.
+
+### Phase 27: Multi-Region Active-Active Architecture (COMPLETED)
+- **Global Database Migration**: Authored Terraform scripts (`infra/terraform/database.tf`) to provision AWS Aurora Global Database. Upgraded `payment-service` to generate time-ordered UUIDv7s via `google/uuid` to prevent index hotspotting in distributed SQL environments.
+- **Kafka MirrorMaker 2.0**: Authored `mirrormaker.properties` and a dedicated `docker-compose.mirrormaker.yml` extension to simulate cross-region Active-Active event replication for `transaction.status.updated` and `merchant.events`.
+- **Route53 Latency Routing**: Authored Terraform scripts (`infra/terraform/route53.tf`) utilizing Route53 Latency-Based Routing and API Gateway health checks to dynamically failover global traffic.

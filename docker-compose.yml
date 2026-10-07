@@ -131,8 +131,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
-    command: ["npx", "prisma", "migrate", "deploy"]
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=auth
+    command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   migrate-merchant:
     build:
@@ -146,8 +146,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
-    command: ["npx", "prisma", "migrate", "deploy"]
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=merchant
+    command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   migrate-notification:
     build:
@@ -160,8 +160,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
-    command: ["npx", "prisma", "migrate", "deploy"]
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/notification_db?schema=notification
+    command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   migrate-reporting:
     build:
@@ -174,8 +174,8 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=public
-    command: ["npx", "prisma", "migrate", "deploy"]
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=reporting
+    command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   auth-service:
     build:
@@ -185,6 +185,7 @@ services:
     env_file: [.env]
     environment:
       <<: *service-env
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=auth
     volumes:
       - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
       - ./infra/certs/auth-service.crt:/app/certs/server.crt:ro
@@ -205,6 +206,7 @@ services:
     env_file: [.env]
     environment:
       <<: *service-env
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=merchant
     volumes:
       - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
       - ./infra/certs/merchant-service.crt:/app/certs/server.crt:ro
@@ -227,7 +229,7 @@ services:
     env_file: [.env]
     environment:
       <<: *service-env
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/notification_db?schema=public
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/notification_db?schema=notification
       SMTP_HOST: mailhog
       SMTP_PORT: 1025
       SMTP_USER: test
@@ -251,6 +253,7 @@ services:
     env_file: [.env]
     environment:
       <<: *service-env
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=reporting
     volumes:
       - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
       - ./infra/certs/reporting-service.crt:/app/certs/server.crt:ro

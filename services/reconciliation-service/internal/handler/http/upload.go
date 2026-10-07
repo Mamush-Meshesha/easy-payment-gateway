@@ -23,6 +23,8 @@ func (h *ReconciliationHandler) RegisterRoutes(r *gin.Engine) {
 	{
 		v1.POST("/upload", h.HandleUploadStatement)
 		v1.POST("/exceptions/:id/resolve", h.HandleResolveException)
+		v1.GET("/jobs", h.HandleGetJobs)
+		v1.GET("/jobs/:id/exceptions", h.HandleGetExceptions)
 	}
 }
 

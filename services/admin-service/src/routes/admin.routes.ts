@@ -10,8 +10,16 @@ router.get('/merchants', requireRole(['SUPER_ADMIN']) as any, (req, res, next) =
   controller.listMerchants(req, res, next)
 );
 
+router.get('/merchants/:id', requireRole(['SUPER_ADMIN']) as any, (req, res, next) =>
+  controller.getMerchantDetails(req, res, next)
+);
+
 router.patch('/merchants/:id/suspend', requireRole(['SUPER_ADMIN']) as any, (req, res, next) =>
   controller.suspendMerchant(req, res, next)
+);
+
+router.patch('/merchants/:id/approve', requireRole(['SUPER_ADMIN']) as any, (req, res, next) =>
+  controller.approveMerchant(req, res, next)
 );
 
 router.put('/merchants/:id/limit', requireRole(['SUPER_ADMIN']) as any, (req, res, next) =>
