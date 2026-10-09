@@ -31,7 +31,7 @@ type Payout struct {
 	IdempotencyKey       string      `json:"idempotencyKey" gorm:"type:varchar(100);not null;uniqueIndex:idx_merchant_idemp"`
 	LedgerReservationRef string      `json:"ledgerReservationRef" gorm:"type:varchar(100)"`
 	ProviderReference    string      `json:"providerReference" gorm:"type:varchar(100)"`
-	DestinationToken     string      `json:"destinationToken" gorm:"type:varchar(255)"`  // Tokenized destination reference
+	DestinationToken     string      `json:"destinationToken" gorm:"type:varchar(255)"` // Tokenized destination reference
 	DestinationBank      string      `json:"destinationBank" gorm:"type:varchar(100)"`
 	CreatedAt            time.Time   `json:"createdAt" gorm:"autoCreateTime"`
 	UpdatedAt            time.Time   `json:"updatedAt" gorm:"autoUpdateTime"`

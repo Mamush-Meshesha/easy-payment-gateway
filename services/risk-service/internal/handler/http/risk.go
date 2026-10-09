@@ -3,8 +3,8 @@ package http
 import (
 	"log"
 	"net/http"
-	"payment-gateway/risk-service/internal/domain"
 	apierrors "payment-gateway/go-apierrors"
+	"payment-gateway/risk-service/internal/domain"
 
 	"github.com/gin-gonic/gin"
 )

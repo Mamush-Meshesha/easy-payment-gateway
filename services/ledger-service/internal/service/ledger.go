@@ -3,8 +3,8 @@ package service
 import (
 	"context"
 	"encoding/json"
-	"time"
 	"payment-gateway/ledger-service/internal/domain"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -28,7 +28,7 @@ func (s *LedgerServiceImpl) RecordTransaction(ctx context.Context, req *domain.R
 	}
 
 	entryID := uuid.New()
-	
+
 	lines := make([]domain.JournalLine, len(req.Lines))
 	for i, lineReq := range req.Lines {
 		lines[i] = domain.JournalLine{
@@ -42,12 +42,12 @@ func (s *LedgerServiceImpl) RecordTransaction(ctx context.Context, req *domain.R
 	}
 
 	entry := &domain.JournalEntry{
-		ID:                    entryID,
-		ReferenceType:         req.ReferenceType,
-		ReferenceID:           req.ReferenceID,
-		Currency:              req.Currency,
-		Environment:           req.Environment,
-		Lines:                 lines,
+		ID:            entryID,
+		ReferenceType: req.ReferenceType,
+		ReferenceID:   req.ReferenceID,
+		Currency:      req.Currency,
+		Environment:   req.Environment,
+		Lines:         lines,
 	}
 
 	if req.ProviderID != nil {

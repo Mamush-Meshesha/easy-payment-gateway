@@ -118,7 +118,7 @@ func (h *BillingHandler) CancelSubscription(c *gin.Context) {
 	if merchantIDStr == "undefined" {
 		merchantIDStr = ""
 	}
-	
+
 	idStr := c.Param("id")
 	id, err := uuid.Parse(idStr)
 	if err != nil {

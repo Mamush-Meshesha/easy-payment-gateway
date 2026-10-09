@@ -22,7 +22,9 @@ func (m *MockRiskService) CheckRisk(ctx context.Context, req *domain.CheckRiskRe
 	}, nil
 }
 func (m *MockRiskService) CreateRule(ctx context.Context, rule *domain.RiskRule) error { return nil }
-func (m *MockRiskService) GetActiveRules(ctx context.Context) ([]domain.RiskRule, error) { return nil, nil }
+func (m *MockRiskService) GetActiveRules(ctx context.Context) ([]domain.RiskRule, error) {
+	return nil, nil
+}
 
 // Mock ML Client
 type MockMLClient struct {
@@ -44,10 +46,10 @@ func TestRiskGrpcServer_CheckRisk_MLIntegration(t *testing.T) {
 	validMerchantID := uuid.New().String()
 
 	tests := []struct {
-		name         string
-		mlScore      float32
-		expectedAct  string
-		expected3DS  bool
+		name        string
+		mlScore     float32
+		expectedAct string
+		expected3DS bool
 	}{
 		{"Low Risk - Allow", 0.1, "ALLOW", false},
 		{"Medium Risk - Challenge 3DS2", 0.5, "CHALLENGE", true},
@@ -64,10 +66,10 @@ func TestRiskGrpcServer_CheckRisk_MLIntegration(t *testing.T) {
 			}
 
 			req := &pb.CheckRiskRequest{
-				PaymentId:     validPaymentID,
-				MerchantId:    validMerchantID,
-				Amount:        50000,
-				Currency:      "ETB",
+				PaymentId:  validPaymentID,
+				MerchantId: validMerchantID,
+				Amount:     50000,
+				Currency:   "ETB",
 			}
 
 			res, err := server.CheckRisk(context.Background(), req)

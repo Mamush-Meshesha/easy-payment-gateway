@@ -57,14 +57,14 @@ func (s *SettlementServiceImpl) CreateSettlement(ctx context.Context, merchantID
 
 	// 3. Create Payout Instruction
 	payout := &domain.Payout{
-		ID:                 uuid.New(),
-		MerchantID:         merchantID,
-		Currency:           currency,
-		Amount:             amount,
-		Status:             domain.StateCreated,
-		IdempotencyKey:     idempotencyKey,
-		DestinationToken:   destAcc,
-		DestinationBank:    destBank,
+		ID:               uuid.New(),
+		MerchantID:       merchantID,
+		Currency:         currency,
+		Amount:           amount,
+		Status:           domain.StateCreated,
+		IdempotencyKey:   idempotencyKey,
+		DestinationToken: destAcc,
+		DestinationBank:  destBank,
 	}
 
 	if err := s.repo.CreatePayout(ctx, payout); err != nil {
@@ -134,11 +134,11 @@ func (s *SettlementServiceImpl) submitPayout(ctx context.Context, payout *domain
 
 	// Call Provider
 	req := domain.PayoutRequest{
-		ReferenceID:        payout.ID.String(),
-		Amount:             payout.Amount,
-		Currency:           payout.Currency,
-		DestinationToken:   payout.DestinationToken,
-		DestinationBank:    payout.DestinationBank,
+		ReferenceID:      payout.ID.String(),
+		Amount:           payout.Amount,
+		Currency:         payout.Currency,
+		DestinationToken: payout.DestinationToken,
+		DestinationBank:  payout.DestinationBank,
 	}
 
 	result, err := s.provider.InitiatePayout(ctx, req)

@@ -46,10 +46,10 @@ type Subscription struct {
 type InvoiceStatus string
 
 const (
-	InvoiceStatusDraft InvoiceStatus = "DRAFT"
-	InvoiceStatusOpen  InvoiceStatus = "OPEN"
-	InvoiceStatusPaid  InvoiceStatus = "PAID"
-	InvoiceStatusVoid  InvoiceStatus = "VOID"
+	InvoiceStatusDraft         InvoiceStatus = "DRAFT"
+	InvoiceStatusOpen          InvoiceStatus = "OPEN"
+	InvoiceStatusPaid          InvoiceStatus = "PAID"
+	InvoiceStatusVoid          InvoiceStatus = "VOID"
 	InvoiceStatusUncollectible InvoiceStatus = "UNCOLLECTIBLE"
 )
 

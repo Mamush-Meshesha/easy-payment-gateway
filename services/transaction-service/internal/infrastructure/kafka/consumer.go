@@ -8,6 +8,10 @@ import (
 	"time"
 
 	"github.com/segmentio/kafka-go"
+
+	"crypto/tls"
+	"github.com/segmentio/kafka-go/sasl/scram"
+	"os"
 )
 
 type ProviderEventConsumer struct {
@@ -21,6 +25,8 @@ func NewProviderEventConsumer(brokers []string, topic string, groupID string, se
 		Topic:    topic,
 		GroupID:  groupID,
 		MaxBytes: 10e6, // 10MB
+
+		Dialer: getKafkaDialer(),
 	})
 
 	return &ProviderEventConsumer{
@@ -64,4 +70,19 @@ func (c *ProviderEventConsumer) Start(ctx context.Context) {
 			}
 		}
 	}
+}
+
+func getKafkaDialer() *kafka.Dialer {
+	username := os.Getenv("KAFKA_SASL_USERNAME")
+	password := os.Getenv("KAFKA_SASL_PASSWORD")
+	if username != "" && password != "" {
+		mechanism, _ := scram.Mechanism(scram.SHA256, username, password)
+		return &kafka.Dialer{
+			Timeout:       10 * time.Second,
+			DualStack:     true,
+			SASLMechanism: mechanism,
+			TLS:           &tls.Config{},
+		}
+	}
+	return nil
 }

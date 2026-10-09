@@ -8,7 +8,7 @@ import (
 
 type Transaction struct {
 	ID                    uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
-	PaymentID             uuid.UUID `gorm:"type:uuid;not null;index"` // Logical Ref
+	PaymentID             uuid.UUID `gorm:"type:uuid;not null;index"`                                  // Logical Ref
 	ProviderID            uuid.UUID `gorm:"type:uuid;not null;uniqueIndex:uq_trans_provider_external"` // Logical Ref
 	ProviderTransactionID string    `gorm:"type:varchar(255);not null;uniqueIndex:uq_trans_provider_external"`
 	Amount                int64     `gorm:"type:bigint;not null"`

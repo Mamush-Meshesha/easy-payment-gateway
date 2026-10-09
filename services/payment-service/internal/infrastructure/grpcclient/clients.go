@@ -4,19 +4,17 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"time"
+	grpcauth "payment-gateway/go-grpc-auth"
+	pbLedger "payment-gateway/ledger-service/proto"
 	"payment-gateway/payment-service/internal/domain"
 	pbMerchant "payment-gateway/payment-service/proto"
-	pbRisk "payment-gateway/risk-service/proto"
 	pbProvider "payment-gateway/provider-service/proto"
-	pbLedger "payment-gateway/ledger-service/proto"
-	grpcauth "payment-gateway/go-grpc-auth"
+	pbRisk "payment-gateway/risk-service/proto"
+	"time"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
 )
-
-
 
 var (
 	caCert     = os.Getenv("MTLS_CA_CERT")
@@ -53,7 +51,7 @@ func (c *MerchantClientImpl) ValidateApiKey(ctx context.Context, apiKey string) 
 	if err != nil {
 		return false, uuid.Nil, "", fmt.Errorf("invalid merchant uuid from auth service: %v", err)
 	}
-	
+
 	return true, merchID, res.Environment, nil
 }
 
@@ -148,10 +146,10 @@ func (c *ProviderClientImpl) InitiatePayment(ctx context.Context, paymentID uuid
 		Currency:    currency,
 		Environment: environment,
 	}
-	
+
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
-	
+
 	res, err := c.client.InitiatePayment(ctxWithTimeout, req)
 	if err != nil {
 		// gRPC Timeout or Unavailability
@@ -171,10 +169,10 @@ func (c *ProviderClientImpl) InitiateRefund(ctx context.Context, refundID uuid.U
 	if originalProviderID != nil {
 		req.OriginalProviderId = originalProviderID
 	}
-	
+
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
-	
+
 	res, err := c.client.InitiateRefund(ctxWithTimeout, req)
 	if err != nil {
 		return "TIMEOUT", err

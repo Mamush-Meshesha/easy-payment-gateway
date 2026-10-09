@@ -9,6 +9,11 @@ import (
 	"github.com/segmentio/kafka-go"
 
 	"payment-gateway/billing-service/internal/domain"
+
+	"crypto/tls"
+	"github.com/segmentio/kafka-go/sasl/scram"
+	"os"
+	"time"
 )
 
 type PaymentEvent struct {
@@ -27,6 +32,8 @@ func NewBillingKafkaConsumer(repo domain.BillingRepository, brokers []string) *B
 		Brokers: brokers,
 		Topic:   "payment.status.updated",
 		GroupID: "billing-service-group",
+
+		Dialer: getKafkaDialer(),
 	})
 	return &BillingKafkaConsumer{repo: repo, reader: reader}
 }
@@ -72,4 +79,19 @@ func (c *BillingKafkaConsumer) handlePaymentStatusUpdated(event PaymentEvent) {
 	} else if event.Status == "FAILED" {
 		c.repo.UpdateSubscriptionStatus(invoice.SubscriptionID, domain.SubscriptionStatusPastDue)
 	}
+}
+
+func getKafkaDialer() *kafka.Dialer {
+	username := os.Getenv("KAFKA_SASL_USERNAME")
+	password := os.Getenv("KAFKA_SASL_PASSWORD")
+	if username != "" && password != "" {
+		mechanism, _ := scram.Mechanism(scram.SHA256, username, password)
+		return &kafka.Dialer{
+			Timeout:       10 * time.Second,
+			DualStack:     true,
+			SASLMechanism: mechanism,
+			TLS:           &tls.Config{},
+		}
+	}
+	return nil
 }

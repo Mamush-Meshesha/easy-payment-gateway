@@ -62,7 +62,7 @@ func (e *DefaultRuleEvaluator) Evaluate(req *domain.CheckRiskRequest, rules []do
 		if matched {
 			if triggeredRule == nil || precedence(rule.Action) > precedence(strictestAction) {
 				strictestAction = rule.Action
-				
+
 				// Need a persistent pointer
 				r := rule
 				triggeredRule = &r
@@ -149,7 +149,7 @@ func (e *DefaultRuleEvaluator) evaluateCondition(ctx map[string]interface{}, con
 
 func compareNumeric(fieldVal, condVal interface{}, op string) (bool, error) {
 	var f1, f2 float64
-	
+
 	switch v := fieldVal.(type) {
 	case float64:
 		f1 = v

@@ -2,10 +2,10 @@ package main
 
 import (
 	"context"
-	"payment-gateway/go-observability"
 	"log"
 	"os"
 	"os/signal"
+	"payment-gateway/go-observability"
 	"syscall"
 
 	"payment-gateway/reconciliation-service/internal/domain"

@@ -11,20 +11,22 @@ import (
 
 // Mock repository
 type mockBillingRepo struct {
-	dueSubs     []*domain.Subscription
-	dueSubsErr  error
-	createdInvs []*domain.Invoice
-	createInvErr error
+	dueSubs          []*domain.Subscription
+	dueSubsErr       error
+	createdInvs      []*domain.Invoice
+	createInvErr     error
 	subStatusUpdates map[uuid.UUID]domain.SubscriptionStatus
 	invStatusUpdates map[uuid.UUID]domain.InvoiceStatus
 	subPeriodUpdates []uuid.UUID
 }
 
-func (m *mockBillingRepo) CreatePlan(plan *domain.Plan) error { return nil }
-func (m *mockBillingRepo) GetPlan(id uuid.UUID) (*domain.Plan, error) { return nil, nil }
+func (m *mockBillingRepo) CreatePlan(plan *domain.Plan) error                     { return nil }
+func (m *mockBillingRepo) GetPlan(id uuid.UUID) (*domain.Plan, error)             { return nil, nil }
 func (m *mockBillingRepo) ListPlans(merchantID uuid.UUID) ([]*domain.Plan, error) { return nil, nil }
-func (m *mockBillingRepo) CreateSubscription(sub *domain.Subscription) error { return nil }
-func (m *mockBillingRepo) GetSubscription(id uuid.UUID) (*domain.Subscription, error) { return nil, nil }
+func (m *mockBillingRepo) CreateSubscription(sub *domain.Subscription) error      { return nil }
+func (m *mockBillingRepo) GetSubscription(id uuid.UUID) (*domain.Subscription, error) {
+	return nil, nil
+}
 func (m *mockBillingRepo) UpdateSubscriptionStatus(id uuid.UUID, status domain.SubscriptionStatus) error {
 	m.subStatusUpdates[id] = status
 	return nil
@@ -49,7 +51,9 @@ func (m *mockBillingRepo) UpdateInvoiceStatus(id uuid.UUID, status domain.Invoic
 	m.invStatusUpdates[id] = status
 	return nil
 }
-func (m *mockBillingRepo) GetInvoiceByPaymentID(paymentID uuid.UUID) (*domain.Invoice, error) { return nil, nil }
+func (m *mockBillingRepo) GetInvoiceByPaymentID(paymentID uuid.UUID) (*domain.Invoice, error) {
+	return nil, nil
+}
 
 // Mock payment client
 type mockPaymentClient struct {

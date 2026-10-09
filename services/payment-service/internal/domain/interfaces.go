@@ -50,7 +50,7 @@ type PaymentRepository interface {
 	GetIdempotencyKey(ctx context.Context, merchantID uuid.UUID, key string) (*IdempotencyKey, error)
 	PruneIdempotencyKeys(ctx context.Context, olderThan time.Time) (int64, error)
 	UpdatePaymentState(ctx context.Context, payment *Payment, history *PaymentStateHistory, outboxEvent *OutboxEvent) error
-	
+
 	// Refund Methods
 	CreateRefundWithIdempotency(ctx context.Context, r *Refund, history *RefundStateHistory, idem *IdempotencyKey, payloadHash string, payment *Payment) (*Refund, error)
 	GetRefundByID(ctx context.Context, id uuid.UUID, environment string) (*Refund, error)
@@ -67,7 +67,7 @@ type MerchantConfig struct {
 	// CachedAt records when this entry was written to the cache.
 	// Used by the orchestrator to enforce a shorter staleness bound
 	// for security-relevant fields (e.g. EnabledPaymentMethods).
-	CachedAt              time.Time
+	CachedAt time.Time
 }
 
 type MerchantClient interface {
@@ -113,7 +113,7 @@ type PricingClient interface {
 type PaymentOrchestrator interface {
 	ProcessPayment(ctx context.Context, req *PaymentRequest, payloadHash string) (*PaymentResponse, error)
 	ResolvePaymentStatus(ctx context.Context, paymentID uuid.UUID, providerStatus string, providerID string, providerTransactionID string) error
-	
+
 	ProcessRefund(ctx context.Context, req *RefundRequest, payloadHash string) (*RefundResponse, error)
 	GetPaymentByID(ctx context.Context, paymentID uuid.UUID) (*Payment, error)
 	GetMerchantName(ctx context.Context, merchantID uuid.UUID) (string, error)

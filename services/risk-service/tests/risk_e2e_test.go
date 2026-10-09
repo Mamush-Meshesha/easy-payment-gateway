@@ -52,13 +52,13 @@ func setupTestEnvironment(t *testing.T) (*gorm.DB, *miniredis.Miniredis, func() 
 
 func TestCheckRisk_VelocityExceeded(t *testing.T) {
 	db, _, startServer := setupTestEnvironment(t)
-	
+
 	// Create an ALLOW rule so that non-velocity blocked requests would pass
 	db.Create(&domain.RiskRule{
-		ID:       uuid.New(),
-		Name:     "Default Allow",
-		IsActive: true,
-		Action:   domain.ActionAllow,
+		ID:        uuid.New(),
+		Name:      "Default Allow",
+		IsActive:  true,
+		Action:    domain.ActionAllow,
 		Condition: domain.RuleCondition{Field: "currency", Operator: "==", Value: "ETB"},
 	})
 
@@ -66,11 +66,11 @@ func TestCheckRisk_VelocityExceeded(t *testing.T) {
 
 	customerID := "cust_vel_test"
 	req := &pb.CheckRiskRequest{
-		PaymentId:   uuid.NewString(),
-		MerchantId:  uuid.NewString(),
-		CustomerId:  customerID,
-		Currency:    "ETB",
-		Amount:      5000,
+		PaymentId:  uuid.NewString(),
+		MerchantId: uuid.NewString(),
+		CustomerId: customerID,
+		Currency:   "ETB",
+		Amount:     5000,
 	}
 
 	// We configured the hardcoded velocity limit to 10 in the RiskService CheckRisk method for this MVP.
@@ -100,15 +100,15 @@ func TestCheckRisk_VelocityExceeded(t *testing.T) {
 func TestCheckRisk_UnavailableRedis(t *testing.T) {
 	_, mr, startServer := setupTestEnvironment(t)
 	grpcServer := startServer()
-	
+
 	// Shut down Redis to simulate failure
 	mr.Close()
 
 	req := &pb.CheckRiskRequest{
-		PaymentId:   uuid.NewString(),
-		MerchantId:  uuid.NewString(),
-		CustomerId:  "cust_unavail_test",
-		Currency:    "ETB",
+		PaymentId:  uuid.NewString(),
+		MerchantId: uuid.NewString(),
+		CustomerId: "cust_unavail_test",
+		Currency:   "ETB",
 	}
 
 	// "The gRPC response must make this distinction explicit... Not confuse RISK_BLOCK with RISK_SERVICE_UNAVAILABLE"
@@ -116,7 +116,7 @@ func TestCheckRisk_UnavailableRedis(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Unexpected err (grpc handler should catch it): %v", err)
 	}
-	
+
 	if res.EvaluationStatus != "UNAVAILABLE" {
 		t.Errorf("Expected EvaluationStatus 'UNAVAILABLE', got %s", res.EvaluationStatus)
 	}
@@ -124,41 +124,41 @@ func TestCheckRisk_UnavailableRedis(t *testing.T) {
 
 func TestCheckRisk_RulePriority(t *testing.T) {
 	db, _, startServer := setupTestEnvironment(t)
-	
+
 	// Rule 1: High priority FLAG
 	db.Create(&domain.RiskRule{
-		ID:       uuid.New(),
-		Name:     "High Priority Flag",
-		IsActive: true,
-		Priority: 100,
-		Action:   domain.ActionFlag,
+		ID:        uuid.New(),
+		Name:      "High Priority Flag",
+		IsActive:  true,
+		Priority:  100,
+		Action:    domain.ActionFlag,
 		Condition: domain.RuleCondition{Field: "currency", Operator: "==", Value: "ETB"},
 	})
-	
+
 	// Rule 2: Low priority BLOCK
 	db.Create(&domain.RiskRule{
-		ID:       uuid.New(),
-		Name:     "Low Priority Block",
-		IsActive: true,
-		Priority: 10,
-		Action:   domain.ActionBlock,
+		ID:        uuid.New(),
+		Name:      "Low Priority Block",
+		IsActive:  true,
+		Priority:  10,
+		Action:    domain.ActionBlock,
 		Condition: domain.RuleCondition{Field: "amount", Operator: ">", Value: float64(1000)},
 	})
 
 	grpcServer := startServer()
 
 	req := &pb.CheckRiskRequest{
-		PaymentId:   uuid.NewString(),
-		MerchantId:  uuid.NewString(),
-		CustomerId:  "cust_test_priority",
-		Currency:    "ETB",
-		Amount:      5000,
+		PaymentId:  uuid.NewString(),
+		MerchantId: uuid.NewString(),
+		CustomerId: "cust_test_priority",
+		Currency:   "ETB",
+		Amount:     5000,
 	}
 
 	// Because we wait for async caches, we need to manually trigger reload for tests
 	// The constructor triggers reload once.
 	// We'll sleep a tiny bit to ensure the async insert completes (for other tests, not this one necessarily)
-	
+
 	res, err := grpcServer.CheckRisk(context.Background(), req)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)

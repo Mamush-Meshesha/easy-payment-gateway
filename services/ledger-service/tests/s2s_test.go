@@ -72,7 +72,7 @@ func TestNegativeS2SSecurity(t *testing.T) {
 		_, err = client.ReserveFunds(ctx, &pb.ReserveFundsRequest{
 			MerchantId: "test",
 		})
-		
+
 		if err != nil {
 			if st, ok := status.FromError(err); ok {
 				if st.Code() == codes.PermissionDenied || st.Code() == codes.Unauthenticated {

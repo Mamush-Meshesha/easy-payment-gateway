@@ -8,6 +8,10 @@ import (
 
 	"github.com/segmentio/kafka-go"
 	"gorm.io/gorm"
+
+	"crypto/tls"
+	"github.com/segmentio/kafka-go/sasl/scram"
+	"os"
 )
 
 type OutboxRelayWorker struct {
@@ -21,6 +25,8 @@ func NewOutboxRelayWorker(db *gorm.DB, brokers []string, topic string) *OutboxRe
 		Addr:                   kafka.TCP(brokers...),
 		Topic:                  topic,
 		AllowAutoTopicCreation: true,
+
+		Transport: getKafkaTransport(),
 	}
 	return &OutboxRelayWorker{
 		db:     db,
@@ -78,4 +84,32 @@ func (w *OutboxRelayWorker) processOutbox(ctx context.Context) {
 	if err := w.db.WithContext(ctx).Model(&domain.OutboxEvent{}).Where("id IN ?", ids).Update("status", "PUBLISHED").Error; err != nil {
 		log.Printf("Failed to update outbox event statuses: %v", err)
 	}
+}
+
+func getKafkaDialer() *kafka.Dialer {
+	username := os.Getenv("KAFKA_SASL_USERNAME")
+	password := os.Getenv("KAFKA_SASL_PASSWORD")
+	if username != "" && password != "" {
+		mechanism, _ := scram.Mechanism(scram.SHA256, username, password)
+		return &kafka.Dialer{
+			Timeout:       10 * time.Second,
+			DualStack:     true,
+			SASLMechanism: mechanism,
+			TLS:           &tls.Config{},
+		}
+	}
+	return nil
+}
+
+func getKafkaTransport() *kafka.Transport {
+	username := os.Getenv("KAFKA_SASL_USERNAME")
+	password := os.Getenv("KAFKA_SASL_PASSWORD")
+	if username != "" && password != "" {
+		mechanism, _ := scram.Mechanism(scram.SHA256, username, password)
+		return &kafka.Transport{
+			SASL: mechanism,
+			TLS:  &tls.Config{},
+		}
+	}
+	return nil
 }

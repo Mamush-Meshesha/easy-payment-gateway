@@ -57,7 +57,7 @@ func (s *PaymentWriteGrpcServer) ExecutePayment(ctx context.Context, req *pb.Exe
 		IdempotencyKey:    req.IdempotencyKey,
 		MerchantID:        merchantID,
 		Environment:       env,
-		APIKey:            "", // Bypass API key validation since we are S2S via gRPC mTLS
+		APIKey:            "",                 // Bypass API key validation since we are S2S via gRPC mTLS
 		MerchantReference: req.IdempotencyKey, // Use idem key as ref
 		Amount:            req.Amount,
 		Currency:          req.Currency,

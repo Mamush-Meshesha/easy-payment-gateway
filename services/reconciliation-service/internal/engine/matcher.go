@@ -114,7 +114,7 @@ func (e *ReconciliationEngine) Run(ctx context.Context, jobID uuid.UUID, provide
 	// Phase 4: Internal -> Provider Matching (Missing in Provider)
 	// We check if the ledger had entries that the provider file DID NOT have.
 	// Since we only fetched ledger entries matching the provider Tx IDs, we didn't catch the reverse.
-	// To do this properly, we must query the Ledger for ALL transactions on this ProviderID + Date, 
+	// To do this properly, we must query the Ledger for ALL transactions on this ProviderID + Date,
 	// and see which ones are NOT in providerMap.
 	// We will implement this as a separate Ledger query in production.
 	// For this phase, we mock the `Missing in Provider` check assuming we fetched them.
@@ -140,7 +140,7 @@ func (e *ReconciliationEngine) recordException(ctx context.Context, jobID uuid.U
 		LedgerCurrency:        lCur,
 		Status:                domain.ExceptionStatusUnresolved,
 	}
-	
+
 	if err := e.repo.CreateException(ctx, ex); err != nil {
 		return fmt.Errorf("create exception: %w", err)
 	}

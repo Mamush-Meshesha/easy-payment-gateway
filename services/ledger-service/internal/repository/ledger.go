@@ -114,7 +114,7 @@ func (r *LedgerRepositoryImpl) RecordJournalEntry(ctx context.Context, entry *do
 		// 5. Update Balances
 		for _, line := range entry.Lines {
 			acc := lockedAccounts[line.AccountID]
-			
+
 			// Account Balance Mathematics
 			acc.ApplyJournalLine(line.Direction, line.Amount)
 
@@ -224,7 +224,7 @@ func (r *LedgerRepositoryImpl) transferFunds(ctx context.Context, merchantID uui
 				},
 			},
 		}
-		
+
 		// Wait, if it's an asset we should credit to decrease.
 		// The standard is Merchant Available = Liability.
 		// Debit decreases Liability.
@@ -262,7 +262,7 @@ func (r *LedgerRepositoryImpl) GetAccountsByMerchant(ctx context.Context, mercha
 
 func (r *LedgerRepositoryImpl) GetLedgerEntriesPaginated(ctx context.Context, merchantID uuid.UUID, environment string, currency *string, limit int, afterCursor *string) ([]domain.JournalEntry, error) {
 	var entries []domain.JournalEntry
-	
+
 	// Create a subquery to find journal entries related to the merchant's accounts
 	subQuery := r.db.Table("accounts").
 		Select("journal_lines.journal_entry_id").
@@ -296,7 +296,7 @@ func (r *LedgerRepositoryImpl) FreezeAccounts(ctx context.Context, merchantID uu
 		if err := tx.Clauses(clause.Locking{Strength: "UPDATE"}).Where("owner_id = ?", merchantID).Find(&accounts).Error; err != nil {
 			return err
 		}
-		
+
 		for i := range accounts {
 			accounts[i].Status = domain.AccountStatusFrozen
 			if err := tx.Save(&accounts[i]).Error; err != nil {

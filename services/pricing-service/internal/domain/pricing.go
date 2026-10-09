@@ -38,8 +38,8 @@ type FeeRule struct {
 	ConditionValue string `gorm:"type:varchar(255);not null"`
 
 	// Outcome
-	RateOverride  float64   `gorm:"type:decimal(5,4)"`
-	FixedOverride int64     
+	RateOverride  float64 `gorm:"type:decimal(5,4)"`
+	FixedOverride int64
 	CreatedAt     time.Time `gorm:"not null;default:now()"`
 }
 

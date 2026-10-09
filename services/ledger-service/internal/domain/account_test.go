@@ -4,17 +4,17 @@ import "testing"
 
 func TestAccountApplyJournalLine(t *testing.T) {
 	tests := []struct {
-		name          string
-		accountType   AccountType
-		initialBal    int64
-		direction     JournalDirection
-		amount        int64
-		expectedBal   int64
+		name        string
+		accountType AccountType
+		initialBal  int64
+		direction   JournalDirection
+		amount      int64
+		expectedBal int64
 	}{
 		// ASSET
 		{"Asset Debit Increases", AccountTypeAsset, 100, DirectionDebit, 50, 150},
 		{"Asset Credit Decreases", AccountTypeAsset, 100, DirectionCredit, 50, 50},
-		
+
 		// EXPENSE
 		{"Expense Debit Increases", AccountTypeExpense, 100, DirectionDebit, 50, 150},
 		{"Expense Credit Decreases", AccountTypeExpense, 100, DirectionCredit, 50, 50},

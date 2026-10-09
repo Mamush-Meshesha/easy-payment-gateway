@@ -24,37 +24,76 @@ func (m *MockPaymentRepo) UpdatePaymentState(ctx context.Context, p *domain.Paym
 	m.payment = p
 	return nil
 }
-func (m *MockPaymentRepo) GetPaymentByID(ctx context.Context, id uuid.UUID, env string) (*domain.Payment, error) { return m.payment, nil }
-func (m *MockPaymentRepo) GetPaymentsPaginated(ctx context.Context, merchantID uuid.UUID, environment string, limit int, afterCursor *string) ([]*domain.Payment, error) { return nil, nil }
-func (m *MockPaymentRepo) GetIdempotencyKey(ctx context.Context, merchantID uuid.UUID, key string) (*domain.IdempotencyKey, error) { return nil, nil }
-func (m *MockPaymentRepo) PruneIdempotencyKeys(ctx context.Context, olderThan time.Time) (int64, error) { return 0, nil }
-func (m *MockPaymentRepo) CreateRefundWithIdempotency(ctx context.Context, r *domain.Refund, h *domain.RefundStateHistory, i *domain.IdempotencyKey, payloadHash string, p *domain.Payment) (*domain.Refund, error) { return nil, nil }
-func (m *MockPaymentRepo) UpdateRefundState(ctx context.Context, r *domain.Refund, h *domain.RefundStateHistory, o *domain.OutboxEvent) error { return nil }
-func (m *MockPaymentRepo) GetRefundByID(ctx context.Context, id uuid.UUID, environment string) (*domain.Refund, error) { return nil, nil }
-func (m *MockPaymentRepo) GetRefundsPaginated(ctx context.Context, merchantID uuid.UUID, environment string, paymentID *uuid.UUID, limit int, offset int) ([]*domain.Refund, error) { return nil, nil }
-func (m *MockPaymentRepo) CountRefunds(ctx context.Context, merchantID uuid.UUID, environment string, paymentID *uuid.UUID) (int64, error) { return 0, nil }
+func (m *MockPaymentRepo) GetPaymentByID(ctx context.Context, id uuid.UUID, env string) (*domain.Payment, error) {
+	return m.payment, nil
+}
+func (m *MockPaymentRepo) GetPaymentsPaginated(ctx context.Context, merchantID uuid.UUID, environment string, limit int, afterCursor *string) ([]*domain.Payment, error) {
+	return nil, nil
+}
+func (m *MockPaymentRepo) GetIdempotencyKey(ctx context.Context, merchantID uuid.UUID, key string) (*domain.IdempotencyKey, error) {
+	return nil, nil
+}
+func (m *MockPaymentRepo) PruneIdempotencyKeys(ctx context.Context, olderThan time.Time) (int64, error) {
+	return 0, nil
+}
+func (m *MockPaymentRepo) CreateRefundWithIdempotency(ctx context.Context, r *domain.Refund, h *domain.RefundStateHistory, i *domain.IdempotencyKey, payloadHash string, p *domain.Payment) (*domain.Refund, error) {
+	return nil, nil
+}
+func (m *MockPaymentRepo) UpdateRefundState(ctx context.Context, r *domain.Refund, h *domain.RefundStateHistory, o *domain.OutboxEvent) error {
+	return nil
+}
+func (m *MockPaymentRepo) GetRefundByID(ctx context.Context, id uuid.UUID, environment string) (*domain.Refund, error) {
+	return nil, nil
+}
+func (m *MockPaymentRepo) GetRefundsPaginated(ctx context.Context, merchantID uuid.UUID, environment string, paymentID *uuid.UUID, limit int, offset int) ([]*domain.Refund, error) {
+	return nil, nil
+}
+func (m *MockPaymentRepo) CountRefunds(ctx context.Context, merchantID uuid.UUID, environment string, paymentID *uuid.UUID) (int64, error) {
+	return 0, nil
+}
 
 type MockMerchantClient struct{}
-func (m *MockMerchantClient) ValidateApiKey(ctx context.Context, apiKey string) (bool, uuid.UUID, string, error) { return true, uuid.New(), "sandbox", nil }
-func (m *MockMerchantClient) GetMerchantConfig(ctx context.Context, merchantID uuid.UUID) (domain.MerchantConfig, error) { 
-	return domain.MerchantConfig{EnabledPaymentMethods: []string{"CARD"}}, nil 
+
+func (m *MockMerchantClient) ValidateApiKey(ctx context.Context, apiKey string) (bool, uuid.UUID, string, error) {
+	return true, uuid.New(), "sandbox", nil
 }
-func (m *MockMerchantClient) GetMerchantName(ctx context.Context, merchantID uuid.UUID) (string, error) { return "Mock Merchant", nil }
+func (m *MockMerchantClient) GetMerchantConfig(ctx context.Context, merchantID uuid.UUID) (domain.MerchantConfig, error) {
+	return domain.MerchantConfig{EnabledPaymentMethods: []string{"CARD"}}, nil
+}
+func (m *MockMerchantClient) GetMerchantName(ctx context.Context, merchantID uuid.UUID) (string, error) {
+	return "Mock Merchant", nil
+}
 
 type MockCache struct{}
-func (m *MockCache) Get(ctx context.Context, merchantID uuid.UUID) (*domain.MerchantConfig, error) { return nil, errors.New("miss") }
-func (m *MockCache) Set(ctx context.Context, merchantID uuid.UUID, config domain.MerchantConfig, ttl time.Duration) error { return nil }
+
+func (m *MockCache) Get(ctx context.Context, merchantID uuid.UUID) (*domain.MerchantConfig, error) {
+	return nil, errors.New("miss")
+}
+func (m *MockCache) Set(ctx context.Context, merchantID uuid.UUID, config domain.MerchantConfig, ttl time.Duration) error {
+	return nil
+}
 func (m *MockCache) Delete(ctx context.Context, merchantID uuid.UUID) error { return nil }
 
 type MockProvider struct{}
-func (m *MockProvider) InitiatePayment(ctx context.Context, paymentID, providerID uuid.UUID, amount int64, currency, env string) (string, error) { return "SUCCESS", nil }
-func (m *MockProvider) InitiateRefund(ctx context.Context, refundID, providerID uuid.UUID, amount int64, currency string, reason *string, env string) (string, error) { return "SUCCESS", nil }
+
+func (m *MockProvider) InitiatePayment(ctx context.Context, paymentID, providerID uuid.UUID, amount int64, currency, env string) (string, error) {
+	return "SUCCESS", nil
+}
+func (m *MockProvider) InitiateRefund(ctx context.Context, refundID, providerID uuid.UUID, amount int64, currency string, reason *string, env string) (string, error) {
+	return "SUCCESS", nil
+}
 
 type MockLedger struct{}
-func (m *MockLedger) RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, providerID string, providerTxID string, amount, merchantCut, platformCut int64, currency, env string) (string, error) { return "SUCCESS", nil }
-func (m *MockLedger) RecordRefundJournalEntry(ctx context.Context, refundID, paymentID uuid.UUID, amount int64, currency, env string) (string, error) { return "SUCCESS", nil }
+
+func (m *MockLedger) RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, providerID string, providerTxID string, amount, merchantCut, platformCut int64, currency, env string) (string, error) {
+	return "SUCCESS", nil
+}
+func (m *MockLedger) RecordRefundJournalEntry(ctx context.Context, refundID, paymentID uuid.UUID, amount int64, currency, env string) (string, error) {
+	return "SUCCESS", nil
+}
 
 type MockPricing struct{}
+
 func (m *MockPricing) CalculateFee(ctx context.Context, merchantID uuid.UUID, paymentMethod string, amount int64, currency string) (*domain.PricingResponse, error) {
 	return &domain.PricingResponse{TotalFee: 0, PlatformCut: 0, MerchantCut: amount}, nil
 }
@@ -66,6 +105,7 @@ type MockRiskClient struct {
 	requires3ds bool
 	err         error
 }
+
 func (m *MockRiskClient) CheckRisk(ctx context.Context, payment *domain.Payment) (string, string, bool, error) {
 	return m.action, m.reason, m.requires3ds, m.err
 }

@@ -55,12 +55,12 @@ type DisputeRepository interface {
 	ListDisputes(merchantID uuid.UUID, limit, offset int) ([]*Dispute, error)
 	UpdateDisputeStatus(id uuid.UUID, status DisputeStatus) error
 	GetDisputesByStatus(status DisputeStatus) ([]*Dispute, error)
-	
+
 	AddEvidence(evidence *Evidence) error
 	ListEvidence(disputeID uuid.UUID) ([]*Evidence, error)
 }
 
-// LedgerClient is used to freeze funds when a dispute is opened, 
+// LedgerClient is used to freeze funds when a dispute is opened,
 // and to either release or reverse the funds depending on the outcome.
 type LedgerClient interface {
 	FreezeDisputeFunds(merchantID uuid.UUID, paymentID uuid.UUID, amount int64, currency string) error

@@ -32,7 +32,7 @@ func (s *providerServiceImpl) CreateProvider(ctx context.Context, code, name str
 	}
 
 	providerID := uuid.New()
-	
+
 	// Assign ID to provider and capabilities
 	for i := range capabilities {
 		capabilities[i].ID = uuid.New()

@@ -3,8 +3,8 @@ package repository
 import (
 	"context"
 	"errors"
-	"strings"
 	"payment-gateway/transaction-service/internal/domain"
+	"strings"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -44,7 +44,7 @@ func (r *TransactionRepositoryImpl) UpsertTransaction(ctx context.Context, tx *d
 				return err
 			}
 
-			// Validate state transition. 
+			// Validate state transition.
 			// We only accept PENDING -> (SUCCESS or FAILED).
 			// If existing is already SUCCESS or FAILED, we ignore this event.
 			if existing.Status == "SUCCESS" || existing.Status == "FAILED" {
@@ -66,7 +66,7 @@ func (r *TransactionRepositoryImpl) UpsertTransaction(ctx context.Context, tx *d
 			if err := dbTx.Save(&existing).Error; err != nil {
 				return err
 			}
-			
+
 			// We update tx ID so the service layer knows which ID was used for the Outbox Event mapping
 			tx.ID = existing.ID
 		} else if err != nil {
@@ -79,7 +79,7 @@ func (r *TransactionRepositoryImpl) UpsertTransaction(ctx context.Context, tx *d
 			EventType: "transaction.status.updated",
 			Status:    "PENDING",
 		}
-		
+
 		payload := map[string]interface{}{
 			"transactionId":         tx.ID.String(),
 			"paymentId":             tx.PaymentID.String(),

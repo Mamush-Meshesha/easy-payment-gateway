@@ -22,7 +22,7 @@ func (e *PricingEngineImpl) CalculateFee(ctx context.Context, req domain.Calcula
 	}
 
 	// Default Pricing if merchant has no profile
-	baseRate := 0.029 // 2.9%
+	baseRate := 0.029      // 2.9%
 	baseFixed := int64(30) // $0.30
 
 	if profile != nil {

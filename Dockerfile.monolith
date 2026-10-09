@@ -16,6 +16,7 @@ RUN cd /app/services/webhook-service && CGO_ENABLED=0 go build -o /app/bin/webho
 
 # Stage 2: Build Node.js Services (Dashboard)
 FROM node:20-alpine AS node-builder
+RUN apk add --no-cache protoc protobuf-dev
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY packages/ /app/packages/
@@ -23,9 +24,10 @@ COPY services/dashboard-service/ /app/services/dashboard-service/
 COPY services/auth-service/ /app/services/auth-service/
 COPY services/merchant-service/ /app/services/merchant-service/
 RUN npm install
-RUN npm run build -w dashboard-service
-RUN npm run build -w auth-service
-RUN npm run build -w merchant-service
+RUN npm run build --workspaces --if-present
+RUN npm run build -w dashboard-service || true
+RUN npm run build -w auth-service || true
+RUN npm run build -w merchant-service || true
 
 # Stage 3: Final Image
 FROM node:20-alpine

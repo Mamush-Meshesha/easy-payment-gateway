@@ -26,6 +26,7 @@ var mockMerchantID = uuid.New()
 type mockMerchant struct {
 	valid bool
 }
+
 func (m *mockMerchant) ValidateApiKey(ctx context.Context, apiKey string) (bool, uuid.UUID, string, domain.MerchantConfig, error) {
 	if m.valid {
 		config := domain.MerchantConfig{
@@ -45,6 +46,7 @@ type mockRisk struct {
 	action string
 	err    error
 }
+
 func (m *mockRisk) CheckRisk(ctx context.Context, req *domain.Payment) (string, string, error) {
 	if m.err != nil {
 		return "", "", m.err
@@ -56,6 +58,7 @@ type mockProvider struct {
 	status string
 	err    error
 }
+
 func (m *mockProvider) InitiatePayment(ctx context.Context, paymentID uuid.UUID, providerID uuid.UUID, amount int64, currency string) (string, error) {
 	if m.err != nil {
 		return "TIMEOUT", m.err // Provider unavail maps to TIMEOUT
@@ -74,6 +77,7 @@ type mockLedger struct {
 	status string
 	err    error
 }
+
 func (m *mockLedger) RecordJournalEntry(ctx context.Context, paymentID uuid.UUID, referenceType string, referenceID string, amount int64, currency string) (string, error) {
 	if m.err != nil {
 		return "TIMEOUT", m.err
@@ -98,7 +102,7 @@ func setupTestApp(t *testing.T, risk *mockRisk, prov *mockProvider, ledg *mockLe
 
 	repo := repository.NewPaymentRepository(db)
 	merch := &mockMerchant{valid: true}
-	
+
 	orchestrator := service.NewPaymentOrchestrator(repo, merch, risk, prov, ledg)
 	paymentHandler := handler.NewPaymentHandler(orchestrator)
 	r := router.SetupRouter(paymentHandler)
@@ -107,9 +111,9 @@ func setupTestApp(t *testing.T, risk *mockRisk, prov *mockProvider, ledg *mockLe
 }
 
 func TestPayment_SuccessFlow(t *testing.T) {
-	db, r := setupTestApp(t, 
-		&mockRisk{action: "ALLOW"}, 
-		&mockProvider{status: "SUCCESS"}, 
+	db, r := setupTestApp(t,
+		&mockRisk{action: "ALLOW"},
+		&mockProvider{status: "SUCCESS"},
 		&mockLedger{status: "COMMITTED"},
 	)
 
@@ -147,9 +151,9 @@ func TestPayment_SuccessFlow(t *testing.T) {
 }
 
 func TestPayment_Idempotency(t *testing.T) {
-	db, r := setupTestApp(t, 
-		&mockRisk{action: "ALLOW"}, 
-		&mockProvider{status: "SUCCESS"}, 
+	db, r := setupTestApp(t,
+		&mockRisk{action: "ALLOW"},
+		&mockProvider{status: "SUCCESS"},
 		&mockLedger{status: "COMMITTED"},
 	)
 
@@ -196,8 +200,8 @@ func TestPayment_Idempotency(t *testing.T) {
 }
 
 func TestPayment_ProviderTimeout_Is_Unknown(t *testing.T) {
-	db, r := setupTestApp(t, 
-		&mockRisk{action: "ALLOW"}, 
+	db, r := setupTestApp(t,
+		&mockRisk{action: "ALLOW"},
 		&mockProvider{status: "", err: errors.New("timeout")}, // Provider times out
 		&mockLedger{status: "COMMITTED"},
 	)
@@ -231,9 +235,9 @@ func TestPayment_ProviderTimeout_Is_Unknown(t *testing.T) {
 }
 
 func TestPayment_LedgerTimeout_Is_Unknown(t *testing.T) {
-	db, r := setupTestApp(t, 
-		&mockRisk{action: "ALLOW"}, 
-		&mockProvider{status: "SUCCESS"}, 
+	db, r := setupTestApp(t,
+		&mockRisk{action: "ALLOW"},
+		&mockProvider{status: "SUCCESS"},
 		&mockLedger{status: "", err: errors.New("ledger timeout")}, // Ledger times out
 	)
 

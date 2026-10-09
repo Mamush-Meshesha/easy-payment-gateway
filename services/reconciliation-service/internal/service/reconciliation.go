@@ -46,7 +46,7 @@ func (s *ReconciliationServiceImpl) ProcessStatement(ctx context.Context, provid
 		FileHash:      fileHash,
 		RecordCount:   len(records),
 	}
-	
+
 	if err := s.repo.CreateStatement(ctx, stmt); err != nil {
 		return "", err
 	}
@@ -58,7 +58,7 @@ func (s *ReconciliationServiceImpl) ProcessStatement(ctx context.Context, provid
 		Status:       domain.JobStatusPending,
 		TotalRecords: len(records),
 	}
-	
+
 	if err := s.repo.CreateJob(ctx, job); err != nil {
 		return "", err
 	}

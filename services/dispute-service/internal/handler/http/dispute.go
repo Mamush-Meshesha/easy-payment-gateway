@@ -47,12 +47,12 @@ func (h *DisputeHandler) SimulateDispute(c *gin.Context) {
 
 	// Generate a random payment ID to dispute for testing
 	paymentID := uuid.Must(uuid.NewV7())
-	
+
 	dispute, err := h.orchestrator.HandleIncomingDispute(
-		merchantID, 
-		paymentID, 
+		merchantID,
+		paymentID,
 		8900, // 89.00
-		"ETB", 
+		"ETB",
 		domain.DisputeReasonFraud,
 	)
 

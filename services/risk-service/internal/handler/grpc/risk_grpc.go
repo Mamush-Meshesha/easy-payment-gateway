@@ -13,7 +13,7 @@ import (
 
 type RiskGrpcServer struct {
 	pb.UnimplementedRiskServiceServer
-	service domain.RiskService
+	service  domain.RiskService
 	mlClient mlpb.RiskMLServiceClient
 }
 

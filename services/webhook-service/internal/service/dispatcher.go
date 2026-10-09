@@ -47,10 +47,10 @@ func (s *DispatcherService) ProcessDelivery(ctx context.Context, delivery *domai
 
 	// 2. Prepare Payload & Signature
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
-	
+
 	// Primary signature
 	signatureStr := "v1=" + GenerateHMACSignature(config.PrimarySecret, timestamp, delivery.Payload)
-	
+
 	// Secondary signature (if active and not expired)
 	if config.SecondarySecret != "" {
 		if config.SecondaryExpiresAt == nil || config.SecondaryExpiresAt.After(time.Now()) {
@@ -151,23 +151,23 @@ func (s *DispatcherService) failAttemptWithRetryAfter(ctx context.Context, deliv
 			delivery.Status = domain.StateDeadLettered
 		} else {
 			delivery.Status = domain.StateRetryWait
-			
+
 			// Calculate Exponential Backoff + Jitter
 			baseDelaySecs := 10.0
 			maxDelaySecs := 3600.0 // 1 hour
-			
+
 			// 10 * 2^(attempt-1)
 			calcDelay := baseDelaySecs * math.Pow(2, float64(delivery.AttemptCount-1))
-			
+
 			// Cap at max delay
 			if calcDelay > maxDelaySecs {
 				calcDelay = maxDelaySecs
 			}
-			
+
 			// Jitter (0-20%)
 			jitter := calcDelay * 0.2 * rand.Float64()
 			finalDelaySecs := calcDelay + jitter
-			
+
 			// Respect Retry-After if it's longer
 			if float64(retryAfterSeconds) > finalDelaySecs {
 				finalDelaySecs = float64(retryAfterSeconds)

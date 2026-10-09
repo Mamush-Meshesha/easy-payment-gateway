@@ -93,18 +93,18 @@ func (r *WebhookRepositoryImpl) SaveAttempt(ctx context.Context, delivery *domai
 		if err := tx.Create(attempt).Error; err != nil {
 			return err
 		}
-		
+
 		if err := tx.Save(delivery).Error; err != nil {
 			return err
 		}
-		
+
 		return nil
 	})
 }
 
 func (r *WebhookRepositoryImpl) UnlockStaleDeliveries(ctx context.Context, timeoutMinutes int) (int64, error) {
 	staleThreshold := time.Now().Add(-time.Duration(timeoutMinutes) * time.Minute)
-	
+
 	result := r.db.WithContext(ctx).Model(&domain.Delivery{}).
 		Where("status = ? AND locked_at < ?", domain.StateDelivering, staleThreshold).
 		Updates(map[string]interface{}{
@@ -145,7 +145,7 @@ func (r *WebhookRepositoryImpl) ReplayDelivery(ctx context.Context, deliveryID u
 			"locked_by":     nil,
 			"last_error":    nil,
 		})
-	
+
 	if result.Error != nil {
 		return result.Error
 	}

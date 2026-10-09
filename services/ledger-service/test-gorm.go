@@ -2,12 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
-	"time"
 	"github.com/google/uuid"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"log"
 	"payment-gateway/ledger-service/internal/domain"
+	"time"
 )
 
 func main() {
@@ -25,11 +25,11 @@ func main() {
 		Currency:      "ETB",
 		Lines: []domain.JournalLine{
 			{
-				ID:             uuid.New(),
-				AccountID:      uuid.MustParse("11111111-1111-1111-1111-111111111111"),
-				Direction:      "DEBIT",
-				Amount:         100,
-				CreatedAt:      time.Now(),
+				ID:        uuid.New(),
+				AccountID: uuid.MustParse("11111111-1111-1111-1111-111111111111"),
+				Direction: "DEBIT",
+				Amount:    100,
+				CreatedAt: time.Now(),
 			},
 		},
 	}
