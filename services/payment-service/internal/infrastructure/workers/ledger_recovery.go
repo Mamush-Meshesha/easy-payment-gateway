@@ -1,4 +1,3 @@
-
 package workers
 
 import (
@@ -74,9 +73,9 @@ func (w *LedgerRecoveryWorker) processRecovery(ctx context.Context) {
 		// In this case, the state is already COMPLETION_PENDING.
 		// Let's just create the outbox and update state directly, or refactor Orchestrator.
 		// The cleanest way is to add a specific method to orchestrator to finalize it.
-		// But since we can't easily change the interface again without updating mocks in E2E tests, 
+		// But since we can't easily change the interface again without updating mocks in E2E tests,
 		// we can just directly update the database here (acting as part of the orchestrator) or assume we will add `FinalizePayment` later.
-		
+
 		// For now, we will update the state to SUCCEEDED and insert an Outbox event manually inside a transaction.
 		err = w.db.WithContext(ctx).Transaction(func(dbTx *gorm.DB) error {
 			if err := dbTx.Model(&domain.Payment{}).Where("id = ?", p.ID).Update("status", domain.StateSucceeded).Error; err != nil {
@@ -93,7 +92,7 @@ func (w *LedgerRecoveryWorker) processRecovery(ctx context.Context) {
 			})
 			return dbTx.Create(outbox).Error
 		})
-		
+
 		if err != nil {
 			log.Printf("Failed to mark payment %s as SUCCEEDED after ledger recovery: %v", p.ID, err)
 		} else {

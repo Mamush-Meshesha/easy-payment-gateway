@@ -20,7 +20,17 @@ export const getKafkaClient = (clientId: string, brokers: string[], tlsOptions?:
       },
     };
 
-    if (tlsOptions) {
+    const saslUsername = process.env.KAFKA_SASL_USERNAME;
+    const saslPassword = process.env.KAFKA_SASL_PASSWORD;
+
+    if (saslUsername && saslPassword) {
+      config.ssl = { rejectUnauthorized: false };
+      config.sasl = {
+        mechanism: 'scram-sha-256', // Aiven and Confluent typically use scram-sha-256 or plain
+        username: saslUsername,
+        password: saslPassword,
+      };
+    } else if (tlsOptions) {
       config.ssl = {
         rejectUnauthorized: true,
         ca: [fs.readFileSync(tlsOptions.caPath, 'utf-8')],

@@ -27,10 +27,10 @@ type WebhookRepository interface {
 }
 
 type WebhookConfig struct {
-	URL                 string
-	PrimarySecret       string
-	SecondarySecret     string
-	SecondaryExpiresAt  *time.Time
+	URL                string
+	PrimarySecret      string
+	SecondarySecret    string
+	SecondaryExpiresAt *time.Time
 }
 
 type MerchantClient interface {

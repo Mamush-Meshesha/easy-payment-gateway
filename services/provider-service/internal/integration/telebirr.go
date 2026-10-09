@@ -27,12 +27,12 @@ import (
 )
 
 type TelebirrConfig struct {
-	BaseURL    string
-	AppID      string
-	AppKey     string
-	ShortCode  string
-	NotifyURL  string
-	ReturnURL  string
+	BaseURL     string
+	AppID       string
+	AppKey      string
+	ShortCode   string
+	NotifyURL   string
+	ReturnURL   string
 	PublicKey   *rsa.PublicKey
 	PrivateKey  *rsa.PrivateKey
 	FabricAppID string
@@ -110,11 +110,11 @@ func NewTelebirrAdapter(baseURL string) domain.ProviderAdapter {
 	}
 
 	cfg := TelebirrConfig{
-		BaseURL:    baseURL,
-		AppID:      os.Getenv("TELEBIRR_APP_ID"),
-		AppKey:     os.Getenv("TELEBIRR_APP_KEY"),
-		ShortCode:  os.Getenv("TELEBIRR_SHORT_CODE"),
-		NotifyURL:  os.Getenv("TELEBIRR_NOTIFY_URL"),
+		BaseURL:     baseURL,
+		AppID:       os.Getenv("TELEBIRR_APP_ID"),
+		AppKey:      os.Getenv("TELEBIRR_APP_KEY"),
+		ShortCode:   os.Getenv("TELEBIRR_SHORT_CODE"),
+		NotifyURL:   os.Getenv("TELEBIRR_NOTIFY_URL"),
 		ReturnURL:   os.Getenv("TELEBIRR_RETURN_URL"),
 		PublicKey:   pubKey,
 		PrivateKey:  privKey,
@@ -214,7 +214,7 @@ func (a *TelebirrAdapter) ApplyFabricToken(ctx context.Context) (string, error) 
 			return token, nil
 		}
 	}
-	
+
 	// If the structure is unknown, just return it as a stringified json for debugging
 	resultBytes, _ := json.Marshal(result)
 	return string(resultBytes), errors.New("could not find token in response")
@@ -271,7 +271,7 @@ func (a *TelebirrAdapter) InitiatePayment(ctx context.Context, paymentID string,
 
 	bizContent := map[string]interface{}{
 		"notify_url":            a.config.NotifyURL,
-		"trade_type":            "InApp", 
+		"trade_type":            "InApp",
 		"appid":                 a.config.AppID,
 		"merch_code":            a.config.ShortCode,
 		"merch_order_id":        paymentID,
@@ -351,8 +351,6 @@ func (a *TelebirrAdapter) InitiatePayment(ctx context.Context, paymentID string,
 	return "PENDING", nil
 }
 
-
-
 func (a *TelebirrAdapter) InitiateRefund(ctx context.Context, refundID string, amount int64, currency string, environment string) (string, error) {
 	log.Printf("[TELEBIRR] Initiating refund request for RefundID=%s, Amount=%d, Currency=%s\n", refundID, amount, currency)
 
@@ -364,10 +362,10 @@ func (a *TelebirrAdapter) InitiateRefund(ctx context.Context, refundID string, a
 	amountStr := fmt.Sprintf("%.2f", float64(amount)/100.0)
 
 	payloadMap := map[string]string{
-		"appId":        a.config.AppID,
-		"appKey":       a.config.AppKey,
-		"nonce":        fmt.Sprintf("%d", time.Now().UnixNano()),
-		"outRefundNo":  refundID,
+		"appId":       a.config.AppID,
+		"appKey":      a.config.AppKey,
+		"nonce":       fmt.Sprintf("%d", time.Now().UnixNano()),
+		"outRefundNo": refundID,
 		// Missing original trade no which usually is required
 		"refundAmount": amountStr,
 		"timestamp":    fmt.Sprintf("%d", time.Now().UnixNano()/int64(time.Millisecond)),

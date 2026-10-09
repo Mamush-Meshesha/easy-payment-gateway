@@ -15,7 +15,7 @@ type DispatcherWorker struct {
 	repo        domain.WebhookRepository
 	service     *service.DispatcherService
 	workerID    string
-	batchSize  int
+	batchSize   int
 	concurrency int
 }
 
@@ -62,11 +62,11 @@ func (w *DispatcherWorker) processBatch(ctx context.Context) {
 		delivery := deliveries[i] // local copy
 		wg.Add(1)
 		sem <- struct{}{}
-		
+
 		go func(d *domain.Delivery) {
 			defer wg.Done()
 			defer func() { <-sem }()
-			
+
 			if err := w.service.ProcessDelivery(ctx, d); err != nil {
 				log.Printf("Error processing delivery %s: %v", d.ID, err)
 			}

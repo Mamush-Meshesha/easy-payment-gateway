@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
-	pbLedger "payment-gateway/ledger-service/proto"
-	grpcauth "payment-gateway/go-grpc-auth"
 	"google.golang.org/grpc"
+	"log"
+	grpcauth "payment-gateway/go-grpc-auth"
+	pbLedger "payment-gateway/ledger-service/proto"
 )
 
 func main() {
@@ -25,9 +25,9 @@ func main() {
 	client := pbLedger.NewLedgerServiceClient(conn)
 	req := &pbLedger.RecordJournalEntryRequest{
 		ReferenceType: "PAYMENT",
-		ReferenceId: "01a11264-c9ca-7b1a-a6a0-611f185a9cf1",
-		Currency: "ETB",
-		Environment: "LIVE",
+		ReferenceId:   "01a11264-c9ca-7b1a-a6a0-611f185a9cf1",
+		Currency:      "ETB",
+		Environment:   "LIVE",
 		Lines: []*pbLedger.JournalLineRequest{
 			{AccountId: "11111111-1111-1111-1111-111111111111", Amount: 100, Direction: "DEBIT"},
 			{AccountId: "22222222-2222-2222-2222-222222222222", Amount: 50, Direction: "CREDIT"},

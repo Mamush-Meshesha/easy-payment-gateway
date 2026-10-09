@@ -3,9 +3,9 @@ package db
 import (
 	"context"
 
-	"payment-gateway/pricing-service/internal/domain"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"payment-gateway/pricing-service/internal/domain"
 )
 
 type PricingRepository struct {

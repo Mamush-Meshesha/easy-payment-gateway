@@ -4,7 +4,6 @@ import (
 	"log"
 	"time"
 
-
 	"github.com/google/uuid"
 	"payment-gateway/billing-service/internal/domain"
 )
@@ -70,7 +69,7 @@ func (s *BillingOrchestrator) ProcessDueSubscriptions() {
 		// The final state resolution (PAID vs FAILED) is handled by the Kafka consumer listening to payment.status.updated
 		// For now, we just link it.
 		s.repo.UpdateInvoiceStatus(invoice.ID, domain.InvoiceStatusOpen, paymentID)
-		
+
 		// Advance the billing period eagerly. If the payment fails later, the Kafka consumer will revert this or mark PAST_DUE
 		var nextStart, nextEnd time.Time
 		if sub.Plan.Interval == "MONTHLY" {
@@ -80,7 +79,7 @@ func (s *BillingOrchestrator) ProcessDueSubscriptions() {
 			nextStart = sub.CurrentPeriodEnd
 			nextEnd = sub.CurrentPeriodEnd.AddDate(1, 0, 0)
 		}
-		
+
 		s.repo.UpdateSubscriptionPeriod(sub.ID, nextStart, nextEnd)
 		log.Printf("Successfully processed subscription %s and generated invoice %s\n", sub.ID, invoice.ID)
 	}

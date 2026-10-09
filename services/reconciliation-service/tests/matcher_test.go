@@ -71,12 +71,12 @@ func TestReconciliationEngine_MatchingLogic(t *testing.T) {
 
 	// Expectations
 	repo.On("UpdateJob", mock.Anything, mock.AnythingOfType("*domain.ReconciliationJob")).Return(nil)
-	
+
 	// Expectations for Exceptions
 	repo.On("CreateException", mock.Anything, mock.MatchedBy(func(e *domain.ReconciliationException) bool {
 		return e.ExceptionType == domain.ExceptionDuplicateProviderRec
 	})).Return(nil).Once()
-	
+
 	repo.On("CreateException", mock.Anything, mock.MatchedBy(func(e *domain.ReconciliationException) bool {
 		return e.ExceptionType == domain.ExceptionAmountMismatch
 	})).Return(nil).Once()

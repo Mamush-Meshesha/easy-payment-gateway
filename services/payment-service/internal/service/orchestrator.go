@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"strings"
 	"payment-gateway/payment-service/internal/domain"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
@@ -86,7 +86,6 @@ func (o *PaymentOrchestratorImpl) getMerchantConfigWithCache(ctx context.Context
 	}
 	return &config, nil
 }
-
 
 func (o *PaymentOrchestratorImpl) ProcessPayment(ctx context.Context, req *domain.PaymentRequest, payloadHash string) (*domain.PaymentResponse, error) {
 	// 1. Auth & Validation (Merchant Service)
@@ -344,17 +343,17 @@ func (o *PaymentOrchestratorImpl) transitionState(ctx context.Context, p *domain
 		Reason:     reason,
 	}
 	p.Status = nextState
-	
+
 	if outbox != nil {
 		outbox.SetPayload(map[string]interface{}{
-			"paymentId": p.ID,
-			"merchantId": p.MerchantID,
+			"paymentId":         p.ID,
+			"merchantId":        p.MerchantID,
 			"merchantReference": p.MerchantReference,
-			"previousStatus": history.FromStatus,
-			"status": p.Status,
-			"amount": p.Amount,
-			"currency": p.Currency,
-			"timestamp": time.Now().Format(time.RFC3339),
+			"previousStatus":    history.FromStatus,
+			"status":            p.Status,
+			"amount":            p.Amount,
+			"currency":          p.Currency,
+			"timestamp":         time.Now().Format(time.RFC3339),
 		})
 	}
 
@@ -404,16 +403,16 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 	// 2. Setup Refund domain object
 	refundID := uuid.Must(uuid.NewV7())
 	refund := &domain.Refund{
-		ID:               refundID,
-		PaymentID:        req.PaymentID,
-		MerchantID:       merchantID,
-		Environment:      req.Environment,
-		Amount:           req.Amount,
-		Currency:         payment.Currency,
-		Status:           domain.RefundStateRequested,
-		Reason:           req.Reason,
-		IdempotencyKey:   req.IdempotencyKey,
-		Version:          1,
+		ID:             refundID,
+		PaymentID:      req.PaymentID,
+		MerchantID:     merchantID,
+		Environment:    req.Environment,
+		Amount:         req.Amount,
+		Currency:       payment.Currency,
+		Status:         domain.RefundStateRequested,
+		Reason:         req.Reason,
+		IdempotencyKey: req.IdempotencyKey,
+		Version:        1,
 	}
 
 	history := &domain.RefundStateHistory{
@@ -479,7 +478,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 			ToStatus:   domain.RefundStateRefunded,
 			Reason:     "Provider and Ledger succeeded",
 		}
-		
+
 		outboxEvent := &domain.OutboxEvent{
 			ID:            uuid.Must(uuid.NewV7()),
 			AggregateType: "Refund",
@@ -487,16 +486,16 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 			EventType:     "refund.succeeded",
 		}
 		outboxEvent.SetPayload(map[string]interface{}{
-			"refundId": refundID.String(),
-			"paymentId": req.PaymentID.String(),
-			"merchantId": payment.MerchantID.String(),
+			"refundId":          refundID.String(),
+			"paymentId":         req.PaymentID.String(),
+			"merchantId":        payment.MerchantID.String(),
 			"merchantReference": payment.MerchantReference,
-			"amount":   req.Amount,
-			"currency": payment.Currency,
-			"status":   "REFUNDED",
-			"timestamp": time.Now().Format(time.RFC3339),
+			"amount":            req.Amount,
+			"currency":          payment.Currency,
+			"status":            "REFUNDED",
+			"timestamp":         time.Now().Format(time.RFC3339),
 		})
-		
+
 		if err := o.repo.UpdateRefundState(ctx, ref, hist, outboxEvent); err != nil {
 			log.Printf("Failed to transition refund %s to REFUNDED: %v", refundID, err)
 		}
@@ -512,7 +511,7 @@ func (o *PaymentOrchestratorImpl) ProcessRefund(ctx context.Context, req *domain
 
 	case "FAILED":
 		return o.failRefund(ctx, ref, "Provider rejected refund")
-		
+
 	default:
 		return o.handleRefundUnknown(ctx, ref, "Provider returned unrecognized status: "+providerStatus)
 	}
@@ -528,7 +527,7 @@ func (o *PaymentOrchestratorImpl) failRefund(ctx context.Context, ref *domain.Re
 		ToStatus:   domain.RefundStateFailed,
 		Reason:     reason,
 	}
-	
+
 	outboxEvent := &domain.OutboxEvent{
 		ID:            uuid.Must(uuid.NewV7()),
 		AggregateType: "Refund",
@@ -542,7 +541,7 @@ func (o *PaymentOrchestratorImpl) failRefund(ctx context.Context, ref *domain.Re
 	})
 
 	o.repo.UpdateRefundState(ctx, ref, history, outboxEvent)
-	
+
 	return &domain.RefundResponse{
 		RefundID: ref.ID,
 		Status:   domain.RefundStateFailed,
@@ -561,7 +560,7 @@ func (o *PaymentOrchestratorImpl) handleRefundUnknown(ctx context.Context, ref *
 		Reason:     reason,
 	}
 	o.repo.UpdateRefundState(ctx, ref, history, nil)
-	
+
 	return &domain.RefundResponse{
 		RefundID: ref.ID,
 		Status:   domain.RefundStateUnknown,

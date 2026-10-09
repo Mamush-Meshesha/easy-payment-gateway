@@ -52,7 +52,7 @@ func (r *RiskRepositoryImpl) GetAnalytics(ctx context.Context) (interface{}, err
 	r.db.WithContext(ctx).Model(&domain.RiskDecision{}).Where("action_taken = ?", domain.ActionBlock).Count(&stats.BlockedCount)
 	r.db.WithContext(ctx).Model(&domain.RiskDecision{}).Where("action_taken = ?", "CHALLENGE").Count(&stats.ChallengedCount)
 	r.db.WithContext(ctx).Model(&domain.RiskDecision{}).Where("action_taken = ?", domain.ActionAllow).Count(&stats.AllowedCount)
-	
+
 	// Calculate average ML score
 	r.db.WithContext(ctx).Model(&domain.RiskDecision{}).Select("COALESCE(AVG(ml_score), 0)").Scan(&stats.AverageScore)
 

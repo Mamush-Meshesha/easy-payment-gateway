@@ -141,7 +141,7 @@ func TestPricingEngine_CalculateFee_WithMethodRule(t *testing.T) {
 
 	respAmex, err := engine.CalculateFee(ctx, reqAmex)
 	assert.NoError(t, err)
-	
+
 	// 10000 * 0.03 = 300
 	// 300 + 20 = 320
 	expectedAmexFee := int64(320)
@@ -157,7 +157,7 @@ func TestPricingEngine_CalculateFee_WithMethodRule(t *testing.T) {
 
 	respVisa, err := engine.CalculateFee(ctx, reqVisa)
 	assert.NoError(t, err)
-	
+
 	// 10000 * 0.015 = 150
 	// 150 + 15 = 165
 	expectedVisaFee := int64(165)

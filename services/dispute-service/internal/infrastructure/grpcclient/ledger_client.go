@@ -59,8 +59,6 @@ func (c *LedgerClientImpl) FreezeDisputeFunds(merchantID uuid.UUID, paymentID uu
 		},
 	}
 
-
-
 	res, err := c.client.RecordJournalEntry(ctx, req)
 	if err != nil {
 		return err
@@ -94,8 +92,6 @@ func (c *LedgerClientImpl) ReleaseDisputeFunds(merchantID uuid.UUID, paymentID u
 		},
 	}
 
-
-
 	res, err := c.client.RecordJournalEntry(ctx, req)
 	if err != nil {
 		return err
@@ -128,8 +124,6 @@ func (c *LedgerClientImpl) ReverseDisputeFunds(merchantID uuid.UUID, paymentID u
 			},
 		},
 	}
-
-
 
 	res, err := c.client.RecordJournalEntry(ctx, req)
 	if err != nil {

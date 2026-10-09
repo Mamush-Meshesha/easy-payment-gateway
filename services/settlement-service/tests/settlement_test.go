@@ -50,26 +50,32 @@ type mockLedger struct {
 	reserveError  error
 	releaseError  error
 	completeError error
-	
-	reserved bool
-	released bool
+
+	reserved  bool
+	released  bool
 	completed bool
 }
 
 func (m *mockLedger) ReserveFunds(ctx context.Context, merchantID uuid.UUID, currency string, amount int64, referenceID string) error {
-	if m.reserveError != nil { return m.reserveError }
+	if m.reserveError != nil {
+		return m.reserveError
+	}
 	m.reserved = true
 	return nil
 }
 
 func (m *mockLedger) ReleaseReservedFunds(ctx context.Context, merchantID uuid.UUID, currency string, amount int64, referenceID string) error {
-	if m.releaseError != nil { return m.releaseError }
+	if m.releaseError != nil {
+		return m.releaseError
+	}
 	m.released = true
 	return nil
 }
 
 func (m *mockLedger) CompleteSettlement(ctx context.Context, merchantID uuid.UUID, currency string, amount int64, referenceID string) error {
-	if m.completeError != nil { return m.completeError }
+	if m.completeError != nil {
+		return m.completeError
+	}
 	m.completed = true
 	return nil
 }
@@ -129,7 +135,7 @@ func TestProcessSettlement_Timeout(t *testing.T) {
 	repo := &mockPayoutRepo{payouts: make(map[uuid.UUID]*domain.Payout)}
 	ledger := &mockLedger{}
 	merchant := &mockMerchant{}
-	
+
 	// Timeout Scenario (Network Error)
 	provider := &mockProvider{
 		err: errors.New("i/o timeout"),
@@ -159,7 +165,7 @@ func TestProcessSettlement_DefinitiveFailure(t *testing.T) {
 	repo := &mockPayoutRepo{payouts: make(map[uuid.UUID]*domain.Payout)}
 	ledger := &mockLedger{}
 	merchant := &mockMerchant{}
-	
+
 	provider := &mockProvider{
 		result: domain.PayoutResult{Status: domain.ProviderStatusFailed, ProviderReference: "ref-fail"},
 	}

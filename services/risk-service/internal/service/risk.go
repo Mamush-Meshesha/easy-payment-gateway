@@ -12,10 +12,10 @@ import (
 )
 
 type RiskServiceImpl struct {
-	repo         domain.RiskRuleRepository
-	velocity     domain.VelocityCache
-	evaluator    domain.RuleEvaluator
-	
+	repo      domain.RiskRuleRepository
+	velocity  domain.VelocityCache
+	evaluator domain.RuleEvaluator
+
 	// In-memory cache of rules
 	mu           sync.RWMutex
 	cachedRules  []domain.RiskRule

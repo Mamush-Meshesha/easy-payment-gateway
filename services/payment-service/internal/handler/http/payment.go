@@ -7,8 +7,8 @@ import (
 	"errors"
 	"log"
 	"net/http"
-	"payment-gateway/payment-service/internal/domain"
 	apierrors "payment-gateway/go-apierrors"
+	"payment-gateway/payment-service/internal/domain"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -275,7 +275,7 @@ func (h *PaymentHandler) HandleGetPublicPayment(c *gin.Context) {
 	allowedMethods, err := h.orchestrator.GetAllowedPaymentMethods(c.Request.Context(), payment.MerchantID)
 	if err != nil || len(allowedMethods) == 0 {
 		// Fallback to legacy behavior if config is missing
-		allowedMethods = []string{"CARD"} 
+		allowedMethods = []string{"CARD"}
 	}
 
 	// Return only public-safe fields for the checkout page

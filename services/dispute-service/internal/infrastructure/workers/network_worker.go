@@ -7,8 +7,6 @@ import (
 
 	"payment-gateway/dispute-service/internal/domain"
 	"payment-gateway/dispute-service/internal/service"
-
-
 )
 
 // NetworkWorker simulates polling Visa VROL / MasterCom APIs for new chargebacks
@@ -57,13 +55,13 @@ func (w *NetworkWorker) pollNetworkAPIs(ctx context.Context) {
 
 	for _, d := range disputes {
 		// Simulate VROL response delay/decision based on time elapsed since dispute creation
-		// Let's just resolve it if it's been under review for a mock period, 
+		// Let's just resolve it if it's been under review for a mock period,
 		// but for demo purposes, we will resolve it immediately in half the cases.
-		
+
 		won := d.Amount%2 == 0 // Pseudo-random: even amount = win, odd amount = lose
-		
+
 		log.Printf("NetworkWorker: Received VROL decision for dispute %s -> WON: %v", d.ID, won)
-		
+
 		if err := w.orchestrator.ResolveDispute(d.ID, won); err != nil {
 			log.Printf("NetworkWorker: Failed to resolve dispute %s: %v", d.ID, err)
 		} else {

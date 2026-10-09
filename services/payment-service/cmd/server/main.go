@@ -5,7 +5,6 @@ import (
 	"log"
 	"net"
 	"os"
-	"time"
 	grpcauth "payment-gateway/go-grpc-auth"
 	"payment-gateway/go-observability"
 	"payment-gateway/payment-service/internal/domain"
@@ -19,6 +18,7 @@ import (
 	"payment-gateway/payment-service/internal/repository"
 	"payment-gateway/payment-service/internal/service"
 	pb "payment-gateway/payment-service/proto"
+	"time"
 
 	"google.golang.org/grpc"
 
@@ -143,11 +143,11 @@ func main() {
 
 	ledgerWorker := workers.NewLedgerRecoveryWorker(db, ledgerClient, pricingClient, orchestrator)
 	go ledgerWorker.Start(context.Background())
-	
-	importTime := time.Hour * 24 // 24 hours
+
+	importTime := time.Hour * 24                                              // 24 hours
 	prunerWorker := workers.NewIdempotencyPruner(paymentRepo, importTime, 30) // 30 days retention
 	go prunerWorker.Start(context.Background())
-	
+
 	port := getEnv("PORT", "8084")
 
 	log.Printf("Payment Service starting on port %s", port)

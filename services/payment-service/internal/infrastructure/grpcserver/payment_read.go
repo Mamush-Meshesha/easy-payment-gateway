@@ -2,9 +2,9 @@ package grpcserver
 
 import (
 	"context"
+	grpcauth "payment-gateway/go-grpc-auth"
 	"payment-gateway/payment-service/internal/domain"
 	pb "payment-gateway/payment-service/proto"
-	grpcauth "payment-gateway/go-grpc-auth"
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"

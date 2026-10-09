@@ -12,11 +12,11 @@ const (
 )
 
 type PayoutRequest struct {
-	ReferenceID        string
-	Amount             int64
-	Currency           string
+	ReferenceID      string
+	Amount           int64
+	Currency         string
 	DestinationToken string
-	DestinationBank    string
+	DestinationBank  string
 }
 
 type PayoutResult struct {

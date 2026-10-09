@@ -9,6 +9,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/segmentio/kafka-go"
+
+	"crypto/tls"
+	"github.com/segmentio/kafka-go/sasl/scram"
+	"os"
 )
 
 type PaymentEventConsumer struct {
@@ -22,6 +26,8 @@ func NewPaymentEventConsumer(brokers []string, topic string, groupID string, rep
 		Topic:    topic,
 		GroupID:  groupID,
 		MaxBytes: 10e6,
+
+		Dialer: getKafkaDialer(),
 	})
 
 	return &PaymentEventConsumer{
@@ -66,7 +72,7 @@ func (c *PaymentEventConsumer) Start(ctx context.Context) {
 				continue
 			}
 
-			// We use the Kafka Offset / eventID ideally. 
+			// We use the Kafka Offset / eventID ideally.
 			// But since the orchestrator doesn't natively generate a stable eventID in Outbox,
 			// we can hash the message key or use a UUID derived from it.
 			// Let's assume m.Key is a UUID. If not, generate a deterministic UUID.
@@ -120,4 +126,19 @@ func (c *PaymentEventConsumer) Start(ctx context.Context) {
 			}
 		}
 	}
+}
+
+func getKafkaDialer() *kafka.Dialer {
+	username := os.Getenv("KAFKA_SASL_USERNAME")
+	password := os.Getenv("KAFKA_SASL_PASSWORD")
+	if username != "" && password != "" {
+		mechanism, _ := scram.Mechanism(scram.SHA256, username, password)
+		return &kafka.Dialer{
+			Timeout:       10 * time.Second,
+			DualStack:     true,
+			SASLMechanism: mechanism,
+			TLS:           &tls.Config{InsecureSkipVerify: true},
+		}
+	}
+	return nil
 }

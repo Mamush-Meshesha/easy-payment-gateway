@@ -30,7 +30,7 @@ func (s *RoutingGrpcServer) DetermineRoute(ctx context.Context, req *pb.Determin
 
 	// Dynamic Routing Logic Stub
 	// In production, this would query a BIN database (like binlist) and evaluate historical provider success rates via reporting-service data.
-	
+
 	providerId := "telebirr" // Default to telebirr
 	reason := "default_route"
 	var estimatedFee int32 = 100 // Example fee: 1.00

@@ -8,8 +8,8 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	authcontext "payment-gateway/go-grpc-auth"
 	pb "payment-gateway/fx-service/proto"
+	authcontext "payment-gateway/go-grpc-auth"
 )
 
 type FxGrpcServer struct {

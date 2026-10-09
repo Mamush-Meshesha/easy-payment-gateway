@@ -2,9 +2,9 @@ package service
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"payment-gateway/provider-service/internal/domain"
 	"testing"
-	"github.com/google/uuid"
 )
 
 type mockProviderRepository struct {

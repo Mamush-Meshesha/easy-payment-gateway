@@ -7,11 +7,11 @@ import (
 )
 
 type Account struct {
-	ID         uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
+	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	AccountCode string    `gorm:"type:varchar(50);uniqueIndex;not null"`
 	AccountType string    `gorm:"type:varchar(20);not null"` // ASSET, LIABILITY, REVENUE, EXPENSE
 	OwnerType   string    `gorm:"type:varchar(20);not null"` // MERCHANT, PROVIDER, SYSTEM
-	OwnerID     uuid.UUID `gorm:"type:uuid;not null"` // Logical ref to owner
+	OwnerID     uuid.UUID `gorm:"type:uuid;not null"`        // Logical ref to owner
 	Currency    string    `gorm:"type:varchar(3);not null"`
 }
 

@@ -3,9 +3,9 @@ package repository
 import (
 	"context"
 	"errors"
+	"payment-gateway/payment-service/internal/domain"
 	"strings"
 	"time"
-	"payment-gateway/payment-service/internal/domain"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -151,7 +151,7 @@ func (r *PaymentRepositoryImpl) UpdatePaymentState(ctx context.Context, payment 
 				"status":  payment.Status,
 				"version": payment.Version + 1,
 			})
-		
+
 		if res.Error != nil {
 			return res.Error
 		}
@@ -274,7 +274,7 @@ func (r *PaymentRepositoryImpl) UpdateRefundState(ctx context.Context, ref *doma
 				"reason":             ref.Reason,
 				"version":            ref.Version + 1,
 			})
-		
+
 		if res.Error != nil {
 			return res.Error
 		}
@@ -309,7 +309,7 @@ func (r *PaymentRepositoryImpl) GetRefundsPaginated(ctx context.Context, merchan
 	if paymentID != nil {
 		query = query.Where("payment_id = ?", *paymentID)
 	}
-	
+
 	err := query.Order("created_at DESC").Limit(limit).Offset(offset).Find(&refunds).Error
 	return refunds, err
 }

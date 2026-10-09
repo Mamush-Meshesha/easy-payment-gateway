@@ -80,7 +80,7 @@ func (s *WebhookReadServer) ReplayWebhookDelivery(ctx context.Context, req *pb.R
 	if err != nil {
 		return nil, err
 	}
-	
+
 	deliveryID, err := uuid.Parse(req.DeliveryId)
 	if err != nil {
 		return nil, err

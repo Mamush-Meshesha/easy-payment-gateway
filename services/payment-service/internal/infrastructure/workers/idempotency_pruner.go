@@ -8,8 +8,8 @@ import (
 )
 
 type IdempotencyPruner struct {
-	repo     domain.PaymentRepository
-	interval time.Duration
+	repo          domain.PaymentRepository
+	interval      time.Duration
 	retentionDays int
 }
 
@@ -40,14 +40,14 @@ func (p *IdempotencyPruner) Start(ctx context.Context) {
 
 func (p *IdempotencyPruner) prune(ctx context.Context) {
 	olderThan := time.Now().AddDate(0, 0, -p.retentionDays)
-	
+
 	log.Printf("Pruning idempotency keys older than %v", olderThan)
-	
+
 	deletedCount, err := p.repo.PruneIdempotencyKeys(ctx, olderThan)
 	if err != nil {
 		log.Printf("Error pruning idempotency keys: %v", err)
 		return
 	}
-	
+
 	log.Printf("Successfully pruned %d idempotency keys", deletedCount)
 }

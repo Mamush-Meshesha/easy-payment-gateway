@@ -10,8 +10,8 @@ import (
 func TestEvaluate_Operators(t *testing.T) {
 	eval := NewRuleEvaluator()
 	req := &domain.CheckRiskRequest{
-		Amount:   5000,
-		Currency: "ETB",
+		Amount:    5000,
+		Currency:  "ETB",
 		IPAddress: "192.168.1.1",
 	}
 
@@ -70,19 +70,19 @@ func TestEvaluate_Precedence_And_Priority(t *testing.T) {
 	}
 
 	r1 := domain.RiskRule{
-		ID:       uuid.New(),
-		Name:     "Flag large",
-		IsActive: true,
-		Priority: 10,
-		Action:   domain.ActionFlag,
+		ID:        uuid.New(),
+		Name:      "Flag large",
+		IsActive:  true,
+		Priority:  10,
+		Action:    domain.ActionFlag,
 		Condition: domain.RuleCondition{Field: "amount", Operator: ">", Value: float64(1000)},
 	}
 	r2 := domain.RiskRule{
-		ID:       uuid.New(),
-		Name:     "Block huge",
-		IsActive: true,
-		Priority: 5, // Lower priority
-		Action:   domain.ActionBlock,
+		ID:        uuid.New(),
+		Name:      "Block huge",
+		IsActive:  true,
+		Priority:  5, // Lower priority
+		Action:    domain.ActionBlock,
 		Condition: domain.RuleCondition{Field: "amount", Operator: ">", Value: float64(4000)},
 	}
 
@@ -112,11 +112,11 @@ func TestEvaluate_StopProcessing(t *testing.T) {
 		Condition:      domain.RuleCondition{Field: "amount", Operator: ">", Value: float64(1000)},
 	}
 	r2 := domain.RiskRule{
-		ID:       uuid.New(),
-		Name:     "Block huge",
-		IsActive: true,
-		Priority: 50, // Lower priority
-		Action:   domain.ActionBlock,
+		ID:        uuid.New(),
+		Name:      "Block huge",
+		IsActive:  true,
+		Priority:  50, // Lower priority
+		Action:    domain.ActionBlock,
 		Condition: domain.RuleCondition{Field: "amount", Operator: ">", Value: float64(4000)},
 	}
 

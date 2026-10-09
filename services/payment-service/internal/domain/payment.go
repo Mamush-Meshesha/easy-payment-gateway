@@ -86,12 +86,12 @@ type RefundStateHistory struct {
 }
 
 type IdempotencyKey struct {
-	ID             uuid.UUID `gorm:"type:uuid;primary_key"`
-	MerchantID     uuid.UUID `gorm:"type:uuid;uniqueIndex:idx_merchant_idem"`
-	IdempotencyKey string    `gorm:"type:varchar(255);uniqueIndex:idx_merchant_idem"`
+	ID             uuid.UUID  `gorm:"type:uuid;primary_key"`
+	MerchantID     uuid.UUID  `gorm:"type:uuid;uniqueIndex:idx_merchant_idem"`
+	IdempotencyKey string     `gorm:"type:varchar(255);uniqueIndex:idx_merchant_idem"`
 	PaymentID      *uuid.UUID `gorm:"type:uuid"`
-	Status         string    `gorm:"type:varchar(20)"`
-	PayloadHash    string    `gorm:"type:varchar(255)"` // to verify the request payload hasn't changed
+	Status         string     `gorm:"type:varchar(20)"`
+	PayloadHash    string     `gorm:"type:varchar(255)"` // to verify the request payload hasn't changed
 	CreatedAt      time.Time
 }
 

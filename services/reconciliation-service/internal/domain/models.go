@@ -18,22 +18,22 @@ const (
 type ExceptionType string
 
 const (
-	ExceptionMissingInLedger       ExceptionType = "MISSING_IN_LEDGER"
-	ExceptionMissingInProvider     ExceptionType = "MISSING_IN_PROVIDER"
-	ExceptionAmountMismatch        ExceptionType = "AMOUNT_MISMATCH"
-	ExceptionStatusMismatch        ExceptionType = "STATUS_MISMATCH"
-	ExceptionCurrencyMismatch      ExceptionType = "CURRENCY_MISMATCH"
-	ExceptionDuplicateProviderRec  ExceptionType = "DUPLICATE_PROVIDER_RECORD"
-	ExceptionDuplicateInternalRec  ExceptionType = "DUPLICATE_INTERNAL_RECORD"
-	ExceptionUnexpectedFee         ExceptionType = "UNEXPECTED_FEE"
+	ExceptionMissingInLedger      ExceptionType = "MISSING_IN_LEDGER"
+	ExceptionMissingInProvider    ExceptionType = "MISSING_IN_PROVIDER"
+	ExceptionAmountMismatch       ExceptionType = "AMOUNT_MISMATCH"
+	ExceptionStatusMismatch       ExceptionType = "STATUS_MISMATCH"
+	ExceptionCurrencyMismatch     ExceptionType = "CURRENCY_MISMATCH"
+	ExceptionDuplicateProviderRec ExceptionType = "DUPLICATE_PROVIDER_RECORD"
+	ExceptionDuplicateInternalRec ExceptionType = "DUPLICATE_INTERNAL_RECORD"
+	ExceptionUnexpectedFee        ExceptionType = "UNEXPECTED_FEE"
 )
 
 type ExceptionStatus string
 
 const (
-	ExceptionStatusUnresolved             ExceptionStatus = "UNRESOLVED"
-	ExceptionStatusResolved               ExceptionStatus = "RESOLVED"
-	ExceptionStatusResolutionAttempted    ExceptionStatus = "RESOLUTION_ATTEMPTED"
+	ExceptionStatusUnresolved          ExceptionStatus = "UNRESOLVED"
+	ExceptionStatusResolved            ExceptionStatus = "RESOLVED"
+	ExceptionStatusResolutionAttempted ExceptionStatus = "RESOLUTION_ATTEMPTED"
 )
 
 type ActionType string
@@ -67,13 +67,13 @@ type ReconciliationJob struct {
 }
 
 type ReconciliationException struct {
-	ID                    uuid.UUID       `gorm:"type:uuid;primaryKey"`
-	JobID                 uuid.UUID       `gorm:"type:uuid;not null;index"`
-	ProviderTransactionID string          `gorm:"type:varchar(255);index"`
-	InternalPaymentID     *uuid.UUID      `gorm:"type:uuid;index"`
-	ExceptionType         ExceptionType   `gorm:"type:varchar(50);not null"`
+	ID                    uuid.UUID     `gorm:"type:uuid;primaryKey"`
+	JobID                 uuid.UUID     `gorm:"type:uuid;not null;index"`
+	ProviderTransactionID string        `gorm:"type:varchar(255);index"`
+	InternalPaymentID     *uuid.UUID    `gorm:"type:uuid;index"`
+	ExceptionType         ExceptionType `gorm:"type:varchar(50);not null"`
 	ProviderAmount        *int64
-	ProviderCurrency      *string         `gorm:"type:varchar(3)"`
+	ProviderCurrency      *string `gorm:"type:varchar(3)"`
 	LedgerAmount          *int64
 	LedgerCurrency        *string         `gorm:"type:varchar(3)"`
 	Status                ExceptionStatus `gorm:"type:varchar(30);not null;default:'UNRESOLVED'"`

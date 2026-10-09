@@ -7,7 +7,7 @@ import (
 )
 
 type RecordEntryRequest struct {
-	ReferenceType string
+	ReferenceType         string
 	ReferenceID           string
 	ProviderID            *string
 	ProviderTransactionID *string
@@ -28,7 +28,7 @@ type LedgerRepository interface {
 	GetJournalEntryByReference(ctx context.Context, refType, refID string) (*JournalEntry, error)
 	GetAccountByID(ctx context.Context, id uuid.UUID) (*Account, error)
 	GetJournalEntriesByProviderReferences(ctx context.Context, providerID string, providerTxIDs []string) ([]JournalEntry, error)
-	
+
 	ReserveFunds(ctx context.Context, merchantID uuid.UUID, environment string, currency string, amount int64, referenceID string) error
 	ReleaseReservedFunds(ctx context.Context, merchantID uuid.UUID, environment string, currency string, amount int64, originalReferenceID string) error
 	CompleteSettlement(ctx context.Context, merchantID uuid.UUID, environment string, currency string, amount int64, originalReferenceID string) error

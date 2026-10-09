@@ -33,13 +33,13 @@ func (s *TransactionServiceImpl) ProcessProviderEvent(ctx context.Context, event
 		PaymentID:             paymentID,
 		ProviderID:            providerID,
 		ProviderTransactionID: event.ProviderTransactionID,
-		// amount and currency usually come in the rawPayload or we update them if the webhook provides them. 
+		// amount and currency usually come in the rawPayload or we update them if the webhook provides them.
 		// For simplicity, we assume the initial provider intent had the correct amounts, but the webhook might provide finalized ones.
 		// If amount/currency are 0/empty, we'd ideally fetch them from Payment Service or assume they didn't change.
 		// We'll set dummy values here and assume the webhook schema could be enriched.
-		Amount:   0,  // Could be enriched from event
-		Currency: "", // Could be enriched from event
-		Status:   event.Status,
+		Amount:    0,  // Could be enriched from event
+		Currency:  "", // Could be enriched from event
+		Status:    event.Status,
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
 	}
