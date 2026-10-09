@@ -60,10 +60,10 @@ seed-users.sh
 add_settings.sql
 
 # Misplaced Root Service Folders (Duplicates / Generators)
-ledger-service/
-notification-service/
-provider-service/
-risk-service/
-settlement-service/
-transaction-service/
-webhook-service/
+/ledger-service/
+/notification-service/
+/provider-service/
+/risk-service/
+/settlement-service/
+/transaction-service/
+/webhook-service/
