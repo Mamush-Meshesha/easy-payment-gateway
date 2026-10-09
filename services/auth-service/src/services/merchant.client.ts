@@ -10,8 +10,8 @@ export function getMerchantClient() {
 
   const certDir = process.env.CERTS_DIR || '/app/certs';
   const caPath = process.env.MTLS_CA_CERT || path.join(certDir, 'ca.crt');
-  const certPath = process.env.MTLS_CLIENT_CERT || path.join(certDir, 'server.crt');
-  const keyPath = process.env.MTLS_CLIENT_KEY || path.join(certDir, 'server.key');
+  const certPath = process.env.MTLS_CLIENT_CERT || path.join(certDir, 'auth-service.crt');
+  const keyPath = process.env.MTLS_CLIENT_KEY || path.join(certDir, 'auth-service.key');
 
   let credentials;
   try {

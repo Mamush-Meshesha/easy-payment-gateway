@@ -17,8 +17,8 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition) as any;
 const caCert = fs.readFileSync(process.env.MTLS_CA_CERT || '/app/certs/ca.crt');
-const clientCert = fs.readFileSync(process.env.MTLS_SERVER_CERT || '/app/certs/server.crt');
-const clientKey = fs.readFileSync(process.env.MTLS_SERVER_KEY || '/app/certs/server.key');
+const clientCert = fs.readFileSync(process.env.MTLS_SERVER_CERT || '/app/certs/dashboard-service.crt');
+const clientKey = fs.readFileSync(process.env.MTLS_SERVER_KEY || '/app/certs/dashboard-service.key');
 const credentials = grpc.credentials.createSsl(caCert, clientKey, clientCert);
 
 const client = new protoDescriptor.payment_read.PaymentReadService(
