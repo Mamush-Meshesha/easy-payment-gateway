@@ -12,5 +12,8 @@ export const fetchAuth = async (url: string, options: RequestInit = {}) => {
     headers.set('X-Merchant-Id', merchantId);
   }
 
-  return fetch(url, { ...options, headers });
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'https://payment-gateway-monolith.onrender.com';
+  const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
+
+  return fetch(fullUrl, { ...options, headers });
 };
