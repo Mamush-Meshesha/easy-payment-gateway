@@ -26,7 +26,7 @@ func NewOutboxRelayWorker(db *gorm.DB, brokers []string, topic string) *OutboxRe
 		Topic:                  topic,
 		AllowAutoTopicCreation: true,
 
-		Transport: getKafkaTransport(),
+		Transport: getKafkaTransportOutbox(),
 	}
 	return &OutboxRelayWorker{
 		db:     db,
@@ -86,7 +86,7 @@ func (w *OutboxRelayWorker) processOutbox(ctx context.Context) {
 	}
 }
 
-func getKafkaDialer() *kafka.Dialer {
+func getKafkaDialerOutbox() *kafka.Dialer {
 	username := os.Getenv("KAFKA_SASL_USERNAME")
 	password := os.Getenv("KAFKA_SASL_PASSWORD")
 	if username != "" && password != "" {
@@ -101,7 +101,7 @@ func getKafkaDialer() *kafka.Dialer {
 	return nil
 }
 
-func getKafkaTransport() *kafka.Transport {
+func getKafkaTransportOutbox() *kafka.Transport {
 	username := os.Getenv("KAFKA_SASL_USERNAME")
 	password := os.Getenv("KAFKA_SASL_PASSWORD")
 	if username != "" && password != "" {

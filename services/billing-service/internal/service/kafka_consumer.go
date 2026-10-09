@@ -33,7 +33,7 @@ func NewBillingKafkaConsumer(repo domain.BillingRepository, brokers []string) *B
 		Topic:   "payment.status.updated",
 		GroupID: "billing-service-group",
 
-		Dialer: getKafkaDialer(),
+		Dialer: getKafkaDialerKafkaconsumer(),
 	})
 	return &BillingKafkaConsumer{repo: repo, reader: reader}
 }
@@ -81,7 +81,7 @@ func (c *BillingKafkaConsumer) handlePaymentStatusUpdated(event PaymentEvent) {
 	}
 }
 
-func getKafkaDialer() *kafka.Dialer {
+func getKafkaDialerKafkaconsumer() *kafka.Dialer {
 	username := os.Getenv("KAFKA_SASL_USERNAME")
 	password := os.Getenv("KAFKA_SASL_PASSWORD")
 	if username != "" && password != "" {
