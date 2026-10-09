@@ -288,7 +288,7 @@ export function startGrpcServer() {
   // Apply the generated TS service
   server.addService(MerchantServiceService, merchantServiceHandler as any);
 
-  const certDir = path.resolve(__dirname, '../../../../infra/certs');
+  const certDir = process.env.CERT_DIR || path.resolve(__dirname, '../../../../infra/certs');
   const caPath = process.env.MTLS_CA_CERT || path.join(certDir, 'ca.crt');
   const certPath = process.env.MTLS_SERVER_CERT || path.join(certDir, 'merchant-service.crt');
   const keyPath = process.env.MTLS_SERVER_KEY || path.join(certDir, 'merchant-service.key');
