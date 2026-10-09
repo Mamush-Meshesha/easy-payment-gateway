@@ -4,6 +4,10 @@ import crypto from 'crypto';
 const redisUrl = process.env.REDIS_URL || 'redis://localhost:6379';
 export const redisClient = new Redis(redisUrl);
 
+redisClient.on('error', (err) => {
+  console.error('[Redis] Connection error:', err.message);
+});
+
 const REFRESH_EXPIRES_IN_SEC = 7 * 24 * 60 * 60; // 7 days
 
 export const generateRefreshToken = async (userId: string): Promise<string> => {

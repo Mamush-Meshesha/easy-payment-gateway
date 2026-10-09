@@ -41,8 +41,8 @@ RUN npm run build -w reporting-service || true
 FROM node:20-alpine
 WORKDIR /app
 
-# Install Nginx and Supervisord
-RUN apk add --no-cache nginx supervisor tzdata ca-certificates
+# Install Nginx, Supervisord, and Redis
+RUN apk add --no-cache nginx supervisor tzdata ca-certificates redis
 
 # Copy Go binaries
 COPY --from=go-builder /app/bin/* /app/bin/
