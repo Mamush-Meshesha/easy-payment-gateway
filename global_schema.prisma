@@ -1,0 +1,371 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// This is the Prisma schema for the notification-service.
+// It owns its own isolated database. No cross-service DB queries permitted.
+
+
+
+
+
+// Immutable log of all notifications ever attempted.
+// Idempotency is enforced via event_id to prevent duplicate deliveries.
+model NotificationLog {
+  id              String   @id @default(uuid())
+  eventId         String   @map("event_id") 
+  deliveryKey     String   @unique @map("delivery_key") // Deterministic key (e.g. eventId + channel + recipient)
+  merchantId      String   @map("merchant_id")
+  recipientEmail  String?  @map("recipient_email")
+  recipientPhone  String?  @map("recipient_phone")
+  channel         String   // "EMAIL" | "SMS"
+  templateId      String   @map("template_id")
+  subject         String?
+  payload         Json     // Rendered template variables (no raw credentials/tokens)
+  status          String   // "PENDING" | "DELIVERING" | "SENT" | "RETRY_WAIT" | "DEAD_LETTER" | "CANCELLED"
+  lastErrorCode   String?  @map("last_error_code")
+  lastErrorMessage String? @map("last_error_message")
+  attemptCount    Int      @default(0) @map("attempt_count")
+  nextRetryAt     DateTime? @map("next_retry_at")
+  lastAttemptAt   DateTime? @map("last_attempt_at")
+  deliveredAt     DateTime? @map("delivered_at")
+  leaseUntil      DateTime? @map("lease_until")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([merchantId, createdAt])
+  @@index([status, nextRetryAt])
+  @@index([eventId])
+  @@map("notification_logs")
+}
+
+
+
+
+
+model PaymentProvider {
+  id          String   @id @default(uuid())
+  code        String   @unique // e.g., "TELEBIRR", "CBE_BIRR", "MPESA"
+  name        String   // e.g., "Telebirr", "CBE Birr", "M-Pesa"
+  type        String   @default("MOBILE_MONEY") // MOBILE_MONEY, CARD, BANK_TRANSFER
+  isActive    Boolean  @default(true)
+  description String?
+  logoUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+
+
+
+
+model Merchant {
+  id              String   @id @default(uuid())
+  legalName       String
+  displayName     String
+  status          String   @default("PENDING") // PENDING, ACTIVE, SUSPENDED, DISABLED
+  country         String   @db.VarChar(3)
+  defaultCurrency String   @db.VarChar(3)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  apiKeys         ApiKey[]
+  webhookConfigs  WebhookConfig[]
+  providerConfigs ProviderConfig[]
+  limits          MerchantLimit[]
+  preferences     MerchantPreference?
+  paymentMethods  MerchantPaymentMethod[]
+  kycProfile      KycProfile?
+}
+
+model ApiKey {
+  id          String    @id @default(uuid())
+  merchantId  String
+  keyType     String    @default("SECRET") // SECRET, PUBLISHABLE
+  environment String    @default("LIVE") // TEST, LIVE
+  keyPrefix   String    @db.VarChar(50)
+  keyLast4    String    @db.VarChar(4)
+  keyHash     String    @unique @db.VarChar(255)
+  rawKey      String?   @db.VarChar(255) // Added for development/testing reveal feature
+  name        String?   @db.VarChar(100)
+  status      String    @default("ACTIVE") // ACTIVE, REVOKED, EXPIRED
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime?
+  expiresAt   DateTime?
+  revokedAt   DateTime?
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId])
+  @@index([keyPrefix])
+}
+
+model WebhookConfig {
+  id          String   @id @default(uuid())
+  merchantId  String
+  environment String   @default("LIVE") // TEST, LIVE
+  url                   String
+  secretHash            String
+  secondarySecret       String?
+  secondaryExpiresAt    DateTime?
+  isActive              Boolean   @default(true)
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+}
+
+model OutboxEvent {
+  id            String    @id @default(uuid())
+  aggregateType String // e.g., "Merchant"
+  aggregateId   String // merchantId
+  eventType     String // e.g., "merchant.created"
+  payload       Json
+  published     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  publishedAt   DateTime?
+}
+
+model ProviderConfig {
+  id         String   @id @default(uuid())
+  merchantId String
+  providerId String // Logical Ref to provider_db
+  status     String   @default("ACTIVE")
+  configRef  String? // Reference to encrypted secrets in a vault
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, providerId])
+}
+
+model MerchantLimit {
+  id           String   @id @default(uuid())
+  merchantId   String
+  currency     String   @db.VarChar(3)
+  minAmount    BigInt
+  maxAmount    BigInt
+  dailyLimit   BigInt?
+  monthlyLimit BigInt?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, currency])
+}
+
+model MerchantPreference {
+  id         String   @id @default(uuid())
+  merchantId String   @unique
+  merchant   Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  // Test Mode
+  isTestMode Boolean @default(true)
+
+  // Preferences
+  defaultCurrency      String  @default("ETB")
+  callbackUrl          String?
+  returnUrl            String?
+  refundWebhookUrl     String?
+  retryPaymentInterval Int     @default(60) // in minutes
+  redirectTimeout      Int     @default(0) // in seconds
+
+  // Customization
+  dashboardTheme String @default("CLASSIC") // CLASSIC, ADAPTIVE, ADVANCED
+
+  // Fee Routing
+  transactionFeePayer String @default("MERCHANT") // MERCHANT, CUSTOMER
+  transferFeePayer    String @default("MERCHANT") // MERCHANT, CUSTOMER
+
+  // Notifications
+  emailImportantNotifs   Boolean @default(true)
+  emailCustomerReceipts  Boolean @default(false)
+  transactionReceiptToMe Boolean @default(true)
+  financeEmail           String?
+
+  // Approvals
+  transferApprovalMethod String  @default("OTP") // OTP, URL
+  approvalUrl            String?
+  approvalSecret         String?
+
+  // Version Control (For Caching)
+  version   Int      @default(1)
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model MerchantPaymentMethod {
+  id         String  @id @default(uuid())
+  merchantId String
+  methodCode String // e.g. "TELEBIRR", "CBE_BIRR", "VISA"
+  isEnabled  Boolean @default(true)
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@unique([merchantId, methodCode])
+}
+
+model KycProfile {
+  id             String    @id @default(uuid())
+  merchantId     String    @unique
+  businessName   String?
+  registrationNo String?
+  taxId          String?
+  businessType   String?
+  
+  // Enterprise KYC Fields
+  websiteUrl         String?
+  supportEmail       String?
+  addressLine1       String?
+  city               String?
+  state              String?
+  postalCode         String?
+  country            String?
+  expectedVolume     String?
+  representativeName String?
+  representativeDob  String?
+
+  status         String    @default("PENDING") // PENDING, UNDER_REVIEW, VERIFIED, REJECTED
+  verifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  merchant  Merchant      @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  documents KycDocument[]
+}
+
+model KycDocument {
+  id                 String   @id @default(uuid())
+  kycProfileId       String
+  documentType       String // ID_CARD, PASSPORT, UTILITY_BILL, BUSINESS_REGISTRATION
+  s3Uri              String
+  verificationStatus String   @default("PENDING") // PENDING, VERIFIED, REJECTED
+  rejectionReason    String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  kycProfile KycProfile @relation(fields: [kycProfileId], references: [id], onDelete: Cascade)
+}
+
+
+
+
+
+model User {
+  id              String      @id @default(uuid())
+  email           String?     @unique
+  phone           String?     @unique
+  status          String      @default("ACTIVE") // ACTIVE, SUSPENDED, DISABLED, PENDING
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  lastLoginAt     DateTime?
+
+  roles           UserRole[]
+  credentials     Credential?
+}
+
+model Credential {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  passwordHash      String
+  passwordChangedAt DateTime @default(now())
+
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Role {
+  id          String      @id @default(uuid())
+  name        String      @unique // SUPER_ADMIN, MERCHANT_OWNER, etc.
+  description String?
+  createdAt   DateTime    @default(now())
+  users       UserRole[]
+}
+
+model UserRole {
+  id         String   @id @default(uuid())
+  userId     String
+  roleId     String
+  merchantId String?  // Null if system-wide admin, otherwise scoped to a merchant (Logical reference to merchant_db)
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId, merchantId])
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  actorType    String   // USER, SYSTEM
+  actorId      String?  
+  action       String
+  resourceType String
+  resourceId   String?
+  beforeData   Json?
+  afterData    Json?
+  reason       String?
+  ipAddress    String?
+  traceId      String?
+  createdAt    DateTime @default(now())
+}
+
+model ProcessedEvent {
+  eventId     String   @id // The original event ID to ensure idempotency
+  processedAt DateTime @default(now())
+}
+
+// This is the Prisma schema for the reporting-service.
+// CRITICAL: This is a READ MODEL (projection). It is NOT the financial source of truth.
+// It is populated from Kafka domain events and used for dashboard queries and CSV/PDF generation.
+// Reports MUST NOT bypass the owning service APIs and query other service databases directly.
+
+
+
+
+
+// Denormalized projection of payment events for fast reporting queries.
+model PaymentProjection {
+  id                String   @id @default(uuid())
+  paymentId         String   @unique @map("payment_id")
+  merchantId        String   @map("merchant_id")
+  merchantReference String   @map("merchant_reference")
+  status            String
+  amount            BigInt   @map("amount") // Minor units
+  currency          String
+  paymentMethod     String?  @map("payment_method")
+  customerId        String?  @map("customer_id")
+  createdAt         DateTime @map("created_at")
+  updatedAt         DateTime @default(now()) @updatedAt @map("updated_at")
+  lastEventAt       DateTime @map("last_event_at")
+
+  @@index([merchantId, status])
+  @@index([merchantId, createdAt])
+  @@index([merchantId, currency])
+  @@map("payment_projections")
+}
+
+// Denormalized projection of transaction events.
+model TransactionProjection {
+  id                    String   @id @default(uuid())
+  transactionId         String   @unique @map("transaction_id")
+  paymentId             String   @map("payment_id")
+  merchantId            String   @map("merchant_id")
+  providerId            String   @map("provider_id")
+  providerTransactionId String?  @map("provider_transaction_id")
+  status                String
+  amount                BigInt
+  currency              String
+  createdAt             DateTime @map("created_at")
+  updatedAt             DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@index([merchantId, status])
+  @@index([merchantId, createdAt])
+  @@map("transaction_projections")
+}

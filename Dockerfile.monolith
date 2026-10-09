@@ -75,6 +75,8 @@ COPY supervisord.conf /etc/supervisord.conf
 # Expose single public port
 EXPOSE 8080
 
+COPY global_schema.prisma /app/global_schema.prisma
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 CMD ["/app/start.sh"]
+
