@@ -37,8 +37,8 @@ bin/
 build/
 node_modules/
 scratch/
-main
-server
+/main
+/server
 
 # Logs
 *.log
