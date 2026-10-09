@@ -40,7 +40,7 @@ func NewMerchantConfigConsumer(brokers []string, topic string, groupID string, c
 		GroupID:  groupID,
 		MaxBytes: 10e6,
 
-		Dialer: getKafkaDialer(),
+		Dialer: getKafkaDialerMerchantconfigconsumer(),
 	})
 
 	return &MerchantConfigConsumer{
@@ -140,7 +140,7 @@ func (c *MerchantConfigConsumer) Start(ctx context.Context) {
 	}
 }
 
-func getKafkaDialer() *kafka.Dialer {
+func getKafkaDialerMerchantconfigconsumer() *kafka.Dialer {
 	username := os.Getenv("KAFKA_SASL_USERNAME")
 	password := os.Getenv("KAFKA_SASL_PASSWORD")
 	if username != "" && password != "" {

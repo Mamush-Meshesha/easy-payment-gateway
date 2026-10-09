@@ -27,7 +27,7 @@ func NewPaymentEventConsumer(brokers []string, topic string, groupID string, rep
 		GroupID:  groupID,
 		MaxBytes: 10e6,
 
-		Dialer: getKafkaDialer(),
+		Dialer: getKafkaDialerConsumer(),
 	})
 
 	return &PaymentEventConsumer{
@@ -128,7 +128,7 @@ func (c *PaymentEventConsumer) Start(ctx context.Context) {
 	}
 }
 
-func getKafkaDialer() *kafka.Dialer {
+func getKafkaDialerConsumer() *kafka.Dialer {
 	username := os.Getenv("KAFKA_SASL_USERNAME")
 	password := os.Getenv("KAFKA_SASL_PASSWORD")
 	if username != "" && password != "" {
