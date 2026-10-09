@@ -18,6 +18,10 @@ RUN cd /app/services/risk-service && CGO_ENABLED=0 go build -o /app/bin/risk-ser
 RUN cd /app/services/reconciliation-service && CGO_ENABLED=0 go build -o /app/bin/reconciliation-service ./cmd/server
 RUN cd /app/services/dispute-service && CGO_ENABLED=0 go build -o /app/bin/dispute-service ./cmd/server
 RUN cd /app/services/billing-service && CGO_ENABLED=0 go build -o /app/bin/billing-service ./cmd/server
+RUN cd /app/services/fx-service && CGO_ENABLED=0 go build -o /app/bin/fx-service ./cmd/server
+RUN cd /app/services/pricing-service && CGO_ENABLED=0 go build -o /app/bin/pricing-service ./cmd/server
+RUN cd /app/services/routing-service && CGO_ENABLED=0 go build -o /app/bin/routing-service ./cmd/server
+RUN cd /app/services/vault-service && CGO_ENABLED=0 go build -o /app/bin/vault-service ./cmd/server
 # Stage 2: Build Node.js Services (Dashboard)
 FROM node:20-alpine AS node-builder
 RUN apk add --no-cache protoc protobuf-dev
@@ -29,6 +33,7 @@ COPY services/auth-service/ /app/services/auth-service/
 COPY services/merchant-service/ /app/services/merchant-service/
 COPY services/admin-service/ /app/services/admin-service/
 COPY services/reporting-service/ /app/services/reporting-service/
+COPY services/notification-service/ /app/services/notification-service/
 RUN npm install
 RUN npm run build --workspaces --if-present
 RUN npm run build -w dashboard-service || true
@@ -36,6 +41,7 @@ RUN npm run build -w auth-service || true
 RUN npm run build -w merchant-service || true
 RUN npm run build -w admin-service || true
 RUN npm run build -w reporting-service || true
+RUN npm run build -w notification-service || true
 
 # Stage 3: Final Image
 FROM node:20-alpine
@@ -53,6 +59,7 @@ COPY --from=node-builder /app/services/auth-service /app/services/auth-service
 COPY --from=node-builder /app/services/merchant-service /app/services/merchant-service
 COPY --from=node-builder /app/services/admin-service /app/services/admin-service
 COPY --from=node-builder /app/services/reporting-service /app/services/reporting-service
+COPY --from=node-builder /app/services/notification-service /app/services/notification-service
 COPY --from=node-builder /app/packages /app/packages
 COPY --from=node-builder /app/node_modules /app/node_modules
 
