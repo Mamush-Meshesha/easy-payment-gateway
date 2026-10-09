@@ -32,9 +32,8 @@ export class EmailSender {
     const pass = process.env.SMTP_PASS;
 
     if (!host || !port || !user || !pass) {
-      throw new Error(
-        'SMTP configuration incomplete: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS are required'
-      );
+      console.warn('SMTP configuration incomplete: SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS are required. Email sending is disabled.');
+      return;
     }
 
     this.transporter = nodemailer.createTransport({
@@ -49,6 +48,11 @@ export class EmailSender {
   }
 
   async send(payload: EmailPayload): Promise<void> {
+    if (!this.transporter) {
+      console.warn('Email sending skipped (no SMTP config):', payload.to, payload.subject);
+      return;
+    }
+
     const fromAddress = process.env.SMTP_FROM || 'no-reply@paymentgateway.local';
 
     try {

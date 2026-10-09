@@ -34,7 +34,9 @@ COPY services/merchant-service/ /app/services/merchant-service/
 COPY services/admin-service/ /app/services/admin-service/
 COPY services/reporting-service/ /app/services/reporting-service/
 COPY services/notification-service/ /app/services/notification-service/
+COPY global_schema.prisma /app/global_schema.prisma
 RUN npm install
+RUN npx prisma generate --schema=/app/global_schema.prisma
 RUN npm run build --workspaces --if-present
 RUN npm run build -w dashboard-service || true
 RUN npm run build -w auth-service || true
