@@ -1,0 +1,43 @@
+services:
+  # The Modular Monolith (Runs all Go microservices + Nginx + Node.js)
+  - type: web
+    name: payment-gateway-monolith
+    env: docker
+    dockerfilePath: ./Dockerfile.monolith
+    plan: free
+    envVars:
+      # External Managed Infrastructure (Set these in Render Dashboard securely)
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: KAFKA_BROKERS
+        sync: false
+      
+      # Internal gRPC routing (forces services to talk inside the container)
+      - key: AUTH_GRPC_PORT
+        value: "3001"
+      - key: MERCHANT_SERVICE_ADDR
+        value: "127.0.0.1:3002"
+      - key: ADMIN_SERVICE_ADDR
+        value: "127.0.0.1:3003"
+      - key: DASHBOARD_SERVICE_ADDR
+        value: "127.0.0.1:3009"
+      - key: PAYMENT_SERVICE_ADDR
+        value: "127.0.0.1:8084"
+      - key: RISK_SERVICE_ADDR
+        value: "127.0.0.1:8083"
+
+  # Frontend (Static site, fast and free)
+  - type: web
+    name: payment-gateway-frontend
+    env: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        fromService:
+          type: web
+          name: payment-gateway-monolith
+          envVarKey: RENDER_EXTERNAL_URL
