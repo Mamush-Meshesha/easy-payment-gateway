@@ -1,0 +1,41 @@
+// This is the Prisma schema for the notification-service.
+// It owns its own isolated database. No cross-service DB queries permitted.
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Immutable log of all notifications ever attempted.
+// Idempotency is enforced via event_id to prevent duplicate deliveries.
+model NotificationLog {
+  id              String   @id @default(uuid())
+  eventId         String   @map("event_id") 
+  deliveryKey     String   @unique @map("delivery_key") // Deterministic key (e.g. eventId + channel + recipient)
+  merchantId      String   @map("merchant_id")
+  recipientEmail  String?  @map("recipient_email")
+  recipientPhone  String?  @map("recipient_phone")
+  channel         String   // "EMAIL" | "SMS"
+  templateId      String   @map("template_id")
+  subject         String?
+  payload         Json     // Rendered template variables (no raw credentials/tokens)
+  status          String   // "PENDING" | "DELIVERING" | "SENT" | "RETRY_WAIT" | "DEAD_LETTER" | "CANCELLED"
+  lastErrorCode   String?  @map("last_error_code")
+  lastErrorMessage String? @map("last_error_message")
+  attemptCount    Int      @default(0) @map("attempt_count")
+  nextRetryAt     DateTime? @map("next_retry_at")
+  lastAttemptAt   DateTime? @map("last_attempt_at")
+  deliveredAt     DateTime? @map("delivered_at")
+  leaseUntil      DateTime? @map("lease_until")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@index([merchantId, createdAt])
+  @@index([status, nextRetryAt])
+  @@index([eventId])
+  @@map("notification_logs")
+}

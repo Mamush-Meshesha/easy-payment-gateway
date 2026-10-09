@@ -1,0 +1,5 @@
+FROM golang:1.25-alpine
+WORKDIR /app
+COPY services/ /app/services/
+RUN ls -la /app/services/
+RUN ls -la /app/services/ledger-service/
