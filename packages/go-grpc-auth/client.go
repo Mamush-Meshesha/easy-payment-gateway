@@ -7,10 +7,14 @@ import (
 	"os"
 
 	"google.golang.org/grpc/credentials"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 // LoadTLSCredentials creates mTLS credentials using the given paths.
 func LoadTLSCredentials(caCertFile, clientCertFile, clientKeyFile string) (credentials.TransportCredentials, error) {
+	if caCertFile == "" {
+		return insecure.NewCredentials(), nil
+	}
 	// Load certificate of the CA who signed server's certificate
 	caCert, err := os.ReadFile(caCertFile)
 	if err != nil {
@@ -39,6 +43,9 @@ func LoadTLSCredentials(caCertFile, clientCertFile, clientKeyFile string) (crede
 
 // LoadServerTLSCredentials creates mTLS credentials for a server.
 func LoadServerTLSCredentials(caCertFile, serverCertFile, serverKeyFile string) (credentials.TransportCredentials, error) {
+	if caCertFile == "" {
+		return insecure.NewCredentials(), nil
+	}
 	// Load certificate of the CA who signed client's certificate
 	caCert, err := os.ReadFile(caCertFile)
 	if err != nil {
