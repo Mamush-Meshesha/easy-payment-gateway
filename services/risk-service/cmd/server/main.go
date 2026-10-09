@@ -101,7 +101,7 @@ func main() {
 
 	// HTTP Router Setup
 	r := router.SetupRouter(riskHttpHandler)
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "8083"
 	}

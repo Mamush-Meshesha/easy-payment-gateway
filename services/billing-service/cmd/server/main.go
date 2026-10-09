@@ -88,7 +88,7 @@ func main() {
 		api.POST("/subscriptions/:id/cancel", handler.CancelSubscription)
 	}
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "3015" // Let's use 3015 for billing-service
 	}

@@ -30,7 +30,7 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(500).json({ error: 'Internal server error' });
 });
 
-const PORT = process.env.PORT || 3008;
+const PORT = process.env.SERVICE_PORT || 3008;
 
 if (process.env.NODE_ENV !== 'test') {
   const paymentProjection = new PaymentProjectionConsumer();

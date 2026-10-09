@@ -79,7 +79,7 @@ func main() {
 		sys.POST("/:id/resolve", handler.SystemResolveDispute)
 	}
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "3017"
 	}

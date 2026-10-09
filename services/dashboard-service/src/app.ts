@@ -33,7 +33,7 @@ import { standardErrorHandler } from '@payment-gateway/api-errors';
 // Standard canonical error handler — must be last middleware
 app.use(standardErrorHandler);
 
-const PORT = process.env.PORT || 3009;
+const PORT = process.env.SERVICE_PORT || 3009;
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT as number, '0.0.0.0', () => {

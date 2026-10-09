@@ -37,7 +37,7 @@ app.use('/api/v1/admin/kyc', adminKycRoutes);
 // Error Handling
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.SERVICE_PORT || 3002;
 
 if (process.env.NODE_ENV !== 'test') {
   const outboxPublisher = new OutboxPublisher();

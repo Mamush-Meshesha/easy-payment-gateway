@@ -39,7 +39,7 @@ func main() {
 	routingServer := routing_grpc.NewRoutingGrpcServer()
 	pb.RegisterRoutingServiceServer(grpcServer, routingServer)
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "50066"
 	}

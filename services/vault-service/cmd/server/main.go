@@ -43,7 +43,7 @@ func main() {
 	pb.RegisterVaultServiceServer(grpcServer, vaultServer)
 
 	// 5. Start Listening
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "50059"
 	}

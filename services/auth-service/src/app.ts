@@ -26,7 +26,7 @@ app.use('/api/v1/auth', authRoutes);
 // Error Handling
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.SERVICE_PORT || 3001;
 
 if (process.env.NODE_ENV !== 'test') {
   const merchantConsumer = new MerchantConsumer();
