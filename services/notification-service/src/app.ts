@@ -36,7 +36,7 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   res.status(500).json({ error: 'Internal server error' });
 });
 
-const PORT = process.env.PORT || 3007;
+const PORT = process.env.SERVICE_PORT || 3007;
 
 if (process.env.NODE_ENV !== 'test') {
   const emailSender = new EmailSender();

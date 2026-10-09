@@ -39,7 +39,7 @@ func main() {
 	fxServer := fx_grpc.NewFxGrpcServer()
 	pb.RegisterFxServiceServer(grpcServer, fxServer)
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "50067"
 	}

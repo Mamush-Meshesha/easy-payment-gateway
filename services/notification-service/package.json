@@ -13,6 +13,7 @@
   "dependencies": {
     "@grpc/grpc-js": "^1.14.5",
     "@grpc/proto-loader": "^0.8.1",
+    "@payment-gateway/api-errors": "file:../../packages/api-errors",
     "@payment-gateway/event-schemas": "file:../../packages/event-schemas",
     "@payment-gateway/protobuf": "file:../../packages/protobuf",
     "@payment-gateway/shared-auth": "file:../../packages/shared-auth",
@@ -26,8 +27,7 @@
     "prisma": "^6.19.3",
     "reflect-metadata": "^0.2.2",
     "ts-grpc-auth": "file:../../packages/ts-grpc-auth",
-    "winston": "^3.19.0",
-    "@payment-gateway/api-errors": "file:../../packages/api-errors"
+    "winston": "^3.19.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
@@ -35,6 +35,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^26.6.2",
     "@types/nodemailer": "^6.4.17",
+    "fast-check": "^4.10.2",
     "jest": "^30.5.2",
     "nodemon": "^3.1.14",
     "ts-jest": "^29.4.12",

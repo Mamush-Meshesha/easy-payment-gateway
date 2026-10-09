@@ -91,7 +91,7 @@ func main() {
 	// HTTP Router Setup
 	r := router.SetupRouter(providerHttpHandler)
 
-	port := os.Getenv("PORT")
+	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
 		port = "3003" // provider service port
 	}
