@@ -137,7 +137,7 @@ func getKafkaDialer() *kafka.Dialer {
 			Timeout:       10 * time.Second,
 			DualStack:     true,
 			SASLMechanism: mechanism,
-			TLS:           &tls.Config{},
+			TLS:           &tls.Config{InsecureSkipVerify: true},
 		}
 	}
 	return nil

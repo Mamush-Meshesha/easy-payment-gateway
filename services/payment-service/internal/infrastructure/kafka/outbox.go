@@ -95,7 +95,7 @@ func getKafkaDialer() *kafka.Dialer {
 			Timeout:       10 * time.Second,
 			DualStack:     true,
 			SASLMechanism: mechanism,
-			TLS:           &tls.Config{},
+			TLS:           &tls.Config{InsecureSkipVerify: true},
 		}
 	}
 	return nil
@@ -108,7 +108,7 @@ func getKafkaTransport() *kafka.Transport {
 		mechanism, _ := scram.Mechanism(scram.SHA256, username, password)
 		return &kafka.Transport{
 			SASL: mechanism,
-			TLS:  &tls.Config{},
+			TLS:  &tls.Config{InsecureSkipVerify: true},
 		}
 	}
 	return nil

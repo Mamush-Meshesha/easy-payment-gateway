@@ -24,7 +24,7 @@ export const getKafkaClient = (clientId: string, brokers: string[], tlsOptions?:
     const saslPassword = process.env.KAFKA_SASL_PASSWORD;
 
     if (saslUsername && saslPassword) {
-      config.ssl = true;
+      config.ssl = { rejectUnauthorized: false };
       config.sasl = {
         mechanism: 'scram-sha-256', // Aiven and Confluent typically use scram-sha-256 or plain
         username: saslUsername,
