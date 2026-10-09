@@ -23,7 +23,7 @@ export class NonRetryableError extends Error {
 }
 
 export class EmailSender {
-  private transporter: nodemailer.Transporter;
+  private transporter?: nodemailer.Transporter;
 
   constructor() {
     const host = process.env.SMTP_HOST;
