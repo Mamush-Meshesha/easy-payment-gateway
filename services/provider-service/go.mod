@@ -9,9 +9,9 @@ require (
 	google.golang.org/protobuf v1.36.12
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/gorm v1.31.2
+	payment-gateway/go-apierrors v0.0.0-00010101000000-000000000000
 	payment-gateway/go-grpc-auth v0.0.0-00010101000000-000000000000
 	payment-gateway/go-observability v0.0.0-00010101000000-000000000000
-	payment-gateway/go-apierrors v0.0.0-00010101000000-000000000000
 )
 
 require (
