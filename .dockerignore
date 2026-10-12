@@ -1,5 +1,6 @@
 **/node_modules/
-dist/
+services/*/dist/
+frontend/dist/
 coverage/
 .git/
 .env

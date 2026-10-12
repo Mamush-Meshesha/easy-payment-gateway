@@ -32,7 +32,9 @@ certs/
 # Temp / Build
 tmp/
 .tmp/
-dist/
+services/*/dist/
+frontend/dist/
+!packages/*/dist/
 bin/
 build/
 node_modules/
