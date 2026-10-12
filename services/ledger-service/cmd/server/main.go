@@ -45,7 +45,7 @@ func main() {
 	}
 
 	// Auto Migrate (Will be replaced with raw SQL migrations in Phase 13/v2)
-	db.AutoMigrate(&domain.Account{}, &domain.JournalEntry{}, &domain.OutboxEvent{})
+	db.AutoMigrate(&domain.Account{}, &domain.JournalEntry{}, &domain.JournalLine{}, &domain.OutboxEvent{})
 
 	// Dependency Injection
 	ledgerRepo := repository.NewLedgerRepository(db)

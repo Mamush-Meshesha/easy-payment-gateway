@@ -69,9 +69,12 @@ func main() {
 	repo := repository.NewWebhookRepository(db)
 
 	// Create service
-	merchantAddress := os.Getenv("MERCHANT_SERVICE_URL")
+	merchantAddress := os.Getenv("MERCHANT_SERVICE_ADDR")
 	if merchantAddress == "" {
-		merchantAddress = "localhost:50052"
+		merchantAddress = os.Getenv("MERCHANT_SERVICE_URL")
+	}
+	if merchantAddress == "" {
+		merchantAddress = "merchant-service:50052"
 	}
 	merchantClient, err := grpcclient.NewMerchantGrpcClient(merchantAddress)
 	if err != nil {

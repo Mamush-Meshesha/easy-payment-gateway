@@ -167,6 +167,18 @@ services:
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway?schema=reporting
     command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
+  migrate-admin:
+    image: payment-gateway/admin-service:latest
+    container_name: migrate_admin
+    networks:
+      - payment_network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/payment_gateway
+    command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
+
   auth-service:
     image: payment-gateway/auth-service:latest
     build:
@@ -261,6 +273,7 @@ services:
         condition: service_completed_successfully
 
   admin-service:
+    image: payment-gateway/admin-service:latest
     build:
       context: .
       dockerfile: services/admin-service/Dockerfile
@@ -274,7 +287,10 @@ services:
     networks:
       - payment_network
     restart: always
-    depends_on: *service-depends
+    depends_on:
+      <<: *service-depends
+      migrate-admin:
+        condition: service_completed_successfully
 
   dashboard-service:
     build:

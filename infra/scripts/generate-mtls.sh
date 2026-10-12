@@ -61,7 +61,15 @@ EOF
   rm "$CERTS_DIR/$SERVICE.csr" "$CERTS_DIR/$SERVICE.ext"
 done
 
-# Cleanup CA serial
-rm -f "$CERTS_DIR/ca.srl"
+# Generate Nginx SSL certs
+NGINX_CERTS_DIR="$(pwd)/infra/nginx/certs"
+mkdir -p "$NGINX_CERTS_DIR"
+if [ ! -f "$NGINX_CERTS_DIR/selfsigned.crt" ]; then
+  echo "Generating Nginx selfsigned certificates..."
+  openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout "$NGINX_CERTS_DIR/selfsigned.key" \
+    -out "$NGINX_CERTS_DIR/selfsigned.crt" \
+    -subj "/CN=localhost"
+fi
 
-echo "All certificates generated successfully in $CERTS_DIR"
+echo "All certificates generated successfully in $CERTS_DIR and $NGINX_CERTS_DIR"
