@@ -425,6 +425,8 @@ services:
       - ./infra/certs/risk-service.key:/app/certs/server.key:ro
     networks:
       - payment_network
+    restart: always
+    depends_on: *service-depends
 
   mailhog:
     image: mailhog/mailhog:latest
