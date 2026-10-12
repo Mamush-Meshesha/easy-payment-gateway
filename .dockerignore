@@ -1,6 +1,12 @@
 **/node_modules/
+**/venv/
+**/__pycache__/
 services/*/dist/
 frontend/dist/
+sdks/*/dist/
+services/*/main
+services/*/app
+services/*/server
 coverage/
 .git/
 .env

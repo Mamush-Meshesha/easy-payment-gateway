@@ -34,13 +34,20 @@ tmp/
 .tmp/
 services/*/dist/
 frontend/dist/
+sdks/*/dist/
 !packages/*/dist/
 bin/
 build/
 node_modules/
 scratch/
+services/*/main
+services/*/app
+services/*/server
 /main
 /server
+**/venv/
+**/__pycache__/
+*.pyc
 
 # Logs
 *.log
