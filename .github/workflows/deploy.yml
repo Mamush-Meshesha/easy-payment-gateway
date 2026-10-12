@@ -64,14 +64,15 @@ jobs:
             bash infra/scripts/generate-mtls.sh
 
             # Build services sequentially to eliminate network contention and disk/memory exhaustion
-            SERVICES_TO_BUILD="auth-service merchant-service notification-service reporting-service admin-service dashboard-service payment-service transaction-service provider-service webhook-service ledger-service reconciliation-service settlement-service risk-service"
+            SERVICES_TO_BUILD="auth-service merchant-service notification-service reporting-service admin-service dashboard-service payment-service transaction-service provider-service webhook-service ledger-service reconciliation-service settlement-service risk-service billing-service dispute-service"
             for svc in $SERVICES_TO_BUILD; do
               echo "🔨 Building $svc..."
               sudo docker compose -f docker-compose.yml build $svc
             done
 
-            # Launch all services
+            # Launch all services and restart gateway to refresh dynamic upstream IPs
             sudo docker compose -f docker-compose.yml up -d
+            sudo docker compose -f docker-compose.yml restart nginx
             
             echo "✅ Deployment successful!"
             sudo docker compose ps

@@ -28,6 +28,8 @@ SERVICES=(
   "reporting-service"
   "admin-service"
   "dashboard-service"
+  "billing-service"
+  "dispute-service"
 )
 
 # Generate certs for each service

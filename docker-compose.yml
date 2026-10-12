@@ -444,6 +444,38 @@ services:
     restart: always
     depends_on: *service-depends
 
+  billing-service:
+    build:
+      context: .
+      dockerfile: services/billing-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/billing-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/billing-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
+  dispute-service:
+    build:
+      context: .
+      dockerfile: services/dispute-service/Dockerfile
+    env_file: [.env]
+    environment:
+      <<: *service-env
+    volumes:
+      - ./infra/certs/ca.crt:/app/certs/ca.crt:ro
+      - ./infra/certs/dispute-service.crt:/app/certs/server.crt:ro
+      - ./infra/certs/dispute-service.key:/app/certs/server.key:ro
+    networks:
+      - payment_network
+    restart: always
+    depends_on: *service-depends
+
   mailhog:
     image: mailhog/mailhog:latest
     ports:
@@ -481,6 +513,8 @@ services:
       - reconciliation-service
       - settlement-service
       - risk-service
+      - billing-service
+      - dispute-service
 
   dozzle:
     image: amir20/dozzle:latest
