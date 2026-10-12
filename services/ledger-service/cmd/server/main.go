@@ -99,7 +99,10 @@ func main() {
 
 	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
-		port = "8082"
+		port = os.Getenv("PORT")
+	}
+	if port == "" {
+		port = "8085"
 	}
 
 	log.Printf("HTTP server listening on port %s", port)

@@ -90,7 +90,10 @@ func main() {
 
 	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
-		port = "3015" // Let's use 3015 for billing-service
+		port = os.Getenv("PORT")
+	}
+	if port == "" {
+		port = "3016" // billing-service port
 	}
 
 	srv := &http.Server{

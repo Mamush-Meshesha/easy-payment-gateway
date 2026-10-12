@@ -93,7 +93,10 @@ func main() {
 
 	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
-		port = "3003" // provider service port
+		port = os.Getenv("PORT")
+	}
+	if port == "" {
+		port = "8087" // provider service port
 	}
 
 	log.Printf("Provider service starting on port %s", port)

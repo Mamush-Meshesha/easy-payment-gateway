@@ -42,7 +42,7 @@ const upTransformers: Record<string, (payload: any) => any> = {
  * API version transformations.
  */
 export const apiTransformerMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const version = req.apiVersion || LATEST_API_VERSION;
+  const version = (req as any).apiVersion || LATEST_API_VERSION;
 
   if (version === LATEST_API_VERSION) {
     return next();

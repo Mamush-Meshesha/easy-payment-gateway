@@ -45,7 +45,7 @@ export class ReportController {
       const nextCursor = hasMore ? results[results.length - 1].paymentId : null;
 
       res.json({
-        data: results.map((p) => ({
+        data: results.map((p: any) => ({
           paymentId: p.paymentId,
           merchantReference: p.merchantReference,
           status: p.status,
@@ -83,7 +83,7 @@ export class ReportController {
       const fields = ['paymentId', 'merchantReference', 'status', 'amount', 'currency', 'createdAt'];
       const parser = new Parser({ fields });
       const csv = parser.parse(
-        payments.map((p) => ({
+        payments.map((p: any) => ({
           paymentId: p.paymentId,
           merchantReference: p.merchantReference,
           status: p.status,

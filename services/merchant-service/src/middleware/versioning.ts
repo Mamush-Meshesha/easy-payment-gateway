@@ -17,7 +17,7 @@ export const apiVersioningMiddleware = (req: Request, res: Response, next: NextF
   const versionHeader = req.headers['api-version'] as string;
   
   if (!versionHeader) {
-    req.apiVersion = LATEST_API_VERSION;
+    (req as any).apiVersion = LATEST_API_VERSION;
     return next();
   }
 
@@ -28,7 +28,7 @@ export const apiVersioningMiddleware = (req: Request, res: Response, next: NextF
     });
   }
 
-  req.apiVersion = versionHeader;
+  (req as any).apiVersion = versionHeader;
   next();
 };
 

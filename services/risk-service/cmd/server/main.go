@@ -103,7 +103,10 @@ func main() {
 	r := router.SetupRouter(riskHttpHandler)
 	port := os.Getenv("SERVICE_PORT")
 	if port == "" {
-		port = "8083"
+		port = os.Getenv("PORT")
+	}
+	if port == "" {
+		port = "8086"
 	}
 
 	log.Printf("HTTP server listening on port %s", port)
