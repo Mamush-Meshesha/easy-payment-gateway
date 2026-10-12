@@ -63,8 +63,15 @@ jobs:
             chmod +x infra/scripts/*.sh || true
             bash infra/scripts/generate-mtls.sh
 
-            # Build and deploy with concurrency limit to prevent disk exhaustion
-            COMPOSE_PARALLEL_LIMIT=2 sudo docker compose -f docker-compose.yml up -d --build
+            # Build services sequentially to eliminate network contention and disk/memory exhaustion
+            SERVICES_TO_BUILD="auth-service merchant-service notification-service reporting-service admin-service dashboard-service payment-service transaction-service routing-service vault-service ledger-service settlement-service dispute-service billing-service pricing-service webhook-service risk-service risk-ml-worker"
+            for svc in $SERVICES_TO_BUILD; do
+              echo "🔨 Building $svc..."
+              sudo docker compose -f docker-compose.yml build $svc
+            done
+
+            # Launch all services
+            sudo docker compose -f docker-compose.yml up -d
             
             echo "✅ Deployment successful!"
             sudo docker compose ps

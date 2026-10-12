@@ -120,10 +120,7 @@ services:
       "
 
   migrate-auth:
-    build:
-      context: .
-      dockerfile: services/auth-service/Dockerfile
-      network: host
+    image: payment-gateway/auth-service:latest
     container_name: migrate_auth
     networks:
       - payment_network
@@ -135,10 +132,7 @@ services:
     command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   migrate-merchant:
-    build:
-      context: .
-      dockerfile: services/merchant-service/Dockerfile
-      network: host
+    image: payment-gateway/merchant-service:latest
     container_name: migrate_merchant
     networks:
       - payment_network
@@ -150,9 +144,7 @@ services:
     command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   migrate-notification:
-    build:
-      context: .
-      dockerfile: services/notification-service/Dockerfile
+    image: payment-gateway/notification-service:latest
     container_name: migrate_notification
     networks:
       - payment_network
@@ -164,9 +156,7 @@ services:
     command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   migrate-reporting:
-    build:
-      context: .
-      dockerfile: services/reporting-service/Dockerfile
+    image: payment-gateway/reporting-service:latest
     container_name: migrate_reporting
     networks:
       - payment_network
@@ -178,6 +168,7 @@ services:
     command: ["npx", "prisma", "db", "push", "--accept-data-loss"]
 
   auth-service:
+    image: payment-gateway/auth-service:latest
     build:
       context: .
       dockerfile: services/auth-service/Dockerfile
@@ -199,6 +190,7 @@ services:
         condition: service_completed_successfully
 
   merchant-service:
+    image: payment-gateway/merchant-service:latest
     build:
       context: .
       dockerfile: services/merchant-service/Dockerfile
@@ -223,6 +215,7 @@ services:
         condition: service_completed_successfully
 
   notification-service:
+    image: payment-gateway/notification-service:latest
     build:
       context: .
       dockerfile: services/notification-service/Dockerfile
@@ -247,6 +240,7 @@ services:
         condition: service_completed_successfully
 
   reporting-service:
+    image: payment-gateway/reporting-service:latest
     build:
       context: .
       dockerfile: services/reporting-service/Dockerfile
