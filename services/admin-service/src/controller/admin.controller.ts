@@ -180,23 +180,22 @@ export class AdminController {
       const pgLatency = Date.now() - pgStart;
 
       const endpoints = [
-        { name: 'Redis Cache (In-Memory)', host: 'localhost', port: 6379, type: 'infra' },
-        { name: 'Kafka Event Bus', host: 'localhost', port: 9092, type: 'infra' },
-        { name: 'Auth Identity Provider', host: 'localhost', port: 3001, type: 'service' },
-        { name: 'Merchant API Gateway', host: 'localhost', port: 3002, type: 'service' },
-        { name: 'Ledger Service (Go)', host: 'localhost', port: 8085, type: 'service' },
-        { name: 'Risk Service (Go)', host: 'localhost', port: 8086, type: 'service' },
-        { name: 'Provider Service (Go)', host: 'localhost', port: 8087, type: 'service' },
-        { name: 'Webhook Service (Go)', host: 'localhost', port: 50056, type: 'service' }, // gRPC only
-        { name: 'Reconciliation Service (Go)', host: 'localhost', port: 3015, type: 'service' },
-        { name: 'Payment Service (Go)', host: 'localhost', port: 8084, type: 'service' },
-        { name: 'Settlement Service (Go)', host: 'localhost', port: 3010, type: 'service' },
-        { name: 'Billing Service (Go)', host: 'localhost', port: 3016, type: 'service' },
-        { name: 'Dispute Service (Go)', host: 'localhost', port: 3017, type: 'service' },
-        { name: 'Pricing Service (Go)', host: 'localhost', port: 50064, type: 'service' }, // gRPC only
-        { name: 'Vault Service (Go)', host: 'localhost', port: 3019, type: 'service' },
-        { name: 'Routing Service (Go)', host: 'localhost', port: 3020, type: 'service' },
-        { name: 'FX Service (Go)', host: 'localhost', port: 3021, type: 'service' }
+        { name: 'Redis Cache (In-Memory)', host: process.env.REDIS_HOST || 'redis', port: 6379, type: 'infra' },
+        { name: 'Kafka Event Bus', host: process.env.KAFKA_HOST || 'kafka', port: 9092, type: 'infra' },
+        { name: 'Auth Identity Provider', host: 'auth-service', port: 3001, type: 'service' },
+        { name: 'Merchant API Gateway', host: 'merchant-service', port: 3002, type: 'service' },
+        { name: 'Ledger Service (Go)', host: 'ledger-service', port: 50053, type: 'service' },
+        { name: 'Risk Service (Go)', host: 'risk-service', port: 8086, type: 'service' },
+        { name: 'Provider Service (Go)', host: 'provider-service', port: 8087, type: 'service' },
+        { name: 'Webhook Service (Go)', host: 'webhook-service', port: 50056, type: 'service' },
+        { name: 'Reconciliation Service (Go)', host: 'reconciliation-service', port: 3011, type: 'service' },
+        { name: 'Payment Service (Go)', host: 'payment-service', port: 8084, type: 'service' },
+        { name: 'Settlement Service (Go)', host: 'settlement-service', port: 3010, type: 'service' },
+        { name: 'Billing Service (Go)', host: 'billing-service', port: 3016, type: 'service' },
+        { name: 'Dispute Service (Go)', host: 'dispute-service', port: 3017, type: 'service' },
+        { name: 'Dashboard Service (BFF)', host: 'dashboard-service', port: 3009, type: 'service' },
+        { name: 'Reporting Service (Go)', host: 'reporting-service', port: 3008, type: 'service' },
+        { name: 'Notification Service', host: 'notification-service', port: 3007, type: 'service' }
       ];
 
       const results = await Promise.all(
