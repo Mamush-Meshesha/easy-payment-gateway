@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Search, Filter, ShieldCheck, XCircle, AlertCircle, FileText } from 'lucide-react';
+import { apiFetch } from '../../lib/api';
 
 interface KycDocument { id: string; documentType: string; s3Uri: string; verificationStatus: string; rejectionReason?: string; }
 interface KycProfile { id: string; status: string; businessName?: string; registrationNo?: string; taxId?: string; updatedAt: string; documents: KycDocument[]; merchant: { legalName: string; status?: string; }; }
@@ -13,12 +14,46 @@ const AdminKycReview: React.FC = () => {
   const fetchProfiles = useCallback(async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('token');
       const qs = statusFilter !== 'ALL' ? `?status=${statusFilter}` : '';
-      const res = await fetch(`/api/v1/admin/kyc${qs}`, { headers: { Authorization: `Bearer ${token}` } });
-      if (res.ok) setProfiles((await res.json()).data);
-    } catch {} finally { setLoading(false); }
+      const data = await apiFetch(`/api/v1/admin/kyc${qs}`);
+      if (data && data.data) {
+        setProfiles(data.data);
+      } else if (Array.isArray(data)) {
+        setProfiles(data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch KYC profiles:', err);
+    } finally {
+      setLoading(false);
+    }
   }, [statusFilter]);
+
+  const handleApprove = async () => {
+    if (!selectedProfile) return;
+    try {
+      await apiFetch(`/api/v1/admin/kyc/${selectedProfile.id}/approve`, { method: 'POST' });
+      fetchProfiles();
+      setSelectedProfile(null);
+    } catch (err) {
+      console.error('Approve failed:', err);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!selectedProfile) return;
+    const reason = prompt('Please enter rejection reason:');
+    if (!reason) return;
+    try {
+      await apiFetch(`/api/v1/admin/kyc/${selectedProfile.id}/reject`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      });
+      fetchProfiles();
+      setSelectedProfile(null);
+    } catch (err) {
+      console.error('Reject failed:', err);
+    }
+  };
 
   useEffect(() => { fetchProfiles(); }, [fetchProfiles]);
 
@@ -92,8 +127,8 @@ const AdminKycReview: React.FC = () => {
               </div>
               {selectedProfile.status === 'UNDER_REVIEW' && (
                 <div className="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 p-4 flex justify-end gap-3 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
-                  <button className="px-6 py-2 rounded-xl text-[13px] font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-colors border border-red-200">Reject</button>
-                  <button className="px-6 py-2 rounded-xl text-[13px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors shadow-sm">Approve & Activate</button>
+                  <button onClick={handleReject} className="px-6 py-2 rounded-xl text-[13px] font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-colors border border-red-200">Reject</button>
+                  <button onClick={handleApprove} className="px-6 py-2 rounded-xl text-[13px] font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-colors shadow-sm">Approve & Activate</button>
                 </div>
               )}
             </div>

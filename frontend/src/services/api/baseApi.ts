@@ -39,7 +39,8 @@ const baseQueryWithReauth: BaseQueryFn<
 
     if (refreshToken) {
       if (!refreshPromise) {
-        refreshPromise = fetch('/api/v1/auth/refresh', {
+        const refreshUrl = import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/api/v1/auth/refresh` : '/api/v1/auth/refresh';
+        refreshPromise = fetch(refreshUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

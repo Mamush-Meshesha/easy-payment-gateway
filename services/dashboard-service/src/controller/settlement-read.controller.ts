@@ -50,7 +50,18 @@ export class SettlementReadController {
         return;
       }
       if (isSuperAdmin && !merchantId) {
-        merchantId = '';
+        if (req.query.merchantId) {
+          merchantId = req.query.merchantId as string;
+        } else {
+          res.json({
+            data: [],
+            total: 0,
+            page: 1,
+            limit: parseInt(req.query.limit as string) || 50,
+            totalPages: 0
+          });
+          return;
+        }
       }
 
       const limit = parseInt(req.query.limit as string) || 50;

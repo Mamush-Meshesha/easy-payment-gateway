@@ -18,12 +18,21 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
 
   if (requireAuth) {
     const state = store.getState();
-    const token = state.auth.accessToken;
+    let token = state.auth.accessToken;
+    if (!token) {
+      token = localStorage.getItem('token');
+      if (!token) {
+        try {
+          const authState = JSON.parse(localStorage.getItem('authState') || '{}');
+          token = authState?.accessToken;
+        } catch {}
+      }
+    }
 
     if (token) {
       requestHeaders.set('Authorization', `Bearer ${token}`);
     } else {
-      console.warn('apiFetch: requireAuth is true but no accessToken found in Redux state.');
+      console.warn('apiFetch: requireAuth is true but no accessToken found in Redux state or localStorage.');
     }
   }
 
@@ -44,7 +53,13 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
   // Handle 401 with refresh logic
   if (response.status === 401 && !options._retry) {
     const state = store.getState();
-    const refreshToken = state.auth.refreshToken;
+    let refreshToken = state.auth.refreshToken;
+    if (!refreshToken) {
+      try {
+        const authState = JSON.parse(localStorage.getItem('authState') || '{}');
+        refreshToken = authState?.refreshToken;
+      } catch {}
+    }
     
     if (refreshToken) {
       if (!refreshPromise) {
@@ -72,7 +87,7 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
           
           // Retry original request with new token
           requestHeaders.set('Authorization', `Bearer ${refreshResult.accessToken}`);
-          response = await fetch(url, {
+          response = await fetch(fullUrl, {
             ...rest,
             headers: requestHeaders,
           });
@@ -125,7 +140,16 @@ export async function apiFetchBlob(url: string, options: FetchOptions = {}): Pro
 
   if (requireAuth) {
     const state = store.getState();
-    const token = state.auth.accessToken;
+    let token = state.auth.accessToken;
+    if (!token) {
+      token = localStorage.getItem('token');
+      if (!token) {
+        try {
+          const authState = JSON.parse(localStorage.getItem('authState') || '{}');
+          token = authState?.accessToken;
+        } catch {}
+      }
+    }
     if (token) {
       requestHeaders.set('Authorization', `Bearer ${token}`);
     }
@@ -142,11 +166,18 @@ export async function apiFetchBlob(url: string, options: FetchOptions = {}): Pro
   // Handle 401 with refresh logic
   if (response.status === 401 && !options._retry) {
     const state = store.getState();
-    const refreshToken = state.auth.refreshToken;
+    let refreshToken = state.auth.refreshToken;
+    if (!refreshToken) {
+      try {
+        const authState = JSON.parse(localStorage.getItem('authState') || '{}');
+        refreshToken = authState?.refreshToken;
+      } catch {}
+    }
     
     if (refreshToken) {
       if (!refreshPromise) {
-        refreshPromise = fetch('/api/v1/auth/refresh', {
+        const refreshUrl = '/api/v1/auth/refresh'.startsWith('http') ? '/api/v1/auth/refresh' : `${baseUrl}/api/v1/auth/refresh`;
+        refreshPromise = fetch(refreshUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ refreshToken }),
@@ -169,7 +200,7 @@ export async function apiFetchBlob(url: string, options: FetchOptions = {}): Pro
           
           // Retry original request with new token
           requestHeaders.set('Authorization', `Bearer ${refreshResult.accessToken}`);
-          response = await fetch(url, {
+          response = await fetch(fullUrl, {
             ...rest,
             headers: requestHeaders,
           });
