@@ -36,7 +36,7 @@ const RadarRules: React.FC = () => {
       const response = await fetchAuth('/api/v1/risk/rules');
       if (response.ok) {
         const data = await response.json();
-        setRules(data || []);
+        setRules(Array.isArray(data) ? data : (Array.isArray(data?.rules) ? data.rules : []));
       }
     } catch (err) {
       console.error('Failed to fetch rules', err);
@@ -155,7 +155,7 @@ const RadarRules: React.FC = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {rules.length === 0 ? (
+                {(!Array.isArray(rules) || rules.length === 0) ? (
                   <tr>
                     <td colSpan={4} className="px-6 py-20 text-center">
                       <div className="inline-flex p-5 bg-indigo-50 rounded-full mb-5">
@@ -172,7 +172,7 @@ const RadarRules: React.FC = () => {
                     </td>
                   </tr>
                 ) : (
-                  rules.map((rule) => (
+                  (Array.isArray(rules) ? rules : []).map((rule) => (
                     <tr key={rule.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-6 py-5 font-semibold text-slate-800">
                         {rule.name}
