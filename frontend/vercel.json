@@ -5,7 +5,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "http://192.168.122.127:8080/api/$1"
+      "dest": "http://payment-gateway-staging-alb-1448992872.eu-north-1.elb.amazonaws.com/api/$1"
     },
     {
       "handle": "filesystem"
