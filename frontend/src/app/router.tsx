@@ -66,10 +66,13 @@ const Community = React.lazy(() => import('../pages/public/Community'));
 
 const Mock3dsChallenge = React.lazy(() => import('../pages/public/Mock3dsChallenge'));
 
+import { RouteErrorBoundary } from '../components/common/RouteErrorBoundary';
+
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <PublicLayout />,
+    errorElement: <RouteErrorBoundary />,
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'pricing', element: <PricingPage /> },
@@ -103,7 +106,7 @@ export const router = createBrowserRouter([
       { path: 'community', element: <Community /> },
     ],
   },
-  { path: '/login', element: <Login /> },
+  { path: '/login', element: <Login />, errorElement: <RouteErrorBoundary /> },
   
   // Super Admin Routes
   {
@@ -113,6 +116,7 @@ export const router = createBrowserRouter([
         <AdminLayout />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
     children: [
       { index: true, element: <AdminDashboard /> },
       { path: 'merchants', element: <MerchantsManagement /> },
@@ -140,6 +144,7 @@ export const router = createBrowserRouter([
         <MerchantLayout />
       </ProtectedRoute>
     ),
+    errorElement: <RouteErrorBoundary />,
     children: [
       { index: true, element: <DashboardOverview /> },
       { path: 'payments', element: <PaymentsList /> },

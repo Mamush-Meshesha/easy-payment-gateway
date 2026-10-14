@@ -8,7 +8,7 @@ const GeneralTab: React.FC = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const merchantId = user?.merchantId || '';
 
-  const { data: merchant, isLoading } = useGetMerchantDetailsQuery(merchantId, { skip: !merchantId });
+  const { data: merchant, isLoading, error } = useGetMerchantDetailsQuery(merchantId, { skip: !merchantId });
 
   const [hasChanges, setHasChanges] = useState(false);
 
@@ -21,6 +21,17 @@ const GeneralTab: React.FC = () => {
   return (
     <div className="max-w-4xl animate-in fade-in slide-in-from-bottom-2 duration-300">
       
+      {error && (
+        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="text-amber-600 shrink-0" size={18} />
+            <p className="text-[13px] text-amber-800 font-medium">
+              Merchant session data was not found in the active database. If you recently reset or reseeded the database, please log out and re-login to synchronize your active merchant profile.
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-6">
         <div>
           <h2 className="text-lg font-bold text-slate-900 mb-1">General Settings</h2>
