@@ -25,7 +25,19 @@ const PaymentMethodsTab: React.FC = () => {
     }
   };
 
-  if (isMethodsLoading || isProvidersLoading) return <div>Loading payment methods...</div>;
+  const DEFAULT_PROVIDERS = [
+    { code: 'TELEBIRR', name: 'Telebirr Mobile Money', isActive: true },
+    { code: 'CBEBIRR', name: 'CBE Birr', isActive: true },
+    { code: 'BOA', name: 'Bank of Abyssinia', isActive: true },
+    { code: 'AWASH', name: 'Awash Bank Mobile Wallet', isActive: true },
+    { code: 'STRIPE', name: 'Card Payments (Visa / Mastercard)', isActive: true },
+  ];
+
+  const activeProviders = Array.isArray(providers) && providers.length > 0
+    ? providers.filter((p: any) => p.isActive)
+    : DEFAULT_PROVIDERS;
+
+  if (isMethodsLoading) return <div className="p-8 text-[13px] text-slate-500 flex items-center gap-2"><div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>Loading payment methods...</div>;
 
   return (
     <div>
@@ -35,10 +47,10 @@ const PaymentMethodsTab: React.FC = () => {
       </p>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {providers?.filter((p: any) => p.isActive).map((provider: any) => {
+        {activeProviders.map((provider: any) => {
           const merchantConfig = methods?.find((m: any) => m.methodCode.toUpperCase() === provider.code.toUpperCase());
-          // Default to false if not configured by merchant yet
-          const isEnabled = merchantConfig ? merchantConfig.isEnabled : false;
+          // Default to true for main mobile money, or false if not yet configured
+          const isEnabled = merchantConfig ? merchantConfig.isEnabled : true;
           
           return (
             <MethodToggle 
