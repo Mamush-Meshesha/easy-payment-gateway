@@ -25,6 +25,10 @@ import { apiTransformerMiddleware } from './middleware/transformer';
 app.use(metricsMiddleware());
 app.get('/metrics', metricsEndpoint);
 
+// Health Checks
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/api/v1/merchants/health', (req, res) => res.json({ status: 'ok' }));
+
 // API Versioning Interceptor
 app.use(apiVersioningMiddleware);
 app.use(apiTransformerMiddleware);

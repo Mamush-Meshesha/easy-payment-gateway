@@ -17,6 +17,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@bufbuild/protobuf": "^2.15.0",
     "@grpc/grpc-js": "^1.14.5",
     "@payment-gateway/api-errors": "file:../../packages/api-errors",
     "@payment-gateway/event-schemas": "file:../../packages/event-schemas",

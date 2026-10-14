@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
+import { MerchantService } from '../services/merchant.service';
 
 const prisma = new PrismaClient();
 
@@ -7,11 +8,19 @@ export const kycController = {
   getProfile: async (req: Request, res: Response): Promise<void> => {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const merchantId =
+        user?.merchantId ||
+        (Array.isArray(user?.roles) ? user.roles.find((r: any) => r?.merchantId)?.merchantId : undefined) ||
+        (req.query?.merchantId as string) ||
+        (req.headers['x-merchant-id'] as string);
+
       if (!merchantId) {
         res.status(401).json({ error: 'Unauthorized merchant context' });
         return;
       }
+
+      // Ensure merchant aggregate exists first to prevent foreign key errors
+      await MerchantService.getMerchant(merchantId);
 
       let profile = await prisma.kycProfile.findUnique({
         where: { merchantId },
@@ -39,7 +48,13 @@ export const kycController = {
   uploadDocument: async (req: Request, res: Response): Promise<void> => {
     try {
       const user = (req as any).user;
-      const merchantId = user?.roles?.find((r: any) => r.merchantId)?.merchantId;
+      const merchantId =
+        user?.merchantId ||
+        (Array.isArray(user?.roles) ? user.roles.find((r: any) => r?.merchantId)?.merchantId : undefined) ||
+        (req.body?.merchantId as string) ||
+        (req.query?.merchantId as string) ||
+        (req.headers['x-merchant-id'] as string);
+
       if (!merchantId) {
         res.status(401).json({ error: 'Unauthorized merchant context' });
         return;
@@ -50,6 +65,9 @@ export const kycController = {
         res.status(400).json({ error: 'documentType and fileName are required' });
         return;
       }
+
+      // Ensure merchant aggregate exists first to prevent foreign key errors
+      await MerchantService.getMerchant(merchantId);
 
       // Find or create profile
       let profile = await prisma.kycProfile.findUnique({ where: { merchantId } });

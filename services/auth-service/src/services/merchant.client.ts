@@ -24,11 +24,15 @@ export function getMerchantClient() {
     credentials = grpc.credentials.createInsecure();
   }
 
-  const host = process.env.MERCHANT_SERVICE_HOST || 'merchant-service';
-  const port = process.env.MERCHANT_GRPC_PORT || '50052';
+  let target = process.env.MERCHANT_SERVICE_ADDR;
+  if (!target) {
+    const host = process.env.MERCHANT_SERVICE_HOST || 'merchant-service.payment-gateway.internal';
+    const port = process.env.MERCHANT_GRPC_PORT || '50052';
+    target = `${host}:${port}`;
+  }
   
   client = new MerchantProto.MerchantServiceClient(
-    `${host}:${port}`,
+    target,
     credentials
   );
 

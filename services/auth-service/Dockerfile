@@ -8,7 +8,7 @@ COPY packages/ ./packages/
 COPY services/auth-service/package*.json ./services/auth-service/
 
 WORKDIR /app
-RUN npm config set registry https://registry.npmjs.org/ && npm config set fetch-retry-maxtimeout 600000 && npm config set fetch-retries 5 && npm install --no-audit --no-fund --legacy-peer-deps
+RUN npm config set registry https://registry.npmjs.org/ && npm config set fetch-retry-maxtimeout 600000 && npm config set fetch-retries 5 && npm install --no-audit --no-fund --legacy-peer-deps && npm install @bufbuild/protobuf@^2.15.0 --no-audit --no-fund --legacy-peer-deps
 
 WORKDIR /app
 COPY . .

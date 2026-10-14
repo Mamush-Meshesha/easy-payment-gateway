@@ -31,11 +31,11 @@ router.get(
   MerchantController.getWebhooks
 );
 
-// Get Merchant details (SUPER_ADMIN or specific MERCHANT_OWNER)
+// Get Merchant details (SUPER_ADMIN or specific MERCHANT_OWNER / MERCHANT_ADMIN)
 router.get(
   '/:merchantId',
   authenticateJWT as any,
-  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER']) as any, // Note: requireRole will enforce req.params.id matches JWT scope for MERCHANT_OWNER
+  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER', 'MERCHANT_ADMIN']) as any,
   MerchantController.getMerchant
 );
 
@@ -43,7 +43,7 @@ router.get(
 router.post(
   '/:merchantId/apikeys',
   authenticateJWT as any,
-  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER']) as any,
+  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER', 'MERCHANT_ADMIN']) as any,
   validationMiddleware(GenerateApiKeyDto),
   MerchantController.generateApiKey
 );
@@ -52,7 +52,7 @@ router.post(
 router.delete(
   '/:merchantId/apikeys/:keyId',
   authenticateJWT as any,
-  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER']) as any,
+  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER', 'MERCHANT_ADMIN']) as any,
   MerchantController.revokeApiKey
 );
 
@@ -60,7 +60,7 @@ router.delete(
 router.post(
   '/:merchantId/webhooks',
   authenticateJWT as any,
-  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER']) as any,
+  requireRole(['SUPER_ADMIN', 'MERCHANT_OWNER', 'MERCHANT_ADMIN']) as any,
   validationMiddleware(CreateWebhookConfigDto),
   MerchantController.configureWebhook
 );

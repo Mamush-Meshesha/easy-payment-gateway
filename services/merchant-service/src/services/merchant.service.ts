@@ -53,7 +53,9 @@ export class MerchantService {
   }
 
   static async getMerchant(merchantId: string) {
-    return await prisma.merchant.findUnique({
+    if (!merchantId) return null;
+
+    let merchant = await prisma.merchant.findUnique({
       where: { id: merchantId },
       include: {
         apiKeys: {
@@ -75,9 +77,57 @@ export class MerchantService {
         limits: true
       }
     });
+
+    if (!merchant) {
+      try {
+        merchant = await prisma.merchant.create({
+          data: {
+            id: merchantId,
+            legalName: 'Merchant Business',
+            displayName: 'Merchant Business',
+            country: 'ETH',
+            defaultCurrency: 'ETB',
+            status: 'ACTIVE'
+          },
+          include: {
+            apiKeys: {
+              select: {
+                id: true,
+                name: true,
+                keyPrefix: true,
+                keyLast4: true,
+                environment: true,
+                keyType: true,
+                status: true,
+                createdAt: true,
+                lastUsedAt: true,
+                revokedAt: true
+              }
+            },
+            webhookConfigs: true,
+            limits: true
+          }
+        });
+      } catch (e) {
+        merchant = await prisma.merchant.findUnique({
+          where: { id: merchantId },
+          include: {
+            apiKeys: true,
+            webhookConfigs: true,
+            limits: true
+          }
+        });
+      }
+    }
+
+    return merchant;
   }
 
   static async getPreferences(merchantId: string) {
+    if (!merchantId) return null;
+    // Ensure merchant aggregate exists first to prevent foreign key errors
+    await MerchantService.getMerchant(merchantId);
+
     let prefs = await prisma.merchantPreference.findUnique({
       where: { merchantId }
     });

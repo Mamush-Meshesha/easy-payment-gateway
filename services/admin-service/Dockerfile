@@ -8,7 +8,7 @@ COPY packages/ ./packages/
 COPY services/admin-service/package*.json ./services/admin-service/
 
 WORKDIR /app
-RUN npm config set registry https://registry.npmmirror.com && npm config set fetch-retry-maxtimeout 600000 && npm config set fetch-retries 5 && npm install --install-links
+RUN npm config set registry https://registry.npmjs.org/ && npm config set fetch-retry-maxtimeout 600000 && npm config set fetch-retries 5 && npm install --no-audit --no-fund --legacy-peer-deps
 
 WORKDIR /app
 COPY . .

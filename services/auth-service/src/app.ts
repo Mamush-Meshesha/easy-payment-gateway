@@ -20,6 +20,10 @@ app.use(express.json());
 app.use(metricsMiddleware());
 app.get('/metrics', metricsEndpoint);
 
+// Health Checks
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+app.get('/api/v1/auth/health', (req, res) => res.json({ status: 'ok' }));
+
 // Routes
 app.use('/api/v1/auth', authRoutes);
 

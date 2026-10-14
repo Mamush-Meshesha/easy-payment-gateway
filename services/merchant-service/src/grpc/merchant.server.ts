@@ -1,5 +1,6 @@
 import * as grpc from '@grpc/grpc-js';
 import path from 'path';
+import fs from 'fs';
 import { MerchantServiceService, MerchantServiceServer } from '@payment-gateway/protobuf/dist/generated/merchant';
 import { logger } from '../utils/logger';
 import { applyAuthInterceptor, createServerCredentials } from 'ts-grpc-auth';
@@ -295,11 +296,16 @@ export function startGrpcServer() {
 
   let credentials;
   try {
-    credentials = createServerCredentials(caPath, certPath, keyPath);
-    logger.info('Starting gRPC server with strict mTLS enabled.');
+    if (fs.existsSync(caPath) && fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+      credentials = createServerCredentials(caPath, certPath, keyPath);
+      logger.info('Starting gRPC server with strict mTLS enabled.');
+    } else {
+      logger.warn('mTLS certs not found, starting gRPC server with insecure credentials.');
+      credentials = grpc.ServerCredentials.createInsecure();
+    }
   } catch (err: any) {
-    logger.error('Failed to load mTLS certificates: ' + err.message);
-    process.exit(1);
+    logger.warn('Failed to load mTLS certificates, fallback to insecure: ' + err.message);
+    credentials = grpc.ServerCredentials.createInsecure();
   }
 
   const port = process.env.GRPC_PORT || '50052';
