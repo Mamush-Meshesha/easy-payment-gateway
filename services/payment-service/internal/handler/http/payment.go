@@ -242,6 +242,67 @@ func (h *PaymentHandler) HandleRefundPayment(c *gin.Context) {
 	}
 }
 
+// HandleGetPayment returns complete payment details for a given payment ID.
+//
+// @Summary      Get payment details
+// @Description  Retrieves full payment details by UUID.
+// @Tags         Payments
+// @Produce      json
+// @Param        id  path  string  true  "Payment ID"
+// @Success      200  {object}  map[string]interface{}
+// @Failure      400  {object}  apierrors.APIError
+// @Failure      404  {object}  apierrors.APIError
+// @Router       /payments/{id} [get]
+func (h *PaymentHandler) HandleGetPayment(c *gin.Context) {
+	paymentIDStr := c.Param("id")
+	paymentID, err := uuid.Parse(paymentIDStr)
+	if err != nil {
+		apierrors.BadRequest(c, apierrors.ErrCodeInvalidPaymentID, "Payment ID must be a valid UUID")
+		return
+	}
+
+	payment, err := h.orchestrator.GetPaymentByID(c.Request.Context(), paymentID)
+	if err != nil {
+		apierrors.NotFound(c, apierrors.ErrCodePaymentNotFound, "No payment found with the provided ID")
+		return
+	}
+
+	var provIDStr *string
+	if payment.ProviderID != nil {
+		s := payment.ProviderID.String()
+		provIDStr = &s
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"id":                 payment.ID.String(),
+		"paymentId":          payment.ID.String(),
+		"payment_id":         payment.ID.String(),
+		"merchantId":         payment.MerchantID.String(),
+		"merchant_id":        payment.MerchantID.String(),
+		"environment":        payment.Environment,
+		"merchantReference":  payment.MerchantReference,
+		"merchant_reference": payment.MerchantReference,
+		"amount":             payment.Amount,
+		"refundedAmount":     payment.RefundedAmount,
+		"refunded_amount":    payment.RefundedAmount,
+		"currency":           payment.Currency,
+		"status":             string(payment.Status),
+		"providerId":         provIDStr,
+		"provider_id":        provIDStr,
+		"customerId":         payment.CustomerID,
+		"customer_id":        payment.CustomerID,
+		"ipAddress":          payment.IPAddress,
+		"ip_address":         payment.IPAddress,
+		"paymentMethod":      payment.PaymentMethod,
+		"payment_method":     payment.PaymentMethod,
+		"version":            payment.Version,
+		"createdAt":          payment.CreatedAt,
+		"created_at":         payment.CreatedAt,
+		"updatedAt":          payment.UpdatedAt,
+		"updated_at":         payment.UpdatedAt,
+	})
+}
+
 // HandleGetPublicPayment returns public-safe payment details for the checkout page.
 //
 // @Summary      Get payment for checkout

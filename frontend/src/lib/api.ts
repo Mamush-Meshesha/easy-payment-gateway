@@ -34,6 +34,11 @@ export async function apiFetch(url: string, options: FetchOptions = {}): Promise
     } else {
       console.warn('apiFetch: requireAuth is true but no accessToken found in Redux state or localStorage.');
     }
+
+    const merchantId = state.auth.user?.merchantId || localStorage.getItem('merchantId');
+    if (merchantId && merchantId !== 'undefined' && merchantId !== 'null' && !requestHeaders.has('X-Merchant-Id')) {
+      requestHeaders.set('X-Merchant-Id', merchantId);
+    }
   }
 
   // Automatically set Content-Type to JSON if sending a body and not already set

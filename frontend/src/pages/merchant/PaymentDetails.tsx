@@ -24,7 +24,13 @@ const PaymentDetails: React.FC = () => {
 
     const fetchPayment = async () => {
       try {
-        const data = await apiFetch(`/api/v1/payments/${id}`);
+        let data;
+        try {
+          data = await apiFetch(`/api/v1/payments/${id}`);
+        } catch (e: any) {
+          // Fallback to dashboard BFF route if direct payments route fails
+          data = await apiFetch(`/api/v1/dashboard/payments/${id}`);
+        }
         setPayment(data);
       } catch (err: any) {
         setError(err.message || 'Failed to load payment details');
@@ -60,6 +66,11 @@ const PaymentDetails: React.FC = () => {
 
   const isSuccess = payment.status === 'SUCCEEDED' || payment.status === 'COMPLETED';
   const isPending = payment.status === 'PENDING' || payment.status === 'CREATED';
+  const refundedAmt = Number(payment.refunded_amount || payment.refundedAmount || 0);
+  const paymentCreatedAt = payment.created_at || payment.createdAt;
+  const paymentUpdatedAt = payment.updated_at || payment.updatedAt;
+  const paymentMethodStr = payment.payment_method || payment.paymentMethod || 'Unknown';
+  const customerOrRef = payment.customer_id || payment.customerId || payment.merchant_reference || payment.merchantReference || 'Not Available';
 
   return (
     <div>
@@ -98,28 +109,28 @@ const PaymentDetails: React.FC = () => {
               <div>
                 <p style={{ margin: '0 0 0.25rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Amount</p>
                 <p style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>{payment.currency || 'ETB'} {(Number(payment.amount) / 100).toFixed(2)}</p>
-                {payment.refunded_amount > 0 && (
+                {refundedAmt > 0 && (
                   <p style={{ margin: '0.25rem 0 0 0', fontSize: '0.85rem', color: '#ef4444' }}>
-                    Refunded: {payment.currency || 'ETB'} {(Number(payment.refunded_amount) / 100).toFixed(2)}
+                    Refunded: {payment.currency || 'ETB'} {(refundedAmt / 100).toFixed(2)}
                   </p>
                 )}
               </div>
               <div>
                 <p style={{ margin: '0 0 0.25rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Date</p>
-                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500 }}>{payment.created_at ? new Date(payment.created_at).toLocaleString() : 'N/A'}</p>
+                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500 }}>{paymentCreatedAt ? new Date(paymentCreatedAt).toLocaleString() : 'N/A'}</p>
               </div>
               <div>
                 <p style={{ margin: '0 0 0.25rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Payment Method</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}>
                   <div style={{ width: '24px', height: '24px', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', fontWeight: 700 }}>
-                    {(payment.payment_method || 'U')[0].toUpperCase()}
+                    {(paymentMethodStr || 'U')[0].toUpperCase()}
                   </div>
-                  {payment.payment_method || 'Unknown'}
+                  {paymentMethodStr}
                 </div>
               </div>
               <div>
                 <p style={{ margin: '0 0 0.25rem 0', color: 'var(--text-muted)', fontSize: '0.85rem' }}>Customer / Reference</p>
-                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500 }}>{payment.customer_id || payment.merchant_reference || 'Not Available'}</p>
+                <p style={{ margin: 0, fontSize: '1rem', fontWeight: 500 }}>{customerOrRef}</p>
               </div>
             </div>
           </div>
@@ -133,7 +144,7 @@ const PaymentDetails: React.FC = () => {
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: isSuccess ? '#10b981' : isPending ? '#fbbf24' : '#ef4444', marginTop: '4px' }}></div>
                 <div>
                   <p style={{ margin: '0 0 0.25rem 0', fontWeight: 600 }}>Status: {payment.status}</p>
-                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>{payment.updated_at ? new Date(payment.updated_at).toLocaleString() : (payment.created_at ? new Date(payment.created_at).toLocaleString() : 'N/A')}</p>
+                  <p style={{ margin: 0, fontSize: '0.85rem', color: 'var(--text-muted)' }}>{paymentUpdatedAt ? new Date(paymentUpdatedAt).toLocaleString() : (paymentCreatedAt ? new Date(paymentCreatedAt).toLocaleString() : 'N/A')}</p>
                 </div>
               </div>
             </div>

@@ -24,7 +24,7 @@ func NewDisputeHandler(orchestrator *service.DisputeOrchestrator, repo domain.Di
 
 func (h *DisputeHandler) ListDisputes(c *gin.Context) {
 	merchantIDStr := c.GetHeader("X-Merchant-Id")
-	if merchantIDStr == "undefined" {
+	if merchantIDStr == "undefined" || merchantIDStr == "null" {
 		merchantIDStr = ""
 	}
 	merchantID, _ := uuid.Parse(merchantIDStr)
@@ -40,10 +40,19 @@ func (h *DisputeHandler) ListDisputes(c *gin.Context) {
 
 func (h *DisputeHandler) SimulateDispute(c *gin.Context) {
 	merchantIDStr := c.GetHeader("X-Merchant-Id")
-	if merchantIDStr == "undefined" {
+	if merchantIDStr == "undefined" || merchantIDStr == "null" {
 		merchantIDStr = ""
 	}
 	merchantID, _ := uuid.Parse(merchantIDStr)
+
+	// If merchantID is Nil, try to adopt merchant ID from any existing dispute or generate a fallback
+	if merchantID == uuid.Nil {
+		if existing, err := h.repo.ListDisputes(uuid.Nil, 1, 0); err == nil && len(existing) > 0 && existing[0].MerchantID != uuid.Nil {
+			merchantID = existing[0].MerchantID
+		} else {
+			merchantID = uuid.Must(uuid.NewV7())
+		}
+	}
 
 	// Generate a random payment ID to dispute for testing
 	paymentID := uuid.Must(uuid.NewV7())

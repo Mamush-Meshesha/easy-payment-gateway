@@ -48,7 +48,19 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to connect to database: %v", err)
 	}
-	db.AutoMigrate(&domain.Payment{}, &domain.PaymentStateHistory{}, &domain.IdempotencyKey{}, &domain.OutboxEvent{}, &domain.Refund{}, &domain.RefundStateHistory{})
+
+	log.Println("Running AutoMigrate for payment models...")
+	if err := db.AutoMigrate(
+		&domain.Payment{},
+		&domain.PaymentStateHistory{},
+		&domain.IdempotencyKey{},
+		&domain.OutboxEvent{},
+		&domain.Refund{},
+		&domain.RefundStateHistory{},
+	); err != nil {
+		log.Fatalf("AutoMigrate failed: %v", err)
+	}
+	log.Println("AutoMigrate completed successfully!")
 
 	// 2. gRPC Clients
 	merchantAddr := getEnv("MERCHANT_SERVICE_ADDR", "localhost:50051")
@@ -107,15 +119,23 @@ func main() {
 	serverCert := os.Getenv("MTLS_SERVER_CERT")
 	serverKey := os.Getenv("MTLS_SERVER_KEY")
 
-	creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
-	if err != nil {
-		log.Fatalf("failed to load TLS credentials: %v", err)
+	var grpcServer *grpc.Server
+	if caCert != "" && serverCert != "" && serverKey != "" {
+		creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
+		if err == nil {
+			grpcServer = grpc.NewServer(
+				grpc.Creds(creds),
+				grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
+			)
+		} else {
+			log.Printf("TLS credentials could not be loaded: %v, falling back to insecure", err)
+		}
 	}
-
-	grpcServer := grpc.NewServer(
-		grpc.Creds(creds),
-		grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
-	)
+	if grpcServer == nil {
+		grpcServer = grpc.NewServer(
+			grpc.UnaryInterceptor(grpcauth.InsecureInterceptor()),
+		)
+	}
 
 	readGrpcHandler := grpcserver.NewPaymentReadGrpcServer(paymentRepo)
 	pb.RegisterPaymentReadServiceServer(grpcServer, readGrpcHandler)

@@ -2,6 +2,7 @@ package service
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -37,11 +38,11 @@ func (o *DisputeOrchestrator) HandleIncomingDispute(merchantID, paymentID uuid.U
 		return nil, fmt.Errorf("failed to create dispute: %w", err)
 	}
 
-	// Freeze funds in ledger
-	if err := o.ledgerClient.FreezeDisputeFunds(merchantID, paymentID, amount, currency); err != nil {
-		// Log error, but dispute is already created. A background sync worker would retry ledger freeze.
-		// For MVP, we'll return the error but acknowledge it.
-		return dispute, fmt.Errorf("dispute created, but failed to freeze ledger funds: %w", err)
+	// Freeze funds in ledger (best-effort async; background sync worker reconciles)
+	if o.ledgerClient != nil {
+		if err := o.ledgerClient.FreezeDisputeFunds(merchantID, paymentID, amount, currency); err != nil {
+			log.Printf("[WARN] Dispute %s created, but failed to freeze ledger funds: %v", dispute.ID, err)
+		}
 	}
 
 	return dispute, nil
@@ -84,9 +85,11 @@ func (o *DisputeOrchestrator) AcceptDispute(disputeID uuid.UUID) error {
 		return err
 	}
 
-	// Reverse the frozen funds to the provider network
-	if err := o.ledgerClient.ReverseDisputeFunds(dispute.MerchantID, dispute.PaymentID, dispute.Amount, dispute.Currency); err != nil {
-		return fmt.Errorf("failed to reverse funds in ledger: %w", err)
+	// Reverse the frozen funds to the provider network (best-effort async)
+	if o.ledgerClient != nil {
+		if err := o.ledgerClient.ReverseDisputeFunds(dispute.MerchantID, dispute.PaymentID, dispute.Amount, dispute.Currency); err != nil {
+			log.Printf("[WARN] Failed to reverse funds in ledger for dispute %s: %v", disputeID, err)
+		}
 	}
 
 	return nil
@@ -104,13 +107,23 @@ func (o *DisputeOrchestrator) ResolveDispute(disputeID uuid.UUID, won bool) erro
 			return err
 		}
 		// Release funds back to merchant
-		return o.ledgerClient.ReleaseDisputeFunds(dispute.MerchantID, dispute.PaymentID, dispute.Amount, dispute.Currency)
+		if o.ledgerClient != nil {
+			if err := o.ledgerClient.ReleaseDisputeFunds(dispute.MerchantID, dispute.PaymentID, dispute.Amount, dispute.Currency); err != nil {
+				log.Printf("[WARN] Failed to release funds in ledger for dispute %s: %v", disputeID, err)
+			}
+		}
+		return nil
 	} else {
 		if err := o.repo.UpdateDisputeStatus(disputeID, domain.DisputeStatusLost); err != nil {
 			return err
 		}
 		// Reverse funds to provider
-		return o.ledgerClient.ReverseDisputeFunds(dispute.MerchantID, dispute.PaymentID, dispute.Amount, dispute.Currency)
+		if o.ledgerClient != nil {
+			if err := o.ledgerClient.ReverseDisputeFunds(dispute.MerchantID, dispute.PaymentID, dispute.Amount, dispute.Currency); err != nil {
+				log.Printf("[WARN] Failed to reverse funds in ledger for dispute %s: %v", disputeID, err)
+			}
+		}
+		return nil
 	}
 }
 

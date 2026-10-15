@@ -46,6 +46,7 @@ func SetupRouter(paymentHandler *handlerhttp.PaymentHandler) *gin.Engine {
 	api := r.Group("/api/v1")
 	{
 		api.POST("/payments", paymentHandler.HandleCreatePayment)
+		api.GET("/payments/:id", paymentHandler.HandleGetPayment)
 		api.POST("/payments/:id/refund", paymentHandler.HandleRefundPayment)
 
 		checkout := api.Group("/checkout")

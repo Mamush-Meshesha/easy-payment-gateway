@@ -6,6 +6,8 @@ import * as protoLoader from '@grpc/proto-loader';
 import path from 'path';
 import fs from 'fs';
 
+import { getGrpcCredentials } from '../utils/grpc-credentials';
+
 const PROTO_PATH = path.resolve(__dirname, '../../../../packages/protobuf/src/payment_read.proto');
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
@@ -15,10 +17,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition) as any;
-const caCert = fs.readFileSync(process.env.MTLS_CA_CERT || '/app/certs/ca.crt');
-const clientCert = fs.readFileSync(process.env.MTLS_SERVER_CERT || '/app/certs/dashboard-service.crt');
-const clientKey = fs.readFileSync(process.env.MTLS_SERVER_KEY || '/app/certs/dashboard-service.key');
-const credentials = grpc.credentials.createSsl(caCert, clientKey, clientCert);
+const credentials = getGrpcCredentials();
 
 const client = new protoDescriptor.payment_read.PaymentReadService(
   process.env.PAYMENT_SERVICE_ADDR || 'payment-service:50051',
