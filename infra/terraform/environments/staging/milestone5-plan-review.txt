@@ -1,0 +1,2006 @@
+[0m[1mmodule.elasticache[0].random_password.redis_auth: Refreshing state... [id=none][0m
+[0m[1mmodule.rds[0].random_password.db_master: Refreshing state... [id=none][0m
+[0m[1mmodule.cloudfront[0].random_string.suffix: Refreshing state... [id=3k38lq][0m
+[0m[1mmodule.s3_storage[0].random_string.suffix: Refreshing state... [id=rulo18][0m
+[0m[1mmodule.vpc.data.aws_region.current: Reading...[0m[0m
+[0m[1mmodule.elasticache[0].aws_secretsmanager_secret.redis_auth: Refreshing state... [id=arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE][0m
+[0m[1mmodule.elasticache[0].aws_elasticache_parameter_group.redis: Refreshing state... [id=payment-gateway-staging-redis7-params][0m
+[0m[1mmodule.ecs[0].aws_ecs_cluster.main: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:cluster/payment-gateway-staging-cluster][0m
+[0m[1mmodule.ecs[0].aws_iam_role.ecs_execution: Refreshing state... [id=payment-gateway-staging-ecs-execution-role][0m
+[0m[1mmodule.vpc.aws_eip.nat[0]: Refreshing state... [id=eipalloc-081e11578249850a5][0m
+[0m[1mmodule.vpc.data.aws_region.current: Read complete after 0s [id=eu-north-1][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket.buckets["kyc_docs"]: Refreshing state... [id=payment-gateway-staging-kyc-docs-rulo18][0m
+[0m[1mmodule.rds[0].aws_db_parameter_group.postgres: Refreshing state... [id=payment-gateway-staging-pg15-params][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket.buckets["audit_reports"]: Refreshing state... [id=payment-gateway-staging-audit-reports-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket.buckets["dispute_evidence"]: Refreshing state... [id=payment-gateway-staging-dispute-evidence-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket.buckets["settlement_statements"]: Refreshing state... [id=payment-gateway-staging-settlement-statements-rulo18][0m
+[0m[1mmodule.ecs[0].aws_iam_role.ecs_task: Refreshing state... [id=payment-gateway-staging-ecs-task-role][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["merchant-service"]: Refreshing state... [id=payment-gateway/merchant-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["webhook-service"]: Refreshing state... [id=payment-gateway/webhook-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["risk-service"]: Refreshing state... [id=payment-gateway/risk-service][0m
+[0m[1mmodule.ingress[0].aws_wafv2_web_acl.alb_waf: Refreshing state... [id=f94c04ea-edf4-4fa5-ba28-95d9d460e9a5][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["reconciliation-service"]: Refreshing state... [id=payment-gateway/reconciliation-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["reporting-service"]: Refreshing state... [id=payment-gateway/reporting-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["dispute-service"]: Refreshing state... [id=payment-gateway/dispute-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["dashboard-service"]: Refreshing state... [id=payment-gateway/dashboard-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["provider-service"]: Refreshing state... [id=payment-gateway/provider-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["auth-service"]: Refreshing state... [id=payment-gateway/auth-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["ledger-service"]: Refreshing state... [id=payment-gateway/ledger-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["billing-service"]: Refreshing state... [id=payment-gateway/billing-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["settlement-service"]: Refreshing state... [id=payment-gateway/settlement-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["transaction-service"]: Refreshing state... [id=payment-gateway/transaction-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["notification-service"]: Refreshing state... [id=payment-gateway/notification-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["admin-service"]: Refreshing state... [id=payment-gateway/admin-service][0m
+[0m[1mmodule.ecr.aws_ecr_repository.services["payment-service"]: Refreshing state... [id=payment-gateway/payment-service][0m
+[0m[1mmodule.vpc.aws_vpc.main: Refreshing state... [id=vpc-0f80380c03be17d3c][0m
+[0m[1mmodule.rds[0].aws_kms_key.rds: Refreshing state... [id=7ce758aa-b4fc-4b1e-9aa5-f283ced521b8][0m
+[0m[1mmodule.cloudfront[0].aws_s3_bucket.frontend: Refreshing state... [id=payment-gateway-staging-spa-assets-3k38lq][0m
+[0m[1mmodule.s3_storage[0].aws_kms_key.storage: Refreshing state... [id=da8af413-46f3-49aa-8ebc-02fb8943aa78][0m
+[0m[1mmodule.cloudfront[0].aws_cloudfront_origin_access_control.oac: Refreshing state... [id=EJ6XDNC4IJQY8][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["reporting-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/reporting-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["merchant-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/merchant-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["auth-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/auth-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["transaction-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/transaction-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["dispute-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/dispute-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["admin-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/admin-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["ledger-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/ledger-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["webhook-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/webhook-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["billing-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/billing-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["dashboard-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/dashboard-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["payment-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/payment-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["reconciliation-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/reconciliation-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["risk-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/risk-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["settlement-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/settlement-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["notification-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/notification-service][0m
+[0m[1mmodule.ecs[0].aws_cloudwatch_log_group.services["provider-service"]: Refreshing state... [id=/ecs/payment-gateway-staging/provider-service][0m
+[0m[1mmodule.ecs[0].aws_iam_role_policy_attachment.ecs_execution_base: Refreshing state... [id=payment-gateway-staging-ecs-execution-role-20261013104833727400000002][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_versioning.versioning["settlement_statements"]: Refreshing state... [id=payment-gateway-staging-settlement-statements-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_versioning.versioning["audit_reports"]: Refreshing state... [id=payment-gateway-staging-audit-reports-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_versioning.versioning["dispute_evidence"]: Refreshing state... [id=payment-gateway-staging-dispute-evidence-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_versioning.versioning["kyc_docs"]: Refreshing state... [id=payment-gateway-staging-kyc-docs-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_policy.enforce_tls["settlement_statements"]: Refreshing state... [id=payment-gateway-staging-settlement-statements-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_policy.enforce_tls["audit_reports"]: Refreshing state... [id=payment-gateway-staging-audit-reports-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_policy.enforce_tls["dispute_evidence"]: Refreshing state... [id=payment-gateway-staging-dispute-evidence-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_policy.enforce_tls["kyc_docs"]: Refreshing state... [id=payment-gateway-staging-kyc-docs-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_public_access_block.public_access["settlement_statements"]: Refreshing state... [id=payment-gateway-staging-settlement-statements-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_public_access_block.public_access["audit_reports"]: Refreshing state... [id=payment-gateway-staging-audit-reports-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_public_access_block.public_access["dispute_evidence"]: Refreshing state... [id=payment-gateway-staging-dispute-evidence-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_public_access_block.public_access["kyc_docs"]: Refreshing state... [id=payment-gateway-staging-kyc-docs-rulo18][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["risk-service"]: Refreshing state... [id=payment-gateway/risk-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["provider-service"]: Refreshing state... [id=payment-gateway/provider-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["auth-service"]: Refreshing state... [id=payment-gateway/auth-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["reconciliation-service"]: Refreshing state... [id=payment-gateway/reconciliation-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["webhook-service"]: Refreshing state... [id=payment-gateway/webhook-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["merchant-service"]: Refreshing state... [id=payment-gateway/merchant-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["admin-service"]: Refreshing state... [id=payment-gateway/admin-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["billing-service"]: Refreshing state... [id=payment-gateway/billing-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["transaction-service"]: Refreshing state... [id=payment-gateway/transaction-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["payment-service"]: Refreshing state... [id=payment-gateway/payment-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["dispute-service"]: Refreshing state... [id=payment-gateway/dispute-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["ledger-service"]: Refreshing state... [id=payment-gateway/ledger-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["reporting-service"]: Refreshing state... [id=payment-gateway/reporting-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["dashboard-service"]: Refreshing state... [id=payment-gateway/dashboard-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["notification-service"]: Refreshing state... [id=payment-gateway/notification-service][0m
+[0m[1mmodule.ecr.aws_ecr_lifecycle_policy.services["settlement-service"]: Refreshing state... [id=payment-gateway/settlement-service][0m
+[0m[1mmodule.s3_storage[0].aws_kms_alias.storage: Refreshing state... [id=alias/payment-gateway-staging-s3-key][0m
+[0m[1mmodule.rds[0].aws_kms_alias.rds: Refreshing state... [id=alias/payment-gateway-staging-rds-key][0m
+[0m[1mmodule.rds[0].aws_secretsmanager_secret.db_credentials: Refreshing state... [id=arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["dispute_evidence"]: Refreshing state... [id=payment-gateway-staging-dispute-evidence-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["settlement_statements"]: Refreshing state... [id=payment-gateway-staging-settlement-statements-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["audit_reports"]: Refreshing state... [id=payment-gateway-staging-audit-reports-rulo18][0m
+[0m[1mmodule.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["kyc_docs"]: Refreshing state... [id=payment-gateway-staging-kyc-docs-rulo18][0m
+[0m[1mmodule.vpc.aws_route_table.private_data: Refreshing state... [id=rtb-08078f6622083d085][0m
+[0m[1mmodule.vpc.aws_subnet.public[0]: Refreshing state... [id=subnet-06530bc9522bdc06f][0m
+[0m[1mmodule.vpc.aws_subnet.public[1]: Refreshing state... [id=subnet-05878daa7174b910e][0m
+[0m[1mmodule.vpc.aws_internet_gateway.gw: Refreshing state... [id=igw-045307139cb17630c][0m
+[0m[1mmodule.vpc.aws_subnet.private_data[0]: Refreshing state... [id=subnet-04ee165032c78e794][0m
+[0m[1mmodule.vpc.aws_subnet.private_data[1]: Refreshing state... [id=subnet-0a4518be691b0250c][0m
+[0m[1mmodule.vpc.aws_subnet.private_app[0]: Refreshing state... [id=subnet-02cc13deaa844777c][0m
+[0m[1mmodule.vpc.aws_subnet.private_app[1]: Refreshing state... [id=subnet-0779619888156c00a][0m
+[0m[1mmodule.security.aws_security_group.tier4_workers: Refreshing state... [id=sg-0f70199c622dd39e2][0m
+[0m[1mmodule.security.aws_security_group.alb: Refreshing state... [id=sg-086c409e4f03de11e][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_private_dns_namespace.main: Refreshing state... [id=ns-3yyzhbdfvj6oqgww][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["dashboard-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-dashboard-service/3fa0ec498b210c77][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["admin-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-admin-service/bc8c198cff9ec633][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["payment-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-payment-service/6e5ad9663d4e76fe][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["billing-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-billing-service/15f71b4aa4aeea82][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["reconciliation-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-reconciliation-service/1f265d4b7471b59f][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["dispute-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-dispute-service/a3ba57ce74863340][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["merchant-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-merchant-service/08781d0a49bbe44a][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["reporting-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-reporting-service/d40a02c857e7e4ee][0m
+[0m[1mmodule.ecs[0].aws_lb_target_group.services["auth-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:targetgroup/pg-stg-auth-service/f0b57a470b4524c3][0m
+[0m[1mmodule.vpc.aws_route_table.public: Refreshing state... [id=rtb-0ff3d1672068685bc][0m
+[0m[1mmodule.vpc.aws_nat_gateway.nat[0]: Refreshing state... [id=nat-0c3862d296bf26c9a][0m
+[0m[1mmodule.vpc.aws_route_table_association.private_data[0]: Refreshing state... [id=rtbassoc-09cc17290ff9688b0][0m
+[0m[1mmodule.vpc.aws_route_table_association.private_data[1]: Refreshing state... [id=rtbassoc-07a16f7ddb8c8b715][0m
+[0m[1mmodule.security.aws_security_group.tier1_public: Refreshing state... [id=sg-0ff89d4a30b1b2335][0m
+[0m[1mmodule.security.aws_security_group.tier2_admin: Refreshing state... [id=sg-0bc3c26295a622835][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["billing-service"]: Refreshing state... [id=srv-t57luv2x7fimmqoz][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["risk-service"]: Refreshing state... [id=srv-i6tekoxkzpzlnxo2][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["dashboard-service"]: Refreshing state... [id=srv-dygika3tv3hwvnj4][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["settlement-service"]: Refreshing state... [id=srv-dnf2ckcwv25ntkvs][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["merchant-service"]: Refreshing state... [id=srv-zufqw64iu6g5latd][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["ledger-service"]: Refreshing state... [id=srv-fbdueoesyoq2fvkk][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["notification-service"]: Refreshing state... [id=srv-34yp662t4k4ogvih][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["payment-service"]: Refreshing state... [id=srv-52clbuebqjibux5f][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["transaction-service"]: Refreshing state... [id=srv-icpki4h3stkz27ws][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["reconciliation-service"]: Refreshing state... [id=srv-u72j2kr4sjxphpmi][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["auth-service"]: Refreshing state... [id=srv-vpcwh44ctg73qlui][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["reporting-service"]: Refreshing state... [id=srv-7mvp3ppqnobx2reu][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["provider-service"]: Refreshing state... [id=srv-3emc7iucwpo65vxt][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["admin-service"]: Refreshing state... [id=srv-yjjoazmyowpyubno][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["webhook-service"]: Refreshing state... [id=srv-57chttrcmjbjvicg][0m
+[0m[1mmodule.ecs[0].aws_service_discovery_service.services["dispute-service"]: Refreshing state... [id=srv-iymdvurq6vi36c72][0m
+[0m[1mmodule.vpc.aws_route_table_association.public[0]: Refreshing state... [id=rtbassoc-0a7888282ee93c1f6][0m
+[0m[1mmodule.vpc.aws_route_table_association.public[1]: Refreshing state... [id=rtbassoc-049a18561bfc76c8f][0m
+[0m[1mmodule.vpc.aws_route_table.private_app[1]: Refreshing state... [id=rtb-00edcba3fea697280][0m
+[0m[1mmodule.vpc.aws_route_table.private_app[0]: Refreshing state... [id=rtb-0cdc0bd07c435dba7][0m
+[0m[1mmodule.security.aws_security_group.webhook: Refreshing state... [id=sg-06b62b0df57796c90][0m
+[0m[1mmodule.security.aws_security_group_rule.auth_payment_grpc_from_callers["tier1_public"]: Refreshing state... [id=sgrule-846087593][0m
+[0m[1mmodule.security.aws_security_group.tier3_private: Refreshing state... [id=sg-0d27af2e251e75575][0m
+[0m[1mmodule.security.aws_security_group_rule.auth_payment_grpc_from_callers["tier2_admin"]: Refreshing state... [id=sgrule-3919450012][0m
+[0m[1mmodule.rds[0].aws_db_subnet_group.postgres: Refreshing state... [id=payment-gateway-staging-db-subnet-group][0m
+[0m[1mmodule.elasticache[0].aws_elasticache_subnet_group.redis: Refreshing state... [id=payment-gateway-staging-redis-subnet-group][0m
+[0m[1mmodule.ingress[0].aws_lb.main: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:loadbalancer/app/payment-gateway-staging-alb/70446dd656474a04][0m
+[0m[1mmodule.vpc.aws_vpc_endpoint.s3: Refreshing state... [id=vpce-0d5dcaedfdb5c0156][0m
+[0m[1mmodule.vpc.aws_route_table_association.private_app[0]: Refreshing state... [id=rtbassoc-0f518242818e29612][0m
+[0m[1mmodule.vpc.aws_route_table_association.private_app[1]: Refreshing state... [id=rtbassoc-0593f1cb619d85bb6][0m
+[0m[1mmodule.security.aws_security_group.rds_proxy: Refreshing state... [id=sg-0b7668e0158aa96c9][0m
+[0m[1mmodule.security.aws_security_group.redis: Refreshing state... [id=sg-0ead89f7f6d72894b][0m
+[0m[1mmodule.security.aws_security_group.msk: Refreshing state... [id=sg-01a6653cb1892699f][0m
+[0m[1mmodule.security.aws_security_group_rule.merchant_grpc_from_callers["tier2_admin"]: Refreshing state... [id=sgrule-3041263377][0m
+[0m[1mmodule.security.aws_security_group_rule.merchant_grpc_from_callers["webhook"]: Refreshing state... [id=sgrule-762387829][0m
+[0m[1mmodule.security.aws_security_group_rule.merchant_grpc_from_callers["tier1_public"]: Refreshing state... [id=sgrule-1857402148][0m
+[0m[1mmodule.security.aws_security_group_rule.merchant_grpc_from_callers["tier3_private"]: Refreshing state... [id=sgrule-248998453][0m
+[0m[1mmodule.security.aws_security_group.rds: Refreshing state... [id=sg-0e0f637b8c339f790][0m
+[0m[1mmodule.vpc_endpoints[0].aws_security_group.endpoints: Refreshing state... [id=sg-00b6f2e73df235058][0m
+[0m[1mmodule.elasticache[0].aws_elasticache_replication_group.redis: Refreshing state... [id=payment-gateway-staging-redis][0m
+[0m[1mmodule.ingress[0].aws_wafv2_web_acl_association.alb_assoc: Refreshing state... [id=arn:aws:wafv2:eu-north-1:431636668603:regional/webacl/payment-gateway-staging-waf/f94c04ea-edf4-4fa5-ba28-95d9d460e9a5,arn:aws:elasticloadbalancing:eu-north-1:431636668603:loadbalancer/app/payment-gateway-staging-alb/70446dd656474a04][0m
+[0m[1mmodule.ingress[0].aws_lb_listener.http: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0][0m
+[0m[1mmodule.security.aws_security_group_rule.rds_direct_ingress["tier4_workers"]: Refreshing state... [id=sgrule-1466462212][0m
+[0m[1mmodule.security.aws_security_group_rule.rds_direct_ingress["tier3_private"]: Refreshing state... [id=sgrule-1860499038][0m
+[0m[1mmodule.security.aws_security_group_rule.rds_direct_ingress["webhook"]: Refreshing state... [id=sgrule-1296204062][0m
+[0m[1mmodule.security.aws_security_group_rule.rds_direct_ingress["tier1_public"]: Refreshing state... [id=sgrule-243673423][0m
+[0m[1mmodule.security.aws_security_group_rule.rds_direct_ingress["tier2_admin"]: Refreshing state... [id=sgrule-3581305722][0m
+[0m[1mmodule.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["secrets"]: Refreshing state... [id=vpce-02c8dfbb83d845977][0m
+[0m[1mmodule.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["ecr_api"]: Refreshing state... [id=vpce-0de2eab1a77bc8b30][0m
+[0m[1mmodule.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["logs"]: Refreshing state... [id=vpce-0a6c74cc2e9ed9b73][0m
+[0m[1mmodule.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["ecr_dkr"]: Refreshing state... [id=vpce-03e371516cd4b7fc4][0m
+[0m[1mmodule.rds[0].aws_db_instance.postgres: Refreshing state... [id=db-QMSR5R3LEZOHXI6GRIOYDZYIDM][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["auth-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/7792e14985d134ad][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["merchant-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/695dd9a7a1031d6d][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["dispute-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/d8d2992fc168176f][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["admin-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/6169980bae3b28ff][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["billing-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/e81e147c0503ad18][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["reporting-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/aca8a4e4082c92e7][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["reconciliation-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/f8449592e96131c5][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["dashboard-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/b61900caeb45e361][0m
+[0m[1mmodule.ecs[0].aws_lb_listener_rule.services["payment-service"]: Refreshing state... [id=arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener-rule/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0/7c5342920504acb4][0m
+[0m[1mmodule.rds[0].aws_secretsmanager_secret_version.db_credentials: Refreshing state... [id=arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF|terraform-20261013101727804400000001][0m
+[0m[1mmodule.elasticache[0].aws_secretsmanager_secret_version.redis_auth: Refreshing state... [id=arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE|terraform-20261013085014457100000003][0m
+[0m[1mmodule.ecs[0].aws_iam_role_policy.ecs_task_s3[0]: Refreshing state... [id=payment-gateway-staging-ecs-task-role:payment-gateway-staging-ecs-s3-policy][0m
+[0m[1mmodule.ecs[0].aws_iam_role_policy.ecs_execution_secrets: Refreshing state... [id=payment-gateway-staging-ecs-execution-role:payment-gateway-staging-ecs-secrets-policy][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["settlement-service"]: Refreshing state... [id=payment-gateway-staging-settlement-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["admin-service"]: Refreshing state... [id=payment-gateway-staging-admin-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["payment-service"]: Refreshing state... [id=payment-gateway-staging-payment-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["billing-service"]: Refreshing state... [id=payment-gateway-staging-billing-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["dispute-service"]: Refreshing state... [id=payment-gateway-staging-dispute-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["ledger-service"]: Refreshing state... [id=payment-gateway-staging-ledger-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["auth-service"]: Refreshing state... [id=payment-gateway-staging-auth-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["provider-service"]: Refreshing state... [id=payment-gateway-staging-provider-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["risk-service"]: Refreshing state... [id=payment-gateway-staging-risk-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["transaction-service"]: Refreshing state... [id=payment-gateway-staging-transaction-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["reporting-service"]: Refreshing state... [id=payment-gateway-staging-reporting-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["notification-service"]: Refreshing state... [id=payment-gateway-staging-notification-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["merchant-service"]: Refreshing state... [id=payment-gateway-staging-merchant-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["dashboard-service"]: Refreshing state... [id=payment-gateway-staging-dashboard-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["webhook-service"]: Refreshing state... [id=payment-gateway-staging-webhook-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_task_definition.services["reconciliation-service"]: Refreshing state... [id=payment-gateway-staging-reconciliation-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["notification-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/notification-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["payment-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/payment-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["transaction-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/transaction-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["auth-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/auth-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["provider-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/provider-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["ledger-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/ledger-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["risk-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/risk-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["merchant-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/merchant-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["admin-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/admin-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["reporting-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/reporting-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["settlement-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/settlement-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["reconciliation-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/reconciliation-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["dispute-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/dispute-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["dashboard-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/dashboard-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["webhook-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/webhook-service][0m
+[0m[1mmodule.ecs[0].aws_ecs_service.services["billing-service"]: Refreshing state... [id=arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/billing-service][0m
+[0m[1mmodule.cloudfront[0].aws_s3_bucket_public_access_block.frontend: Refreshing state... [id=payment-gateway-staging-spa-assets-3k38lq][0m
+[0m[1mmodule.cloudfront[0].aws_s3_bucket_versioning.frontend: Refreshing state... [id=payment-gateway-staging-spa-assets-3k38lq][0m
+[0m[1mmodule.cloudfront[0].aws_s3_bucket_server_side_encryption_configuration.frontend: Refreshing state... [id=payment-gateway-staging-spa-assets-3k38lq][0m
+[0m[1mmodule.cloudfront[0].aws_cloudfront_distribution.spa: Refreshing state... [id=E3HO3817RSULYE][0m
+[0m[1mmodule.cloudfront[0].aws_s3_bucket_policy.frontend_oac: Refreshing state... [id=payment-gateway-staging-spa-assets-3k38lq][0m
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  [33m~[0m update in-place[0m
+[31m-[0m/[32m+[0m destroy and then create replacement[0m
+
+Terraform will perform the following actions:
+
+[1m  # module.ecs[0].aws_ecs_service.services["admin-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/admin-service"
+        name                               = "admin-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-admin-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-admin-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["auth-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/auth-service"
+        name                               = "auth-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-auth-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-auth-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["billing-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/billing-service"
+        name                               = "billing-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-billing-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-billing-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["dashboard-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/dashboard-service"
+        name                               = "dashboard-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-dashboard-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-dashboard-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["dispute-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/dispute-service"
+        name                               = "dispute-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-dispute-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-dispute-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["ledger-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/ledger-service"
+        name                               = "ledger-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-ledger-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-ledger-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["merchant-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/merchant-service"
+        name                               = "merchant-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-merchant-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-merchant-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["notification-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/notification-service"
+        name                               = "notification-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-notification-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-notification-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["payment-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/payment-service"
+        name                               = "payment-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-payment-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-payment-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["provider-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/provider-service"
+        name                               = "provider-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-provider-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-provider-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["reconciliation-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/reconciliation-service"
+        name                               = "reconciliation-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-reconciliation-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-reconciliation-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["reporting-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/reporting-service"
+        name                               = "reporting-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-reporting-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-reporting-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (5 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["risk-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/risk-service"
+        name                               = "risk-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-risk-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-risk-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["settlement-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/settlement-service"
+        name                               = "settlement-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-settlement-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-settlement-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["transaction-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/transaction-service"
+        name                               = "transaction-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-transaction-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-transaction-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_service.services["webhook-service"][0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_ecs_service" "services" {
+      [33m~[0m[0m desired_count                      = 0 [33m->[0m[0m 1
+        id                                 = "arn:aws:ecs:eu-north-1:431636668603:service/payment-gateway-staging-cluster/webhook-service"
+        name                               = "webhook-service"
+        tags                               = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-webhook-service-service"
+        }
+      [33m~[0m[0m task_definition                    = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-webhook-service:1" -> (known after apply)
+        [90m# (15 unchanged attributes hidden)[0m[0m
+
+        [90m# (4 unchanged blocks hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["admin-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-admin-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-admin-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3003"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "admin-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-admin-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-admin-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["auth-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-auth-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-auth-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3001"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "auth-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-auth-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-auth-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["billing-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-billing-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-billing-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3016"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "billing-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-billing-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-billing-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["dashboard-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-dashboard-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-dashboard-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3009"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "dashboard-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-dashboard-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-dashboard-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["dispute-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-dispute-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-dispute-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3017"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "dispute-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-dispute-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-dispute-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["ledger-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-ledger-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-ledger-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "ledger-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-ledger-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-ledger-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["merchant-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-merchant-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-merchant-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50052"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3002"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "merchant-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-merchant-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-merchant-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["notification-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-notification-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-notification-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50058"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3007"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "notification-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-notification-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-notification-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["payment-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-payment-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-payment-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "8084"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "payment-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-payment-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-payment-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["provider-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-provider-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-provider-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50055"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "8087"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "provider-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-provider-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-provider-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["reconciliation-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-reconciliation-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-reconciliation-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3011"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "reconciliation-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-reconciliation-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-reconciliation-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["reporting-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-reporting-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-reporting-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3008"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "reporting-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-reporting-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-reporting-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["risk-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-risk-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-risk-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50054"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "8086"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "risk-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-risk-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-risk-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["settlement-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-settlement-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-settlement-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50057"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "3010"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "settlement-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-settlement-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-settlement-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["transaction-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-transaction-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-transaction-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "transaction-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-transaction-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-transaction-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_ecs_task_definition.services["webhook-service"][0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_ecs_task_definition" "services" {
+      [33m~[0m[0m arn                      = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-webhook-service:1" -> (known after apply)
+      [33m~[0m[0m arn_without_revision     = "arn:aws:ecs:eu-north-1:431636668603:task-definition/payment-gateway-staging-webhook-service" -> (known after apply)
+      [33m~[0m[0m container_definitions    = jsonencode(
+          [33m~[0m[0m [
+              [33m~[0m[0m {
+                  [33m~[0m[0m environment      = [
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_GRPC_PORT"
+                          [32m+[0m[0m value = "50051"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "AUTH_SERVICE_HOST"
+                          [32m+[0m[0m value = "auth-service.payment-gateway.internal"
+                        },
+                        {
+                            name  = "DB_HOST"
+                            value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                        [90m# (3 unchanged elements hidden)[0m[0m
+                        {
+                            name  = "GRPC_PORT"
+                            value = "50056"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "LEDGER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "ledger-service.payment-gateway.internal:50053"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "MERCHANT_SERVICE_ADDR"
+                          [32m+[0m[0m value = "merchant-service.payment-gateway.internal:50052"
+                        },
+                        {
+                            name  = "PORT"
+                            value = "0"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "PROVIDER_SERVICE_ADDR"
+                          [32m+[0m[0m value = "provider-service.payment-gateway.internal:50055"
+                        },
+                        {
+                            name  = "REDIS_HOST"
+                            value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                        {
+                            name  = "REDIS_PORT"
+                            value = "6379"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name  = "RISK_SERVICE_ADDR"
+                          [32m+[0m[0m value = "risk-service.payment-gateway.internal:50054"
+                        },
+                    ]
+                  [31m-[0m[0m mountPoints      = []
+                    name             = "webhook-service"
+                  [33m~[0m[0m secrets          = [
+                        {
+                            name      = "DATABASE_CREDENTIALS"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "DATABASE_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF:database_url::"
+                        },
+                        {
+                            name      = "REDIS_AUTH"
+                            valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                      [32m+[0m[0m {
+                          [32m+[0m[0m name      = "REDIS_URL"
+                          [32m+[0m[0m valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE:redis_url::"
+                        },
+                    ]
+                  [31m-[0m[0m systemControls   = []
+                  [31m-[0m[0m volumesFrom      = []
+                    [90m# (4 unchanged attributes hidden)[0m[0m
+                },
+            ] [31m# forces replacement[0m[0m
+        )
+      [33m~[0m[0m enable_fault_injection   = false -> (known after apply)
+      [33m~[0m[0m id                       = "payment-gateway-staging-webhook-service" -> (known after apply)
+      [33m~[0m[0m revision                 = 1 -> (known after apply)
+        tags                     = {
+            "Environment" = "staging"
+            "ManagedBy"   = "Terraform"
+            "Name"        = "payment-gateway-staging-webhook-service-taskdef"
+        }
+        [90m# (10 unchanged attributes hidden)[0m[0m
+    }
+
+[1m  # module.ecs[0].aws_iam_role_policy.ecs_execution_secrets[0m will be updated in-place
+[0m  [33m~[0m[0m resource "aws_iam_role_policy" "ecs_execution_secrets" {
+        id     = "payment-gateway-staging-ecs-execution-role:payment-gateway-staging-ecs-secrets-policy"
+        name   = "payment-gateway-staging-ecs-secrets-policy"
+      [33m~[0m[0m policy = jsonencode(
+          [33m~[0m[0m {
+              [33m~[0m[0m Statement = [
+                  [33m~[0m[0m {
+                      [33m~[0m[0m Resource = [
+                            "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF",
+                          [32m+[0m[0m "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF*",
+                            "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE",
+                          [32m+[0m[0m "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE*",
+                        ]
+                        [90m# (2 unchanged attributes hidden)[0m[0m
+                    },
+                    {
+                        Action   = [
+                            "kms:Decrypt",
+                        ]
+                        Effect   = "Allow"
+                        Resource = [
+                            "arn:aws:kms:eu-north-1:431636668603:key/da8af413-46f3-49aa-8ebc-02fb8943aa78",
+                            "arn:aws:kms:eu-north-1:431636668603:key/7ce758aa-b4fc-4b1e-9aa5-f283ced521b8",
+                        ]
+                    },
+                ]
+                [90m# (1 unchanged attribute hidden)[0m[0m
+            }
+        )
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.elasticache[0].aws_secretsmanager_secret_version.redis_auth[0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_secretsmanager_secret_version" "redis_auth" {
+      [33m~[0m[0m arn                  = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE" -> (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [33m~[0m[0m id                   = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE|terraform-20261013085014457100000003" -> (known after apply)
+      [33m~[0m[0m secret_string        = (sensitive value) [31m# forces replacement[0m[0m
+      [33m~[0m[0m version_id           = "terraform-20261013085014457100000003" -> (known after apply)
+      [33m~[0m[0m version_stages       = [
+          [31m-[0m[0m "AWSCURRENT",
+        ] -> (known after apply)
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1m  # module.rds[0].aws_secretsmanager_secret_version.db_credentials[0m must be [1m[31mreplaced[0m
+[0m[31m-[0m/[32m+[0m[0m resource "aws_secretsmanager_secret_version" "db_credentials" {
+      [33m~[0m[0m arn                  = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF" -> (known after apply)
+      [32m+[0m[0m has_secret_string_wo = (known after apply)
+      [33m~[0m[0m id                   = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF|terraform-20261013101727804400000001" -> (known after apply)
+      [33m~[0m[0m secret_string        = (sensitive value) [31m# forces replacement[0m[0m
+      [33m~[0m[0m version_id           = "terraform-20261013101727804400000001" -> (known after apply)
+      [33m~[0m[0m version_stages       = [
+          [31m-[0m[0m "AWSCURRENT",
+        ] -> (known after apply)
+        [90m# (1 unchanged attribute hidden)[0m[0m
+    }
+
+[1mPlan:[0m 18 to add, 17 to change, 18 to destroy.
+[0m[90m
+─────────────────────────────────────────────────────────────────────────────[0m
+
+Saved the plan to: milestone5.tfplan
+
+To perform exactly these actions, run the following command to apply:
+    terraform apply "milestone5.tfplan"

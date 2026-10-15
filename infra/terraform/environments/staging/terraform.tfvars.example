@@ -1,0 +1,63 @@
+# ==============================================================================
+# Payment Gateway — Staging Terraform Variables Example
+# Milestone 1: Foundation (VPC, Security, ECR)
+# Milestone 2: Ingress & Storage (ALB, WAF, S3, CloudFront, Endpoints)
+# ==============================================================================
+
+aws_region   = "eu-north-1"
+project_name = "payment-gateway"
+environment  = "staging"
+
+# ------------------------------------------------------------------------------
+# Network Configuration
+# ------------------------------------------------------------------------------
+vpc_cidr                  = "10.20.0.0/16"
+availability_zones        = ["eu-north-1a", "eu-north-1b"]
+# Optional explicit AZ IDs to guarantee immutable physical AZ alignment:
+# availability_zone_ids   = ["eun1-az1", "eun1-az2"]
+
+public_subnet_cidrs       = ["10.20.0.0/24", "10.20.1.0/24"]
+private_app_subnet_cidrs  = ["10.20.10.0/24", "10.20.11.0/24"]
+private_data_subnet_cidrs = ["10.20.20.0/24", "10.20.21.0/24"]
+
+# Cost optimization: use 1 NAT Gateway in staging ($32.40/mo vs $64.80/mo)
+enable_nat_gateway_per_az = false
+
+# Database Access:
+# false enforces strict RDS Proxy only on port 5432.
+# true adds controlled rules allowing application tasks direct DB ingress for benchmarking/migration.
+allow_direct_rds_connection = false
+
+# ECR Configuration:
+ecr_image_tag_mutability = "IMMUTABLE"
+ecr_keep_last_n_images   = 30
+
+# ------------------------------------------------------------------------------
+# Milestone 2 Feature Gate (Keep false for Milestone 1 deployment)
+# ------------------------------------------------------------------------------
+# Set to true ONLY after Milestone 1 foundation passes live AWS verification checks
+enable_milestone2_ingress_storage = false
+
+# Set enable_custom_domain to true once your Route 53 zone is registered
+enable_custom_domain = false
+domain_name          = ""
+route53_zone_id      = ""
+
+# WAF Rate Limiting (per 5 minutes per IP)
+waf_rate_limit = 2000
+
+# ------------------------------------------------------------------------------
+# Milestone 3 Feature Gate: Database & Cache (RDS, Proxy, Redis)
+# ------------------------------------------------------------------------------
+# Set to true to provision RDS PostgreSQL, RDS Proxy, and ElastiCache Redis
+enable_milestone3_databases = false
+
+rds_instance_class         = "db.t4g.small"
+rds_allocated_storage      = 50
+rds_max_allocated_storage  = 500
+rds_multi_az               = true
+enable_rds_proxy           = true
+
+redis_node_type            = "cache.t4g.micro"
+redis_num_cache_clusters   = 2
+

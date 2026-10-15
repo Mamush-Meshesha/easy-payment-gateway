@@ -34,13 +34,13 @@ resource "aws_rds_cluster" "primary" {
 }
 
 resource "aws_rds_cluster_instance" "primary_instance" {
-  provider             = aws.primary
-  count                = 2 # Multi-AZ
-  identifier           = "pg-cluster-primary-instance-${count.index}"
-  cluster_identifier   = aws_rds_cluster.primary.id
-  instance_class       = "db.r6g.large"
-  engine               = aws_rds_cluster.primary.engine
-  engine_version       = aws_rds_cluster.primary.engine_version
+  provider           = aws.primary
+  count              = 2 # Multi-AZ
+  identifier         = "pg-cluster-primary-instance-${count.index}"
+  cluster_identifier = aws_rds_cluster.primary.id
+  instance_class     = "db.r6g.large"
+  engine             = aws_rds_cluster.primary.engine
+  engine_version     = aws_rds_cluster.primary.engine_version
 }
 
 # Secondary Cluster (EU-West-1)
@@ -58,11 +58,11 @@ resource "aws_rds_cluster" "secondary" {
 }
 
 resource "aws_rds_cluster_instance" "secondary_instance" {
-  provider             = aws.secondary
-  count                = 2 # Multi-AZ
-  identifier           = "pg-cluster-secondary-instance-${count.index}"
-  cluster_identifier   = aws_rds_cluster.secondary.id
-  instance_class       = "db.r6g.large"
-  engine               = aws_rds_cluster.secondary.engine
-  engine_version       = aws_rds_cluster.secondary.engine_version
+  provider           = aws.secondary
+  count              = 2 # Multi-AZ
+  identifier         = "pg-cluster-secondary-instance-${count.index}"
+  cluster_identifier = aws_rds_cluster.secondary.id
+  instance_class     = "db.r6g.large"
+  engine             = aws_rds_cluster.secondary.engine
+  engine_version     = aws_rds_cluster.secondary.engine_version
 }

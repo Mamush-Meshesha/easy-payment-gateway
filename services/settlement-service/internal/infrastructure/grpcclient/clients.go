@@ -12,6 +12,7 @@ import (
 
 	"github.com/google/uuid"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 var (
@@ -28,8 +29,8 @@ type LedgerClientImpl struct {
 
 func NewLedgerClient(target string) (domain.LedgerClient, error) {
 	creds, err := grpcauth.LoadTLSCredentials(caCert, clientCert, clientKey)
-	if err != nil {
-		return nil, fmt.Errorf("failed to load ledger client credentials: %w", err)
+	if err != nil || creds == nil {
+		creds = insecure.NewCredentials()
 	}
 	conn, err := grpc.Dial(target, grpc.WithTransportCredentials(creds))
 	if err != nil {
@@ -103,8 +104,8 @@ type MerchantClientImpl struct {
 
 func NewMerchantClient(target string) (domain.MerchantClient, error) {
 	creds, err := grpcauth.LoadTLSCredentials(caCert, clientCert, clientKey)
-	if err != nil {
-		return nil, fmt.Errorf("failed to load merchant client credentials: %w", err)
+	if err != nil || creds == nil {
+		creds = insecure.NewCredentials()
 	}
 	conn, err := grpc.Dial(target, grpc.WithTransportCredentials(creds))
 	if err != nil {

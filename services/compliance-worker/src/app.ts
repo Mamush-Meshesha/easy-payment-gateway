@@ -24,7 +24,16 @@ const caPath = process.env.MTLS_CA_CERT || path.join(certDir, 'ca.crt');
 const certPath = process.env.MTLS_CLIENT_CERT || path.join(certDir, 'admin-service.crt'); // Spoofing as admin to bypass policy for MVP
 const keyPath = process.env.MTLS_CLIENT_KEY || path.join(certDir, 'admin-service.key');
 
-const credentials = createClientCredentials(caPath, certPath, keyPath);
+let credentials = grpc.credentials.createInsecure();
+try {
+  if (fs.existsSync(caPath) && fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+    credentials = createClientCredentials(caPath, certPath, keyPath);
+  } else {
+    logger.warn('mTLS certs not found, falling back to insecure credentials.');
+  }
+} catch (err: any) {
+  logger.warn('Failed to load mTLS certificates, falling back to insecure: ' + err.message);
+}
 
 const merchantClient = new protoDescriptor.merchant.MerchantService(
   process.env.MERCHANT_SERVICE_ADDR || 'localhost:50052',

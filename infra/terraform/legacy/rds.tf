@@ -10,32 +10,32 @@ resource "aws_db_subnet_group" "default" {
 }
 
 resource "aws_db_instance" "payment_postgres" {
-  identifier           = "payment-gateway-prod"
-  engine               = "postgres"
-  engine_version       = "15.3"
-  instance_class       = "db.r6g.xlarge" # Memory optimized for financial workload
-  allocated_storage    = 100             # Start with 100GB
-  max_allocated_storage = 1000           # Autoscaling up to 1TB
+  identifier            = "payment-gateway-prod"
+  engine                = "postgres"
+  engine_version        = "15.3"
+  instance_class        = "db.r6g.xlarge" # Memory optimized for financial workload
+  allocated_storage     = 100             # Start with 100GB
+  max_allocated_storage = 1000            # Autoscaling up to 1TB
 
-  db_name              = "payment_gateway"
-  username             = var.db_username
-  password             = var.db_password
-  
+  db_name  = "payment_gateway"
+  username = var.db_username
+  password = var.db_password
+
   db_subnet_group_name   = aws_db_subnet_group.default.name
   vpc_security_group_ids = [aws_security_group.db_sg.id]
 
   # Production Durability Settings
-  multi_az               = true
-  storage_type           = "gp3"
-  storage_encrypted      = true
-  kms_key_id             = aws_kms_key.db_encryption.arn
+  multi_az          = true
+  storage_type      = "gp3"
+  storage_encrypted = true
+  kms_key_id        = aws_kms_key.db_encryption.arn
 
   backup_retention_period = 30 # 30 days retention for financial audit
   backup_window           = "03:00-04:00"
   maintenance_window      = "Sun:04:00-Sun:05:00"
 
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  
+
   deletion_protection = true # PREVENT ACCIDENTAL DELETION
 }
 

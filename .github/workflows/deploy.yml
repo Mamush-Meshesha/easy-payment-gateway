@@ -1,12 +1,7 @@
 name: Payment Gateway CI/CD Pipeline
 
+# Legacy EC2 Deployment (Retained for manual fallback)
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:

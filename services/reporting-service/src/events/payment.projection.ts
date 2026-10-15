@@ -8,12 +8,13 @@ import { logger } from '../utils/logger';
  * This is an append/upsert-only pattern — never deletes financial projections.
  */
 export class PaymentProjectionConsumer {
-  private consumer: KafkaConsumer;
+  private consumer?: KafkaConsumer;
 
   constructor() {
     const brokers = process.env.KAFKA_BROKERS?.split(',');
-    if (!brokers || brokers.length === 0) {
-      throw new Error('KAFKA_BROKERS environment variable is required');
+    if (!brokers || brokers.length === 0 || !process.env.KAFKA_BROKERS) {
+      console.warn('KAFKA_BROKERS environment variable not provided. Kafka event consumer disabled.');
+      return;
     }
     this.consumer = new KafkaConsumer(
       'reporting-service',
@@ -23,6 +24,7 @@ export class PaymentProjectionConsumer {
   }
 
   async start(): Promise<void> {
+    if (!this.consumer) return;
     await this.consumer.connect();
     await this.consumer.subscribe('payment.events');
 
@@ -59,6 +61,6 @@ export class PaymentProjectionConsumer {
   }
 
   async stop(): Promise<void> {
-    await this.consumer.disconnect();
+    await this.consumer?.disconnect();
   }
 }

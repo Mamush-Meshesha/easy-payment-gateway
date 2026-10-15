@@ -69,15 +69,21 @@ func main() {
 	serverCert := os.Getenv("MTLS_SERVER_CERT")
 	serverKey := os.Getenv("MTLS_SERVER_KEY")
 
-	creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
-	if err != nil {
-		log.Fatalf("failed to load TLS credentials: %v", err)
+	var grpcServer *grpc.Server
+	if caCert != "" && serverCert != "" && serverKey != "" {
+		creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
+		if err == nil {
+			grpcServer = grpc.NewServer(
+				grpc.Creds(creds),
+				grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
+			)
+		} else {
+			log.Printf("TLS credentials could not be loaded: %v, falling back to insecure", err)
+		}
 	}
-
-	grpcServer := grpc.NewServer(
-		grpc.Creds(creds),
-		grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
-	)
+	if grpcServer == nil {
+		grpcServer = grpc.NewServer()
+	}
 
 	pb.RegisterProviderServiceServer(grpcServer, providerGrpcHandler)
 

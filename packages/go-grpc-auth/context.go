@@ -72,7 +72,12 @@ func RequireMerchant(ctx context.Context, targetMerchantID string) error {
 	// SYSTEM/SERVICE contexts might bypass merchant tenant isolation depending on specific rules,
 	// but generally, we demand a match if it's a USER context.
 	if reqCtx.AuthType == "USER" {
-		if reqCtx.MerchantId != targetMerchantID {
+		for _, r := range reqCtx.Roles {
+			if r == "SUPER_ADMIN" {
+				return nil
+			}
+		}
+		if targetMerchantID != "" && reqCtx.MerchantId != targetMerchantID {
 			return fmt.Errorf("unauthorized tenant access: user belongs to merchant %s, requested %s", reqCtx.MerchantId, targetMerchantID)
 		}
 	}

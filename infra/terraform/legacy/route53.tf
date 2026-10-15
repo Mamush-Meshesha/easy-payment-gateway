@@ -36,7 +36,7 @@ resource "aws_route53_record" "api_us" {
   type     = "A"
 
   set_identifier = "us-east-1-region"
-  
+
   latency_routing_policy {
     region = "us-east-1"
   }

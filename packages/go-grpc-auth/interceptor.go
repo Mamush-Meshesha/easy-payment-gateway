@@ -53,3 +53,20 @@ func AuthInterceptor(policy PolicyFunc) grpc.UnaryServerInterceptor {
 		return handler(ctx, req)
 	}
 }
+
+// InsecureInterceptor extracts and injects RequestContext when mTLS is not active.
+func InsecureInterceptor() grpc.UnaryServerInterceptor {
+	return func(
+		ctx context.Context,
+		req interface{},
+		info *grpc.UnaryServerInfo,
+		handler grpc.UnaryHandler,
+	) (interface{}, error) {
+		reqCtx, err := ExtractRequestContext(ctx)
+		if err == nil && reqCtx != nil {
+			ctx = InjectRequestContext(ctx, reqCtx)
+		}
+		return handler(ctx, req)
+	}
+}
+

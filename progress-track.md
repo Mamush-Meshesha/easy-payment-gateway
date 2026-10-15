@@ -603,3 +603,105 @@ animations to `ReconciliationUpload.css`. These were referenced i- **CSS Bug Fix
 - **Global Database Migration**: Authored Terraform scripts (`infra/terraform/database.tf`) to provision AWS Aurora Global Database. Upgraded `payment-service` to generate time-ordered UUIDv7s via `google/uuid` to prevent index hotspotting in distributed SQL environments.
 - **Kafka MirrorMaker 2.0**: Authored `mirrormaker.properties` and a dedicated `docker-compose.mirrormaker.yml` extension to simulate cross-region Active-Active event replication for `transaction.status.updated` and `merchant.events`.
 - **Route53 Latency Routing**: Authored Terraform scripts (`infra/terraform/route53.tf`) utilizing Route53 Latency-Based Routing and API Gateway health checks to dynamically failover global traffic.
+
+## Phase 28: AWS Production Migration (AWS Phase 2)
+**Status: 🚀 In Progress (Milestones 1, 2, & 3 Complete)**
+
+### Milestone 1: Terraform Foundation & Network Provisioning (COMPLETED)
+- **Target Region**: Provisions in `eu-north-1` (Stockholm), adhering to AWS Organization SCP (`RegionFloor`).
+- **VPC & Subnets**: Provisioned `10.20.0.0/16` VPC (`vpc-0f80380c03be17d3c`) spanning 2 Availability Zones (`eu-north-1a` / `eun1-az1` and `eu-north-1b` / `eun1-az2`).
+- **Network Tiering & Routing**:
+  - 2 Public Subnets with Internet Gateway route (`igw-045307139cb17630c`).
+  - 2 Private App Subnets with NAT Gateway route (`nat-0c3862d296bf26c9a`, EIP `51.20.39.80`).
+  - 2 Private Data Subnets with strictly zero internet ingress/egress (`0.0.0.0/0`), fully isolated.
+  - S3 Gateway Endpoint (`vpce-0d5dcaedfdb5c0156`) associated with all 4 private route tables for zero-cost private S3 traffic.
+- **Security Groups & Least-Privilege Rules**:
+  - Tier 4 Workers (`sg_tier4_workers`): Headless worker with strictly zero inbound ingress rules (`IpPermissions: []`).
+  - Webhook Service (`sg_webhook`): Inbound port 50056 restricted strictly to Tier 2 Admin.
+  - RDS Proxy (`sg_rds_proxy`): Port 5432 ingress from authorized application tiers.
+  - RDS Database (`sg_rds`): Port 5432 ingress restricted exclusively to RDS Proxy (`allow_direct_rds_connection = false`).
+  - Internal gRPC rules for Merchant Service (port 50052) and Auth/Payment (port 50051) from authorized caller SGs.
+- **ECR Repositories**: Provisioned 16 private ECR repositories with AES256 encryption, scan-on-push, untagged image 7-day expiration, and tagged release retention (last 30 images).
+- **mTLS Alignment**: Updated `infra/scripts/generate-mtls.sh` to include AWS Cloud Map private DNS SAN (`DNS.2 = $SERVICE.payment-gateway.internal`) and SPIFFE URIs for Zero-Trust L7 auth.
+- **Live AWS Audit**: Verified 100% of the 69 resources live via AWS APIs. Zero drift, zero SCP violations.
+
+### Milestone 2: Ingress & Storage Provisioning (COMPLETED)
+- **Status: ✅ 100% Provisioned & Live Verified in `eu-north-1`**
+- **Resources Added**: 40 resources (Cumulative: 109 resources managed by Terraform).
+- **S3 Document & Banking Storage**:
+  - Provisioned KMS-managed key `alias/payment-gateway-staging-s3-key` (`arn:aws:kms:eu-north-1:431636668603:key/da8af413-46f3-49aa-8ebc-02fb8943aa78`).
+  - Created 4 private buckets: `kyc-docs-rulo18`, `dispute-evidence-rulo18`, `settlement-statements-rulo18`, `audit-reports-rulo18`.
+  - Configured AWS KMS default encryption, bucket key enablement, object versioning, and public access blocks across all 4 buckets.
+  - Applied strict TLS 1.2+ bucket policies denying non-secure HTTP transport (`aws:SecureTransport: false`).
+- **Frontend SPA CDN & Origin Access Control (OAC)**:
+  - Provisioned private static assets bucket `payment-gateway-staging-spa-assets-3k38lq`.
+  - Created CloudFront Origin Access Control (`oac`) and attached strict bucket policy authorizing CloudFront distribution access.
+  - Provisioned global CloudFront distribution `dsa9a17a5rjog.cloudfront.net` (Distribution ID: `E3HO3817RSULYE`).
+- **Application Load Balancer & AWS WAFv2**:
+  - Provisioned multi-AZ public ALB (`arn:aws:elasticloadbalancing:eu-north-1:431636668603:loadbalancer/app/payment-gateway-staging-alb/70446dd656474a04`, DNS: `payment-gateway-staging-alb-1448992872.eu-north-1.elb.amazonaws.com`).
+  - Bound regional AWS WAFv2 Web ACL (`arn:aws:wafv2:eu-north-1:431636668603:regional/webacl/payment-gateway-staging-waf/f94c04ea-edf4-4fa5-ba28-95d9d460e9a5`) containing AWS Managed IP Reputation and Core Rule Set in monitored `COUNT` mode.
+  - Verified default HTTP listener health probe responds with HTTP 200: `{"environment":"staging","message":"Payment Gateway ALB Active","status":"healthy"}`.
+- **Private VPC Interface Endpoints**:
+  - Provisioned 4 interface endpoints in private app subnets with private DNS enabled:
+    - ECR API: `vpce-0de2eab1a77bc8b30` (`com.amazonaws.eu-north-1.ecr.api`)
+    - ECR Docker Registry: `vpce-03e371516cd4b7fc4` (`com.amazonaws.eu-north-1.ecr.dkr`)
+    - CloudWatch Logs: `vpce-0a6c74cc2e9ed9b73` (`com.amazonaws.eu-north-1.logs`)
+    - Secrets Manager: `vpce-02c8dfbb83d845977` (`com.amazonaws.eu-north-1.secretsmanager`)
+  - Bound dedicated least-privilege security group `sg-00b6f2e73df235058` restricting inbound access exclusively to application tiers.
+
+### Milestone 3: Database & Cache Infrastructure (COMPLETED)
+- **Status: ✅ 100% Provisioned & Live Verified in `eu-north-1`**
+- **Resources Added**: 16 resources (Cumulative: 125 resources managed by Terraform).
+- **Amazon RDS PostgreSQL 15**:
+  - Deployed in isolated private data subnets (`subnet-04ee165032c78e794`, `subnet-0a4518be691b0250c`).
+  - Endpoint: `payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com:5432`.
+  - Database name: `payment_gateway`, Master username: `gateway_admin`.
+  - Storage: 20GB gp3 (autoscaling up to 100GB), encrypted via KMS customer key `alias/payment-gateway-staging-rds-key` (`arn:aws:kms:eu-north-1:431636668603:key/7ce758aa-b4fc-4b1e-9aa5-f283ced521b8`).
+  - Parameter group `payment-gateway-staging-pg15-params` enforcing TLS (`rds.force_ssl = 1`) and slow query logging (`>250ms`).
+  - Master credentials vaulted securely in AWS Secrets Manager: `arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF`.
+- **Amazon ElastiCache Redis 7**:
+  - Multi-AZ replication group with automatic failover enabled.
+  - Primary write endpoint: `master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com:6379`.
+  - Read replica endpoint: `replica.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com:6379`.
+  - Parameter group `payment-gateway-staging-redis7-params` configured with `volatile-lru` eviction policy.
+  - Encryption: in-transit TLS enabled, at-rest encryption enabled, auth token vaulted in AWS Secrets Manager: `arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE`.
+- **Data Tier Network Security**:
+  - Provisioned 5 direct ingress rules on port 5432 connecting PostgreSQL security group (`sg-0e0f637b8c339f790`) exclusively to the application task security groups (`tier1_public`, `tier2_admin`, `tier3_private`, `tier4_workers`, `webhook`).
+
+### Milestone 4: ECS Fargate Fleet & Service Discovery (COMPLETED)
+- **Status: ✅ 100% Provisioned & Live in `eu-north-1`**
+- **Resources Added**: 89 resources (Cumulative: 214 resources managed by Terraform).
+- **ECS Fargate Cluster**:
+  - Cluster: `payment-gateway-staging-cluster` (`arn:aws:ecs:eu-north-1:431636668603:cluster/payment-gateway-staging-cluster`).
+- **AWS Cloud Map Mesh (`payment-gateway.internal`)**:
+  - Private DNS namespace: `payment-gateway.internal` (`ns-3yyzhbdfvj6oqgww`).
+  - Registered all 16 microservices with multi-value A-records (TTL 10s):
+    - `auth-service.payment-gateway.internal`, `payment-service.payment-gateway.internal`, `merchant-service.payment-gateway.internal`
+    - `ledger-service.payment-gateway.internal`, `risk-service.payment-gateway.internal`, `provider-service.payment-gateway.internal`
+    - `settlement-service.payment-gateway.internal`, `reconciliation-service.payment-gateway.internal`, `notification-service.payment-gateway.internal`
+    - `billing-service.payment-gateway.internal`, `dispute-service.payment-gateway.internal`, `admin-service.payment-gateway.internal`
+    - `dashboard-service.payment-gateway.internal`, `reporting-service.payment-gateway.internal`, `transaction-service.payment-gateway.internal`, `webhook-service.payment-gateway.internal`.
+- **IAM Security**:
+  - Task Execution Role: `payment-gateway-staging-ecs-execution-role` with Secrets Manager and KMS decrypt permissions.
+  - Task Role: `payment-gateway-staging-ecs-task-role` with S3 document storage access (`kyc`, `dispute`, `settlements`, `reports`).
+- **CloudWatch Observability**:
+  - Provisioned 16 dedicated log groups (`/ecs/payment-gateway-staging/<service>`) with 7-day log retention.
+- **ALB Ingress & Path Routing**:
+  - Provisioned 9 target groups (`pg-stg-*`) with automated health checks on port mappings.
+  - Configured 9 listener forwarding rules on ALB port 80:
+    - `/api/v1/auth*` -> `auth-service`
+    - `/api/v1/payments*`, `/api/v1/checkout*` -> `payment-service`
+    - `/api/v1/merchants*` -> `merchant-service`
+    - `/api/v1/billing*` -> `billing-service`
+    - `/api/v1/admin*` -> `admin-service`
+    - `/api/v1/dashboard*` -> `dashboard-service`
+    - `/api/v1/reporting*` -> `reporting-service`
+    - `/api/v1/disputes*` -> `dispute-service`
+    - `/api/v1/reconciliation*` -> `reconciliation-service`
+- **ECS Task Definitions & Services**:
+  - Provisioned 16 Fargate task definitions (256 CPU, 512 MiB memory) with dynamic database and Redis secret resolution.
+  - Deployed 16 ECS services spanning private application subnets across both AZs.
+
+
+
+

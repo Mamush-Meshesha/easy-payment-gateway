@@ -1,0 +1,4230 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["admin-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/admin-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["auth-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/auth-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["billing-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/billing-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["dashboard-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/dashboard-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["dispute-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/dispute-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["ledger-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/ledger-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["merchant-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/merchant-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["notification-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/notification-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["payment-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/payment-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["provider-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/provider-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["reconciliation-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/reconciliation-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["reporting-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/reporting-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["risk-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/risk-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["settlement-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/settlement-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["transaction-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/transaction-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_cloudwatch_log_group.services["webhook-service"] will be created
+  + resource "aws_cloudwatch_log_group" "services" {
+      + arn               = (known after apply)
+      + id                = (known after apply)
+      + log_group_class   = (known after apply)
+      + name              = "/ecs/payment-gateway-staging/webhook-service"
+      + name_prefix       = (known after apply)
+      + retention_in_days = 7
+      + skip_destroy      = false
+      + tags              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-logs"
+        }
+      + tags_all          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-logs"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.ecs[0].aws_ecs_cluster.main will be created
+  + resource "aws_ecs_cluster" "main" {
+      + arn      = (known after apply)
+      + id       = (known after apply)
+      + name     = "payment-gateway-staging-cluster"
+      + tags     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-cluster"
+        }
+      + tags_all = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-cluster"
+          + "Project"     = "payment-gateway"
+        }
+
+      + setting {
+          + name  = "containerInsights"
+          + value = "disabled"
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["admin-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "admin-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "admin-service"
+          + container_port   = 3003
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0bc3c26295a622835",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["auth-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "auth-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "auth-service"
+          + container_port   = 3001
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0ff89d4a30b1b2335",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["billing-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "billing-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "billing-service"
+          + container_port   = 3016
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0ff89d4a30b1b2335",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["dashboard-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "dashboard-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "dashboard-service"
+          + container_port   = 3009
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0bc3c26295a622835",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["dispute-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "dispute-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "dispute-service"
+          + container_port   = 3017
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0bc3c26295a622835",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["ledger-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "ledger-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0d27af2e251e75575",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["merchant-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "merchant-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "merchant-service"
+          + container_port   = 3002
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0ff89d4a30b1b2335",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["notification-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "notification-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0d27af2e251e75575",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["payment-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "payment-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "payment-service"
+          + container_port   = 8084
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0ff89d4a30b1b2335",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["provider-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "provider-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0d27af2e251e75575",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["reconciliation-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "reconciliation-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "reconciliation-service"
+          + container_port   = 3011
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0d27af2e251e75575",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["reporting-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "reporting-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + load_balancer {
+          + container_name   = "reporting-service"
+          + container_port   = 3008
+          + target_group_arn = (known after apply)
+        }
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0bc3c26295a622835",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["risk-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "risk-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0d27af2e251e75575",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["settlement-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "settlement-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0d27af2e251e75575",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["transaction-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "transaction-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-0f70199c622dd39e2",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_service.services["webhook-service"] will be created
+  + resource "aws_ecs_service" "services" {
+      + availability_zone_rebalancing      = "DISABLED"
+      + cluster                            = (known after apply)
+      + deployment_maximum_percent         = 200
+      + deployment_minimum_healthy_percent = 100
+      + desired_count                      = 0
+      + enable_ecs_managed_tags            = false
+      + enable_execute_command             = false
+      + iam_role                           = (known after apply)
+      + id                                 = (known after apply)
+      + launch_type                        = "FARGATE"
+      + name                               = "webhook-service"
+      + platform_version                   = (known after apply)
+      + scheduling_strategy                = "REPLICA"
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-service"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-service"
+          + "Project"     = "payment-gateway"
+        }
+      + task_definition                    = (known after apply)
+      + triggers                           = (known after apply)
+      + wait_for_steady_state              = false
+
+      + network_configuration {
+          + assign_public_ip = false
+          + security_groups  = [
+              + "sg-06b62b0df57796c90",
+            ]
+          + subnets          = [
+              + "subnet-02cc13deaa844777c",
+              + "subnet-0779619888156c00a",
+            ]
+        }
+
+      + service_registries {
+          + registry_arn = (known after apply)
+        }
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["admin-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3003"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/admin-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/admin-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "admin-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3003
+                          + hostPort      = 3003
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-admin-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["auth-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50051"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3001"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/auth-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/auth-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "auth-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3001
+                          + hostPort      = 3001
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50051
+                          + hostPort      = 50051
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-auth-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["billing-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3016"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/billing-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/billing-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "billing-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3016
+                          + hostPort      = 3016
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-billing-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["dashboard-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3009"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/dashboard-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/dashboard-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "dashboard-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3009
+                          + hostPort      = 3009
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-dashboard-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["dispute-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3017"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/dispute-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/dispute-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "dispute-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3017
+                          + hostPort      = 3017
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-dispute-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["ledger-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50053"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/ledger-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/ledger-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "ledger-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 50053
+                          + hostPort      = 50053
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-ledger-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["merchant-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50052"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3002"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/merchant-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/merchant-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "merchant-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3002
+                          + hostPort      = 3002
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50052
+                          + hostPort      = 50052
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-merchant-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["notification-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50058"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3007"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/notification-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/notification-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "notification-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3007
+                          + hostPort      = 3007
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50058
+                          + hostPort      = 50058
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-notification-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["payment-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50051"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "8084"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/payment-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/payment-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "payment-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 8084
+                          + hostPort      = 8084
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50051
+                          + hostPort      = 50051
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-payment-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["provider-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50055"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "8087"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/provider-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/provider-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "provider-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 8087
+                          + hostPort      = 8087
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50055
+                          + hostPort      = 50055
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-provider-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["reconciliation-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3011"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/reconciliation-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/reconciliation-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "reconciliation-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3011
+                          + hostPort      = 3011
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-reconciliation-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["reporting-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3008"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/reporting-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/reporting-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "reporting-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3008
+                          + hostPort      = 3008
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-reporting-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["risk-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50054"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "8086"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/risk-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/risk-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "risk-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 8086
+                          + hostPort      = 8086
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50054
+                          + hostPort      = 50054
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-risk-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["settlement-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50057"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "3010"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/settlement-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/settlement-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "settlement-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 3010
+                          + hostPort      = 3010
+                          + protocol      = "tcp"
+                        },
+                      + {
+                          + containerPort = 50057
+                          + hostPort      = 50057
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-settlement-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["transaction-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/transaction-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/transaction-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "transaction-service"
+                  + portMappings     = []
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-transaction-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_ecs_task_definition.services["webhook-service"] will be created
+  + resource "aws_ecs_task_definition" "services" {
+      + arn                      = (known after apply)
+      + arn_without_revision     = (known after apply)
+      + container_definitions    = jsonencode(
+            [
+              + {
+                  + environment      = [
+                      + {
+                          + name  = "DB_HOST"
+                          + value = "payment-gateway-staging-postgres.ct6easkiwemw.eu-north-1.rds.amazonaws.com"
+                        },
+                      + {
+                          + name  = "DB_NAME"
+                          + value = "payment_gateway"
+                        },
+                      + {
+                          + name  = "DB_PORT"
+                          + value = "5432"
+                        },
+                      + {
+                          + name  = "ENVIRONMENT"
+                          + value = "staging"
+                        },
+                      + {
+                          + name  = "GRPC_PORT"
+                          + value = "50056"
+                        },
+                      + {
+                          + name  = "PORT"
+                          + value = "0"
+                        },
+                      + {
+                          + name  = "REDIS_HOST"
+                          + value = "master.payment-gateway-staging-redis.pdpg9a.eun1.cache.amazonaws.com"
+                        },
+                      + {
+                          + name  = "REDIS_PORT"
+                          + value = "6379"
+                        },
+                    ]
+                  + essential        = true
+                  + image            = "431636668603.dkr.ecr.eu-north-1.amazonaws.com/payment-gateway/webhook-service:latest"
+                  + logConfiguration = {
+                      + logDriver = "awslogs"
+                      + options   = {
+                          + awslogs-group         = "/ecs/payment-gateway-staging/webhook-service"
+                          + awslogs-region        = "eu-north-1"
+                          + awslogs-stream-prefix = "ecs"
+                        }
+                    }
+                  + name             = "webhook-service"
+                  + portMappings     = [
+                      + {
+                          + containerPort = 50056
+                          + hostPort      = 50056
+                          + protocol      = "tcp"
+                        },
+                    ]
+                  + secrets          = [
+                      + {
+                          + name      = "DATABASE_CREDENTIALS"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF"
+                        },
+                      + {
+                          + name      = "REDIS_AUTH"
+                          + valueFrom = "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE"
+                        },
+                    ]
+                },
+            ]
+        )
+      + cpu                      = "256"
+      + enable_fault_injection   = (known after apply)
+      + execution_role_arn       = (known after apply)
+      + family                   = "payment-gateway-staging-webhook-service"
+      + id                       = (known after apply)
+      + memory                   = "512"
+      + network_mode             = "awsvpc"
+      + requires_compatibilities = [
+          + "FARGATE",
+        ]
+      + revision                 = (known after apply)
+      + skip_destroy             = false
+      + tags                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-taskdef"
+        }
+      + tags_all                 = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-taskdef"
+          + "Project"     = "payment-gateway"
+        }
+      + task_role_arn            = (known after apply)
+      + track_latest             = false
+    }
+
+  # module.ecs[0].aws_iam_role.ecs_execution will be created
+  + resource "aws_iam_role" "ecs_execution" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "payment-gateway-staging-ecs-execution-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ecs-execution-role"
+        }
+      + tags_all              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ecs-execution-role"
+          + "Project"     = "payment-gateway"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.ecs[0].aws_iam_role.ecs_task will be created
+  + resource "aws_iam_role" "ecs_task" {
+      + arn                   = (known after apply)
+      + assume_role_policy    = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action    = "sts:AssumeRole"
+                      + Effect    = "Allow"
+                      + Principal = {
+                          + Service = "ecs-tasks.amazonaws.com"
+                        }
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + create_date           = (known after apply)
+      + force_detach_policies = false
+      + id                    = (known after apply)
+      + managed_policy_arns   = (known after apply)
+      + max_session_duration  = 3600
+      + name                  = "payment-gateway-staging-ecs-task-role"
+      + name_prefix           = (known after apply)
+      + path                  = "/"
+      + tags                  = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ecs-task-role"
+        }
+      + tags_all              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ecs-task-role"
+          + "Project"     = "payment-gateway"
+        }
+      + unique_id             = (known after apply)
+    }
+
+  # module.ecs[0].aws_iam_role_policy.ecs_execution_secrets will be created
+  + resource "aws_iam_role_policy" "ecs_execution_secrets" {
+      + id          = (known after apply)
+      + name        = "payment-gateway-staging-ecs-secrets-policy"
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "secretsmanager:GetSecretValue",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/rds/master-credentials-6q6iYF",
+                          + "arn:aws:secretsmanager:eu-north-1:431636668603:secret:payment-gateway/staging/redis/auth-token-hc6lzE",
+                        ]
+                    },
+                  + {
+                      + Action   = [
+                          + "kms:Decrypt",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:kms:eu-north-1:431636668603:key/da8af413-46f3-49aa-8ebc-02fb8943aa78",
+                          + "arn:aws:kms:eu-north-1:431636668603:key/7ce758aa-b4fc-4b1e-9aa5-f283ced521b8",
+                        ]
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = (known after apply)
+    }
+
+  # module.ecs[0].aws_iam_role_policy.ecs_task_s3[0] will be created
+  + resource "aws_iam_role_policy" "ecs_task_s3" {
+      + id          = (known after apply)
+      + name        = "payment-gateway-staging-ecs-s3-policy"
+      + name_prefix = (known after apply)
+      + policy      = jsonencode(
+            {
+              + Statement = [
+                  + {
+                      + Action   = [
+                          + "s3:GetObject",
+                          + "s3:PutObject",
+                          + "s3:ListBucket",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:s3:::payment-gateway-staging-kyc-docs-rulo18",
+                          + "arn:aws:s3:::payment-gateway-staging-dispute-evidence-rulo18",
+                          + "arn:aws:s3:::payment-gateway-staging-settlement-statements-rulo18",
+                          + "arn:aws:s3:::payment-gateway-staging-audit-reports-rulo18",
+                          + "arn:aws:s3:::payment-gateway-staging-kyc-docs-rulo18/*",
+                          + "arn:aws:s3:::payment-gateway-staging-dispute-evidence-rulo18/*",
+                          + "arn:aws:s3:::payment-gateway-staging-settlement-statements-rulo18/*",
+                          + "arn:aws:s3:::payment-gateway-staging-audit-reports-rulo18/*",
+                        ]
+                    },
+                  + {
+                      + Action   = [
+                          + "kms:GenerateDataKey",
+                          + "kms:Decrypt",
+                        ]
+                      + Effect   = "Allow"
+                      + Resource = [
+                          + "arn:aws:kms:eu-north-1:431636668603:key/da8af413-46f3-49aa-8ebc-02fb8943aa78",
+                          + "arn:aws:kms:eu-north-1:431636668603:key/7ce758aa-b4fc-4b1e-9aa5-f283ced521b8",
+                        ]
+                    },
+                ]
+              + Version   = "2012-10-17"
+            }
+        )
+      + role        = (known after apply)
+    }
+
+  # module.ecs[0].aws_iam_role_policy_attachment.ecs_execution_base will be created
+  + resource "aws_iam_role_policy_attachment" "ecs_execution_base" {
+      + id         = (known after apply)
+      + policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+      + role       = "payment-gateway-staging-ecs-execution-role"
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["admin-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 50
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/admin*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["auth-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 10
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/auth*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["billing-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 40
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/billing*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["dashboard-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 60
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/dashboard*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["dispute-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 80
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/disputes*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["merchant-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 30
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/merchants*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["payment-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 20
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/checkout*",
+                  + "/api/v1/payments*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["reconciliation-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 90
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/reconciliation*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_listener_rule.services["reporting-service"] will be created
+  + resource "aws_lb_listener_rule" "services" {
+      + arn          = (known after apply)
+      + id           = (known after apply)
+      + listener_arn = "arn:aws:elasticloadbalancing:eu-north-1:431636668603:listener/app/payment-gateway-staging-alb/70446dd656474a04/f41eecfb212197e0"
+      + priority     = 70
+      + tags_all     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+
+      + action {
+          + order            = (known after apply)
+          + target_group_arn = (known after apply)
+          + type             = "forward"
+        }
+
+      + condition {
+          + path_pattern {
+              + values = [
+                  + "/api/v1/reporting*",
+                ]
+            }
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["admin-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-admin-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3003
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["auth-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-auth-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3001
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["billing-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-billing-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3016
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["dashboard-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-dashboard-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3009
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["dispute-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-dispute-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3017
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["merchant-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-merchant-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3002
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["payment-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-payment-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 8084
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["reconciliation-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-reconciliation-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3011
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_lb_target_group.services["reporting-service"] will be created
+  + resource "aws_lb_target_group" "services" {
+      + arn                                = (known after apply)
+      + arn_suffix                         = (known after apply)
+      + connection_termination             = (known after apply)
+      + deregistration_delay               = "300"
+      + id                                 = (known after apply)
+      + ip_address_type                    = (known after apply)
+      + lambda_multi_value_headers_enabled = false
+      + load_balancer_arns                 = (known after apply)
+      + load_balancing_algorithm_type      = (known after apply)
+      + load_balancing_anomaly_mitigation  = (known after apply)
+      + load_balancing_cross_zone_enabled  = (known after apply)
+      + name                               = "pg-stg-reporting-service"
+      + name_prefix                        = (known after apply)
+      + port                               = 3008
+      + preserve_client_ip                 = (known after apply)
+      + protocol                           = "HTTP"
+      + protocol_version                   = (known after apply)
+      + proxy_protocol_v2                  = false
+      + slow_start                         = 0
+      + tags                               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-tg"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-tg"
+          + "Project"     = "payment-gateway"
+        }
+      + target_type                        = "ip"
+      + vpc_id                             = "vpc-0f80380c03be17d3c"
+
+      + health_check {
+          + enabled             = true
+          + healthy_threshold   = 2
+          + interval            = 30
+          + matcher             = "200-399"
+          + path                = "/health"
+          + port                = "traffic-port"
+          + protocol            = "HTTP"
+          + timeout             = 5
+          + unhealthy_threshold = 3
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_private_dns_namespace.main will be created
+  + resource "aws_service_discovery_private_dns_namespace" "main" {
+      + arn         = (known after apply)
+      + description = "Private DNS namespace for Payment Gateway microservice gRPC mesh"
+      + hosted_zone = (known after apply)
+      + id          = (known after apply)
+      + name        = "payment-gateway.internal"
+      + tags        = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-cloudmap"
+        }
+      + tags_all    = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-cloudmap"
+          + "Project"     = "payment-gateway"
+        }
+      + vpc         = "vpc-0f80380c03be17d3c"
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["admin-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "admin-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-admin-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["auth-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "auth-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-auth-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["billing-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "billing-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-billing-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["dashboard-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "dashboard-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dashboard-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["dispute-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "dispute-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-dispute-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["ledger-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "ledger-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-ledger-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["merchant-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "merchant-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-merchant-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["notification-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "notification-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-notification-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["payment-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "payment-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-payment-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["provider-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "provider-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-provider-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["reconciliation-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "reconciliation-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reconciliation-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["reporting-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "reporting-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-reporting-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["risk-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "risk-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-risk-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["settlement-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "settlement-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-settlement-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["transaction-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "transaction-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-transaction-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+  # module.ecs[0].aws_service_discovery_service.services["webhook-service"] will be created
+  + resource "aws_service_discovery_service" "services" {
+      + arn           = (known after apply)
+      + force_destroy = false
+      + id            = (known after apply)
+      + name          = "webhook-service"
+      + namespace_id  = (known after apply)
+      + tags          = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-discovery"
+        }
+      + tags_all      = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-webhook-service-discovery"
+          + "Project"     = "payment-gateway"
+        }
+      + type          = (known after apply)
+
+      + dns_config {
+          + namespace_id   = (known after apply)
+          + routing_policy = "MULTIVALUE"
+
+          + dns_records {
+              + ttl  = 10
+              + type = "A"
+            }
+        }
+
+      + health_check_custom_config {
+          + failure_threshold = 1
+        }
+    }
+
+Plan: 89 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + cloudmap_namespace_id              = (known after apply)
+  + cloudmap_service_discovery_domains = {
+      + admin-service          = "admin-service.payment-gateway.internal"
+      + auth-service           = "auth-service.payment-gateway.internal"
+      + billing-service        = "billing-service.payment-gateway.internal"
+      + dashboard-service      = "dashboard-service.payment-gateway.internal"
+      + dispute-service        = "dispute-service.payment-gateway.internal"
+      + ledger-service         = "ledger-service.payment-gateway.internal"
+      + merchant-service       = "merchant-service.payment-gateway.internal"
+      + notification-service   = "notification-service.payment-gateway.internal"
+      + payment-service        = "payment-service.payment-gateway.internal"
+      + provider-service       = "provider-service.payment-gateway.internal"
+      + reconciliation-service = "reconciliation-service.payment-gateway.internal"
+      + reporting-service      = "reporting-service.payment-gateway.internal"
+      + risk-service           = "risk-service.payment-gateway.internal"
+      + settlement-service     = "settlement-service.payment-gateway.internal"
+      + transaction-service    = "transaction-service.payment-gateway.internal"
+      + webhook-service        = "webhook-service.payment-gateway.internal"
+    }
+  + ecs_cluster_arn                    = (known after apply)
+  + ecs_cluster_id                     = (known after apply)

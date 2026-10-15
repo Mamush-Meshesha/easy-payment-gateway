@@ -17,6 +17,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "@bufbuild/protobuf": "^2.15.0",
     "@grpc/grpc-js": "^1.14.5",
     "enabled": "^2.0.0",
     "kuler": "^2.0.0",

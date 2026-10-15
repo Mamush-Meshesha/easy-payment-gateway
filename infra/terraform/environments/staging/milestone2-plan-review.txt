@@ -1,0 +1,959 @@
+
+Terraform used the selected providers to generate the following execution
+plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.cloudfront[0].aws_cloudfront_distribution.spa will be created
+  + resource "aws_cloudfront_distribution" "spa" {
+      + arn                             = (known after apply)
+      + caller_reference                = (known after apply)
+      + continuous_deployment_policy_id = (known after apply)
+      + default_root_object             = "index.html"
+      + domain_name                     = (known after apply)
+      + enabled                         = true
+      + etag                            = (known after apply)
+      + hosted_zone_id                  = (known after apply)
+      + http_version                    = "http2"
+      + id                              = (known after apply)
+      + in_progress_validation_batches  = (known after apply)
+      + is_ipv6_enabled                 = true
+      + last_modified_time              = (known after apply)
+      + price_class                     = "PriceClass_100"
+      + retain_on_delete                = false
+      + staging                         = false
+      + status                          = (known after apply)
+      + tags                            = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-cloudfront"
+        }
+      + tags_all                        = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-cloudfront"
+          + "Project"     = "payment-gateway"
+        }
+      + trusted_key_groups              = (known after apply)
+      + trusted_signers                 = (known after apply)
+      + wait_for_deployment             = true
+
+      + custom_error_response {
+          + error_caching_min_ttl = 10
+          + error_code            = 403
+          + response_code         = 200
+          + response_page_path    = "/index.html"
+        }
+      + custom_error_response {
+          + error_caching_min_ttl = 10
+          + error_code            = 404
+          + response_code         = 200
+          + response_page_path    = "/index.html"
+        }
+
+      + default_cache_behavior {
+          + allowed_methods        = [
+              + "GET",
+              + "HEAD",
+              + "OPTIONS",
+            ]
+          + cache_policy_id        = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+          + cached_methods         = [
+              + "GET",
+              + "HEAD",
+            ]
+          + compress               = true
+          + default_ttl            = (known after apply)
+          + max_ttl                = (known after apply)
+          + min_ttl                = 0
+          + target_origin_id       = (known after apply)
+          + trusted_key_groups     = (known after apply)
+          + trusted_signers        = (known after apply)
+          + viewer_protocol_policy = "redirect-to-https"
+        }
+
+      + origin {
+          + connection_attempts      = 3
+          + connection_timeout       = 10
+          + domain_name              = (known after apply)
+          + origin_access_control_id = (known after apply)
+          + origin_id                = (known after apply)
+        }
+
+      + restrictions {
+          + geo_restriction {
+              + locations        = (known after apply)
+              + restriction_type = "none"
+            }
+        }
+
+      + viewer_certificate {
+          + cloudfront_default_certificate = true
+          + minimum_protocol_version       = "TLSv1"
+        }
+    }
+
+  # module.cloudfront[0].aws_cloudfront_origin_access_control.oac will be created
+  + resource "aws_cloudfront_origin_access_control" "oac" {
+      + arn                               = (known after apply)
+      + description                       = "OAC for private S3 single-page application bucket"
+      + etag                              = (known after apply)
+      + id                                = (known after apply)
+      + name                              = "payment-gateway-staging-oac"
+      + origin_access_control_origin_type = "s3"
+      + signing_behavior                  = "always"
+      + signing_protocol                  = "sigv4"
+    }
+
+  # module.cloudfront[0].aws_s3_bucket.frontend will be created
+  + resource "aws_s3_bucket" "frontend" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-spa-assets"
+        }
+      + tags_all                    = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-spa-assets"
+          + "Project"     = "payment-gateway"
+        }
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.cloudfront[0].aws_s3_bucket_policy.frontend_oac will be created
+  + resource "aws_s3_bucket_policy" "frontend_oac" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.cloudfront[0].aws_s3_bucket_public_access_block.frontend will be created
+  + resource "aws_s3_bucket_public_access_block" "frontend" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.cloudfront[0].aws_s3_bucket_server_side_encryption_configuration.frontend will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "frontend" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + apply_server_side_encryption_by_default {
+              + sse_algorithm = "AES256"
+            }
+        }
+    }
+
+  # module.cloudfront[0].aws_s3_bucket_versioning.frontend will be created
+  + resource "aws_s3_bucket_versioning" "frontend" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Enabled"
+        }
+    }
+
+  # module.cloudfront[0].random_string.suffix will be created
+  + resource "random_string" "suffix" {
+      + id          = (known after apply)
+      + length      = 6
+      + lower       = true
+      + min_lower   = 0
+      + min_numeric = 0
+      + min_special = 0
+      + min_upper   = 0
+      + number      = true
+      + numeric     = true
+      + result      = (known after apply)
+      + special     = false
+      + upper       = false
+    }
+
+  # module.ingress[0].aws_lb.main will be created
+  + resource "aws_lb" "main" {
+      + arn                                                          = (known after apply)
+      + arn_suffix                                                   = (known after apply)
+      + client_keep_alive                                            = 3600
+      + desync_mitigation_mode                                       = "defensive"
+      + dns_name                                                     = (known after apply)
+      + drop_invalid_header_fields                                   = true
+      + enable_deletion_protection                                   = false
+      + enable_http2                                                 = true
+      + enable_tls_version_and_cipher_suite_headers                  = false
+      + enable_waf_fail_open                                         = false
+      + enable_xff_client_port                                       = false
+      + enable_zonal_shift                                           = false
+      + enforce_security_group_inbound_rules_on_private_link_traffic = (known after apply)
+      + id                                                           = (known after apply)
+      + idle_timeout                                                 = 60
+      + internal                                                     = false
+      + ip_address_type                                              = (known after apply)
+      + load_balancer_type                                           = "application"
+      + name                                                         = "payment-gateway-staging-alb"
+      + name_prefix                                                  = (known after apply)
+      + preserve_host_header                                         = false
+      + security_groups                                              = [
+          + "sg-086c409e4f03de11e",
+        ]
+      + subnets                                                      = [
+          + "subnet-05878daa7174b910e",
+          + "subnet-06530bc9522bdc06f",
+        ]
+      + tags                                                         = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-alb"
+        }
+      + tags_all                                                     = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-alb"
+          + "Project"     = "payment-gateway"
+        }
+      + vpc_id                                                       = (known after apply)
+      + xff_header_processing_mode                                   = "append"
+      + zone_id                                                      = (known after apply)
+    }
+
+  # module.ingress[0].aws_lb_listener.http will be created
+  + resource "aws_lb_listener" "http" {
+      + arn                                                                   = (known after apply)
+      + id                                                                    = (known after apply)
+      + load_balancer_arn                                                     = (known after apply)
+      + port                                                                  = 80
+      + protocol                                                              = "HTTP"
+      + routing_http_request_x_amzn_mtls_clientcert_header_name               = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_issuer_header_name        = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_leaf_header_name          = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_subject_header_name       = (known after apply)
+      + routing_http_request_x_amzn_mtls_clientcert_validity_header_name      = (known after apply)
+      + routing_http_request_x_amzn_tls_cipher_suite_header_name              = (known after apply)
+      + routing_http_request_x_amzn_tls_version_header_name                   = (known after apply)
+      + routing_http_response_access_control_allow_credentials_header_value   = (known after apply)
+      + routing_http_response_access_control_allow_headers_header_value       = (known after apply)
+      + routing_http_response_access_control_allow_methods_header_value       = (known after apply)
+      + routing_http_response_access_control_allow_origin_header_value        = (known after apply)
+      + routing_http_response_access_control_expose_headers_header_value      = (known after apply)
+      + routing_http_response_access_control_max_age_header_value             = (known after apply)
+      + routing_http_response_content_security_policy_header_value            = (known after apply)
+      + routing_http_response_server_enabled                                  = (known after apply)
+      + routing_http_response_strict_transport_security_header_value          = (known after apply)
+      + routing_http_response_x_content_type_options_header_value             = (known after apply)
+      + routing_http_response_x_frame_options_header_value                    = (known after apply)
+      + ssl_policy                                                            = (known after apply)
+      + tags_all                                                              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Project"     = "payment-gateway"
+        }
+      + tcp_idle_timeout_seconds                                              = (known after apply)
+
+      + default_action {
+          + order = (known after apply)
+          + type  = "fixed-response"
+
+          + fixed_response {
+              + content_type = "application/json"
+              + message_body = jsonencode(
+                    {
+                      + environment = "staging"
+                      + message     = "Payment Gateway ALB Active"
+                      + status      = "healthy"
+                    }
+                )
+              + status_code  = "200"
+            }
+        }
+    }
+
+  # module.ingress[0].aws_wafv2_web_acl.alb_waf will be created
+  + resource "aws_wafv2_web_acl" "alb_waf" {
+      + application_integration_url = (known after apply)
+      + arn                         = (known after apply)
+      + capacity                    = (known after apply)
+      + description                 = "WAF protecting public ALB in monitored COUNT mode"
+      + id                          = (known after apply)
+      + lock_token                  = (known after apply)
+      + name                        = "payment-gateway-staging-waf"
+      + name_prefix                 = (known after apply)
+      + scope                       = "REGIONAL"
+      + tags                        = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-waf"
+        }
+      + tags_all                    = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-waf"
+          + "Project"     = "payment-gateway"
+        }
+
+      + default_action {
+          + allow {
+            }
+        }
+
+      + rule {
+          + name     = "RateLimitPerIP"
+          + priority = 40
+
+          + action {
+              + count {
+                }
+            }
+
+          + statement {
+              + rate_based_statement {
+                  + aggregate_key_type    = "IP"
+                  + evaluation_window_sec = 300
+                  + limit                 = 2000
+                }
+            }
+
+          + visibility_config {
+              + cloudwatch_metrics_enabled = true
+              + metric_name                = "RateLimitMetric"
+              + sampled_requests_enabled   = true
+            }
+        }
+      + rule {
+          + name     = "AWSManagedRulesAmazonIpReputationList"
+          + priority = 30
+
+          + override_action {
+              + count {}
+            }
+
+          + statement {
+              + managed_rule_group_statement {
+                  + name        = "AWSManagedRulesAmazonIpReputationList"
+                  + vendor_name = "AWS"
+                }
+            }
+
+          + visibility_config {
+              + cloudwatch_metrics_enabled = true
+              + metric_name                = "AmazonIpReputationMetric"
+              + sampled_requests_enabled   = true
+            }
+        }
+      + rule {
+          + name     = "AWSManagedRulesCommonRuleSet"
+          + priority = 10
+
+          + override_action {
+              + count {}
+            }
+
+          + statement {
+              + managed_rule_group_statement {
+                  + name        = "AWSManagedRulesCommonRuleSet"
+                  + vendor_name = "AWS"
+                }
+            }
+
+          + visibility_config {
+              + cloudwatch_metrics_enabled = true
+              + metric_name                = "CommonRuleSetMetric"
+              + sampled_requests_enabled   = true
+            }
+        }
+      + rule {
+          + name     = "AWSManagedRulesKnownBadInputsRuleSet"
+          + priority = 20
+
+          + override_action {
+              + count {}
+            }
+
+          + statement {
+              + managed_rule_group_statement {
+                  + name        = "AWSManagedRulesKnownBadInputsRuleSet"
+                  + vendor_name = "AWS"
+                }
+            }
+
+          + visibility_config {
+              + cloudwatch_metrics_enabled = true
+              + metric_name                = "KnownBadInputsMetric"
+              + sampled_requests_enabled   = true
+            }
+        }
+
+      + visibility_config {
+          + cloudwatch_metrics_enabled = true
+          + metric_name                = "payment-gateway-staging-waf-summary"
+          + sampled_requests_enabled   = true
+        }
+    }
+
+  # module.ingress[0].aws_wafv2_web_acl_association.alb_assoc will be created
+  + resource "aws_wafv2_web_acl_association" "alb_assoc" {
+      + id           = (known after apply)
+      + resource_arn = (known after apply)
+      + web_acl_arn  = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_kms_alias.storage will be created
+  + resource "aws_kms_alias" "storage" {
+      + arn            = (known after apply)
+      + id             = (known after apply)
+      + name           = "alias/payment-gateway-staging-s3-key"
+      + name_prefix    = (known after apply)
+      + target_key_arn = (known after apply)
+      + target_key_id  = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_kms_key.storage will be created
+  + resource "aws_kms_key" "storage" {
+      + arn                                = (known after apply)
+      + bypass_policy_lockout_safety_check = false
+      + customer_master_key_spec           = "SYMMETRIC_DEFAULT"
+      + deletion_window_in_days            = 30
+      + description                        = "KMS Key for Payment Gateway document storage (KYC, Disputes, Statements)"
+      + enable_key_rotation                = true
+      + id                                 = (known after apply)
+      + is_enabled                         = true
+      + key_id                             = (known after apply)
+      + key_usage                          = "ENCRYPT_DECRYPT"
+      + multi_region                       = (known after apply)
+      + policy                             = (known after apply)
+      + rotation_period_in_days            = (known after apply)
+      + tags                               = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-s3-key"
+        }
+      + tags_all                           = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-s3-key"
+          + "Project"     = "payment-gateway"
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket.buckets["audit_reports"] will be created
+  + resource "aws_s3_bucket" "buckets" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = (known after apply)
+      + tags_all                    = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket.buckets["dispute_evidence"] will be created
+  + resource "aws_s3_bucket" "buckets" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = (known after apply)
+      + tags_all                    = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket.buckets["kyc_docs"] will be created
+  + resource "aws_s3_bucket" "buckets" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = (known after apply)
+      + tags_all                    = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket.buckets["settlement_statements"] will be created
+  + resource "aws_s3_bucket" "buckets" {
+      + acceleration_status         = (known after apply)
+      + acl                         = (known after apply)
+      + arn                         = (known after apply)
+      + bucket                      = (known after apply)
+      + bucket_domain_name          = (known after apply)
+      + bucket_prefix               = (known after apply)
+      + bucket_regional_domain_name = (known after apply)
+      + force_destroy               = false
+      + hosted_zone_id              = (known after apply)
+      + id                          = (known after apply)
+      + object_lock_enabled         = (known after apply)
+      + policy                      = (known after apply)
+      + region                      = (known after apply)
+      + request_payer               = (known after apply)
+      + tags                        = (known after apply)
+      + tags_all                    = (known after apply)
+      + website_domain              = (known after apply)
+      + website_endpoint            = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_policy.enforce_tls["audit_reports"] will be created
+  + resource "aws_s3_bucket_policy" "enforce_tls" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_policy.enforce_tls["dispute_evidence"] will be created
+  + resource "aws_s3_bucket_policy" "enforce_tls" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_policy.enforce_tls["kyc_docs"] will be created
+  + resource "aws_s3_bucket_policy" "enforce_tls" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_policy.enforce_tls["settlement_statements"] will be created
+  + resource "aws_s3_bucket_policy" "enforce_tls" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+      + policy = (known after apply)
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_public_access_block.public_access["audit_reports"] will be created
+  + resource "aws_s3_bucket_public_access_block" "public_access" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_public_access_block.public_access["dispute_evidence"] will be created
+  + resource "aws_s3_bucket_public_access_block" "public_access" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_public_access_block.public_access["kyc_docs"] will be created
+  + resource "aws_s3_bucket_public_access_block" "public_access" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_public_access_block.public_access["settlement_statements"] will be created
+  + resource "aws_s3_bucket_public_access_block" "public_access" {
+      + block_public_acls       = true
+      + block_public_policy     = true
+      + bucket                  = (known after apply)
+      + id                      = (known after apply)
+      + ignore_public_acls      = true
+      + restrict_public_buckets = true
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["audit_reports"] will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + bucket_key_enabled = true
+
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "aws:kms"
+            }
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["dispute_evidence"] will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + bucket_key_enabled = true
+
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "aws:kms"
+            }
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["kyc_docs"] will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + bucket_key_enabled = true
+
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "aws:kms"
+            }
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_server_side_encryption_configuration.encryption["settlement_statements"] will be created
+  + resource "aws_s3_bucket_server_side_encryption_configuration" "encryption" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + rule {
+          + bucket_key_enabled = true
+
+          + apply_server_side_encryption_by_default {
+              + kms_master_key_id = (known after apply)
+              + sse_algorithm     = "aws:kms"
+            }
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_versioning.versioning["audit_reports"] will be created
+  + resource "aws_s3_bucket_versioning" "versioning" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Enabled"
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_versioning.versioning["dispute_evidence"] will be created
+  + resource "aws_s3_bucket_versioning" "versioning" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Enabled"
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_versioning.versioning["kyc_docs"] will be created
+  + resource "aws_s3_bucket_versioning" "versioning" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Enabled"
+        }
+    }
+
+  # module.s3_storage[0].aws_s3_bucket_versioning.versioning["settlement_statements"] will be created
+  + resource "aws_s3_bucket_versioning" "versioning" {
+      + bucket = (known after apply)
+      + id     = (known after apply)
+
+      + versioning_configuration {
+          + mfa_delete = (known after apply)
+          + status     = "Enabled"
+        }
+    }
+
+  # module.s3_storage[0].random_string.suffix will be created
+  + resource "random_string" "suffix" {
+      + id          = (known after apply)
+      + length      = 6
+      + lower       = true
+      + min_lower   = 0
+      + min_numeric = 0
+      + min_special = 0
+      + min_upper   = 0
+      + number      = true
+      + numeric     = true
+      + result      = (known after apply)
+      + special     = false
+      + upper       = false
+    }
+
+  # module.vpc_endpoints[0].aws_security_group.endpoints will be created
+  + resource "aws_security_group" "endpoints" {
+      + arn                    = (known after apply)
+      + description            = "Controls HTTPS access to private AWS service interface endpoints"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow outbound"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = []
+              + description      = "HTTPS from authorized application task security groups"
+              + from_port        = 443
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = [
+                  + "sg-06b62b0df57796c90",
+                  + "sg-0bc3c26295a622835",
+                  + "sg-0d27af2e251e75575",
+                  + "sg-0f70199c622dd39e2",
+                  + "sg-0ff89d4a30b1b2335",
+                ]
+              + self             = false
+              + to_port          = 443
+            },
+        ]
+      + name                   = "payment-gateway-staging-sg-vpc-endpoints"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + revoke_rules_on_delete = false
+      + tags                   = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-sg-vpc-endpoints"
+        }
+      + tags_all               = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-sg-vpc-endpoints"
+          + "Project"     = "payment-gateway"
+        }
+      + vpc_id                 = "vpc-0f80380c03be17d3c"
+    }
+
+  # module.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["ecr_api"] will be created
+  + resource "aws_vpc_endpoint" "interface_endpoints" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.eu-north-1.ecr.api"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = [
+          + "subnet-02cc13deaa844777c",
+          + "subnet-0779619888156c00a",
+        ]
+      + tags                  = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-vpce-ecr_api"
+          + "Service"     = "ecr_api"
+        }
+      + tags_all              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-vpce-ecr_api"
+          + "Project"     = "payment-gateway"
+          + "Service"     = "ecr_api"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = "vpc-0f80380c03be17d3c"
+    }
+
+  # module.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["ecr_dkr"] will be created
+  + resource "aws_vpc_endpoint" "interface_endpoints" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.eu-north-1.ecr.dkr"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = [
+          + "subnet-02cc13deaa844777c",
+          + "subnet-0779619888156c00a",
+        ]
+      + tags                  = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-vpce-ecr_dkr"
+          + "Service"     = "ecr_dkr"
+        }
+      + tags_all              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-vpce-ecr_dkr"
+          + "Project"     = "payment-gateway"
+          + "Service"     = "ecr_dkr"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = "vpc-0f80380c03be17d3c"
+    }
+
+  # module.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["logs"] will be created
+  + resource "aws_vpc_endpoint" "interface_endpoints" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.eu-north-1.logs"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = [
+          + "subnet-02cc13deaa844777c",
+          + "subnet-0779619888156c00a",
+        ]
+      + tags                  = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-vpce-logs"
+          + "Service"     = "logs"
+        }
+      + tags_all              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-vpce-logs"
+          + "Project"     = "payment-gateway"
+          + "Service"     = "logs"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = "vpc-0f80380c03be17d3c"
+    }
+
+  # module.vpc_endpoints[0].aws_vpc_endpoint.interface_endpoints["secrets"] will be created
+  + resource "aws_vpc_endpoint" "interface_endpoints" {
+      + arn                   = (known after apply)
+      + cidr_blocks           = (known after apply)
+      + dns_entry             = (known after apply)
+      + id                    = (known after apply)
+      + ip_address_type       = (known after apply)
+      + network_interface_ids = (known after apply)
+      + owner_id              = (known after apply)
+      + policy                = (known after apply)
+      + prefix_list_id        = (known after apply)
+      + private_dns_enabled   = true
+      + requester_managed     = (known after apply)
+      + route_table_ids       = (known after apply)
+      + security_group_ids    = (known after apply)
+      + service_name          = "com.amazonaws.eu-north-1.secretsmanager"
+      + service_region        = (known after apply)
+      + state                 = (known after apply)
+      + subnet_ids            = [
+          + "subnet-02cc13deaa844777c",
+          + "subnet-0779619888156c00a",
+        ]
+      + tags                  = {
+          + "Environment" = "staging"
+          + "Name"        = "payment-gateway-staging-vpce-secrets"
+          + "Service"     = "secrets"
+        }
+      + tags_all              = {
+          + "Environment" = "staging"
+          + "ManagedBy"   = "Terraform"
+          + "Name"        = "payment-gateway-staging-vpce-secrets"
+          + "Project"     = "payment-gateway"
+          + "Service"     = "secrets"
+        }
+      + vpc_endpoint_type     = "Interface"
+      + vpc_id                = "vpc-0f80380c03be17d3c"
+    }
+
+Plan: 40 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + alb_arn                         = (known after apply)
+  + alb_dns_name                    = (known after apply)
+  + cloudfront_domain_name          = (known after apply)
+  + dispute_bucket_name             = (known after apply)
+  + frontend_spa_bucket_name        = (known after apply)
+  + kyc_bucket_name                 = (known after apply)
+  + reports_bucket_name             = (known after apply)
+  + settlement_bucket_name          = (known after apply)
+  + storage_kms_key_arn             = (known after apply)
+  + vpc_endpoint_security_group_id  = (known after apply)
+  + vpc_interface_endpoint_ids      = {
+      + ecr_api = (known after apply)
+      + ecr_dkr = (known after apply)
+      + logs    = (known after apply)
+      + secrets = (known after apply)
+    }
+  + waf_web_acl_arn                 = (known after apply)

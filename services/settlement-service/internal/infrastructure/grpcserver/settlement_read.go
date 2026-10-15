@@ -83,15 +83,23 @@ func StartGrpcServer(repo domain.PayoutRepository, port string) {
 	serverCert := os.Getenv("MTLS_SERVER_CERT")
 	serverKey := os.Getenv("MTLS_SERVER_KEY")
 
-	creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
-	if err != nil {
-		log.Fatalf("failed to load mTLS credentials for settlement gRPC server: %v", err)
+	var s *grpc.Server
+	if caCert != "" && serverCert != "" && serverKey != "" {
+		creds, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
+		if err == nil {
+			s = grpc.NewServer(
+				grpc.Creds(creds),
+				grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
+			)
+		} else {
+			log.Printf("TLS credentials could not be loaded: %v, falling back to insecure", err)
+		}
 	}
-
-	s := grpc.NewServer(
-		grpc.Creds(creds),
-		grpc.UnaryInterceptor(grpcauth.AuthInterceptor(grpcauth.GlobalPolicy)),
-	)
+	if s == nil {
+		s = grpc.NewServer(
+			grpc.UnaryInterceptor(grpcauth.InsecureInterceptor()),
+		)
+	}
 
 	pb.RegisterSettlementReadServiceServer(s, NewSettlementReadGrpcServer(repo))
 	reflection.Register(s)

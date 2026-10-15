@@ -4,12 +4,13 @@ import { NotificationService } from '../services/notification.service';
 import { logger } from '../utils/logger';
 
 export class PaymentNotificationConsumer {
-  private consumer: KafkaConsumer;
+  private consumer?: KafkaConsumer;
 
   constructor(private readonly notificationService: NotificationService) {
     const brokers = process.env.KAFKA_BROKERS?.split(',');
-    if (!brokers || brokers.length === 0) {
-      throw new Error('KAFKA_BROKERS environment variable is required');
+    if (!brokers || brokers.length === 0 || !process.env.KAFKA_BROKERS) {
+      logger.warn('KAFKA_BROKERS environment variable is not configured. PaymentNotificationConsumer disabled.');
+      return;
     }
 
     this.consumer = new KafkaConsumer(
@@ -20,6 +21,10 @@ export class PaymentNotificationConsumer {
   }
 
   async start(): Promise<void> {
+    if (!this.consumer) {
+      logger.warn('PaymentNotificationConsumer is not active (Kafka disabled)');
+      return;
+    }
     await this.consumer.connect();
     await this.consumer.subscribe('payment.events');
 
@@ -69,6 +74,6 @@ export class PaymentNotificationConsumer {
   }
 
   async stop(): Promise<void> {
-    await this.consumer.disconnect();
+    await this.consumer?.disconnect();
   }
 }

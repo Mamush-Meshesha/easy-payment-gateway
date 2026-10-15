@@ -30,6 +30,10 @@ SERVICES=(
   "dashboard-service"
   "billing-service"
   "dispute-service"
+  "vault-service"
+  "pricing-service"
+  "routing-service"
+  "fx-service"
 )
 
 # Generate certs for each service
@@ -39,7 +43,7 @@ for SERVICE in "${SERVICES[@]}"; do
   # Private Key
   openssl genrsa -out "$CERTS_DIR/$SERVICE.key" 2048
   
-  # CSR config with SPIFFE URI
+  # CSR config with SPIFFE URI and AWS Cloud Map DNS names
   cat > "$CERTS_DIR/$SERVICE.ext" <<-EOF
 authorityKeyIdentifier=keyid,issuer
 basicConstraints=CA:FALSE
@@ -48,6 +52,9 @@ subjectAltName = @alt_names
 
 [alt_names]
 DNS.1 = $SERVICE
+DNS.2 = $SERVICE.payment-gateway.internal
+DNS.3 = localhost
+IP.1 = 127.0.0.1
 URI.1 = spiffe://payment-gateway/ns/production/sa/$SERVICE
 EOF
 

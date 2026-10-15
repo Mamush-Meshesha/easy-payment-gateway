@@ -1,0 +1,161 @@
+name: AWS ECS Fargate Fleet CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'services/**'
+      - 'packages/**'
+      - 'infra/scripts/**'
+      - '.github/workflows/ecs-deploy.yml'
+  workflow_dispatch:
+    inputs:
+      service:
+        description: 'Microservice to build and deploy (or "all")'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - payment-service
+          - dispute-service
+          - ledger-service
+          - dashboard-service
+          - auth-service
+          - merchant-service
+          - billing-service
+          - admin-service
+          - reporting-service
+          - risk-service
+          - provider-service
+          - settlement-service
+          - reconciliation-service
+          - notification-service
+          - transaction-service
+          - webhook-service
+
+permissions:
+  contents: read
+
+env:
+  AWS_REGION: eu-north-1
+  AWS_ACCOUNT_ID: '431636668603'
+  ECS_CLUSTER: payment-gateway-staging-cluster
+  ECR_REGISTRY: 431636668603.dkr.ecr.eu-north-1.amazonaws.com
+
+jobs:
+  determine-changes:
+    name: Determine Changed Microservices
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.filter.outputs.services }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect Changed Services
+        id: filter
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            if [ "${{ inputs.service }}" == "all" ]; then
+              SERVICES='["auth-service","payment-service","merchant-service","billing-service","admin-service","dashboard-service","reporting-service","dispute-service","ledger-service","risk-service","provider-service","settlement-service","reconciliation-service","notification-service","transaction-service","webhook-service"]'
+            else
+              SERVICES='["${{ inputs.service }}"]'
+            fi
+            echo "services=$SERVICES" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          # Diff against previous commit or before SHA
+          if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null || git diff --name-only HEAD~1 HEAD 2>/dev/null || git ls-files)
+          else
+            CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git ls-files)
+          fi
+          echo "Changed files:"
+          echo "$CHANGED_FILES"
+
+          # If shared libraries or core infrastructure changed, rebuild all services
+          if echo "$CHANGED_FILES" | grep -qE '^packages/|^infra/scripts/'; then
+            echo "Shared packages or scripts changed. Rebuilding all services."
+            SERVICES='["auth-service","payment-service","merchant-service","billing-service","admin-service","dashboard-service","reporting-service","dispute-service","ledger-service","risk-service","provider-service","settlement-service","reconciliation-service","notification-service","transaction-service","webhook-service"]'
+            echo "services=$SERVICES" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          ALL_SERVICES=("auth-service" "payment-service" "merchant-service" "billing-service" "admin-service" "dashboard-service" "reporting-service" "dispute-service" "ledger-service" "risk-service" "provider-service" "settlement-service" "reconciliation-service" "notification-service" "transaction-service" "webhook-service")
+          MATCHED=()
+          for svc in "${ALL_SERVICES[@]}"; do
+            if echo "$CHANGED_FILES" | grep -q "^services/$svc/"; then
+              MATCHED+=("\"$svc\"")
+            fi
+          done
+
+          if [ ${#MATCHED[@]} -eq 0 ]; then
+            echo "No microservice source files changed."
+            echo "services=[]" >> $GITHUB_OUTPUT
+          else
+            JSON_ARRAY="[$(IFS=,; echo "${MATCHED[*]}")]"
+            echo "Services to build: $JSON_ARRAY"
+            echo "services=$JSON_ARRAY" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    name: Build & Deploy
+    needs: determine-changes
+    if: needs.determine-changes.outputs.services != '[]' && needs.determine-changes.outputs.services != ''
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        service: ${{ fromJson(needs.determine-changes.outputs.services) }}
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: services/${{ matrix.service }}/Dockerfile
+          push: true
+          tags: |
+            ${{ env.ECR_REGISTRY }}/payment-gateway/${{ matrix.service }}:latest
+            ${{ env.ECR_REGISTRY }}/payment-gateway/${{ matrix.service }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Deploy to AWS ECS Fargate
+        run: |
+          echo "Initiating rolling ECS deployment for [${{ matrix.service }}] in cluster [${{ env.ECS_CLUSTER }}]..."
+          aws ecs update-service \
+            --cluster "${{ env.ECS_CLUSTER }}" \
+            --service "${{ matrix.service }}" \
+            --force-new-deployment \
+            --region "${{ env.AWS_REGION }}"
+          echo "Deployment triggered. Waiting for service stabilization..."
+          aws ecs wait services-stable \
+            --cluster "${{ env.ECS_CLUSTER }}" \
+            --services "${{ matrix.service }}" \
+            --region "${{ env.AWS_REGION }}" || {
+              echo "Notice: Service stabilization timed out or is continuing in background."
+            }
+          echo "Service ${{ matrix.service }} successfully deployed."

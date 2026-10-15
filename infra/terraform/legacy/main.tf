@@ -57,13 +57,13 @@ resource "aws_route53_record" "api_us" {
   zone_id = aws_route53_zone.payment_gateway.zone_id
   name    = "api.paymentgateway.local"
   type    = "A"
-  
+
   set_identifier = "us-east-region"
-  
+
   latency_routing_policy {
     region = "us-east-1"
   }
-  
+
   health_check_id = aws_route53_health_check.us_east_health.id
   records         = ["10.0.1.50"] # Placeholder for API Gateway LB
   ttl             = 60
@@ -74,13 +74,13 @@ resource "aws_route53_record" "api_eu" {
   zone_id = aws_route53_zone.payment_gateway.zone_id
   name    = "api.paymentgateway.local"
   type    = "A"
-  
+
   set_identifier = "eu-west-region"
-  
+
   latency_routing_policy {
     region = "eu-west-1"
   }
-  
+
   health_check_id = aws_route53_health_check.eu_west_health.id
   records         = ["10.1.1.50"] # Placeholder for API Gateway LB
   ttl             = 60
@@ -97,7 +97,7 @@ resource "cockroach_cluster" "global_payment_db" {
   }
   regions = [
     {
-      name = "us-east-1"
+      name    = "us-east-1"
       primary = true
     },
     {

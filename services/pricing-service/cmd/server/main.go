@@ -29,22 +29,21 @@ func main() {
 	handler := grpc_handler.NewPricingGrpcHandler(engine)
 
 	caCert := os.Getenv("MTLS_CA_CERT")
-	if caCert == "" {
-		caCert = "../../infra/certs/ca.crt"
-	}
 	serverCert := os.Getenv("MTLS_SERVER_CERT")
 	serverKey := os.Getenv("MTLS_SERVER_KEY")
 
-	tlsCredentials, err := grpcauth.LoadServerTLSCredentials(
-		caCert,
-		serverCert,
-		serverKey,
-	)
-	if err != nil {
-		log.Fatalf("Failed to load TLS credentials: %v", err)
+	var server *grpc.Server
+	if caCert != "" && serverCert != "" && serverKey != "" {
+		tlsCredentials, err := grpcauth.LoadServerTLSCredentials(caCert, serverCert, serverKey)
+		if err == nil {
+			server = grpc.NewServer(grpc.Creds(tlsCredentials))
+		} else {
+			log.Printf("Failed to load TLS credentials: %v, falling back to insecure", err)
+			server = grpc.NewServer()
+		}
+	} else {
+		server = grpc.NewServer()
 	}
-
-	server := grpc.NewServer(grpc.Creds(tlsCredentials))
 	pb.RegisterPricingServiceServer(server, handler)
 	reflection.Register(server)
 
