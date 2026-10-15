@@ -167,10 +167,10 @@ The system operates on an uncompromising **Zero-Trust** security model, assuming
 ```mermaid
 sequenceDiagram
     autonumber
-    participant Client as Calling Service<br/>(e.g., payment-service)
-    participant CA as Internal Root CA<br/>(PaymentGateway Root CA)
-    participant Server as Target Service<br/>(e.g., ledger-service)
-    participant Interceptor as Auth Interceptor<br/>(Universal UnaryInterceptor)
+    participant Client as "Calling Service (payment-service)"
+    participant CA as "Internal Root CA (Root CA)"
+    participant Server as "Target Service (ledger-service)"
+    participant Interceptor as "Auth Interceptor (Universal)"
 
     Note over Client,Server: Mutual TLS (mTLS) Handshake Phase
     Client->>Server: ClientHello (Supported Ciphers + SNI)
@@ -184,10 +184,10 @@ sequenceDiagram
     Note over Server,Interceptor: Application Authorization Phase
     Client->>Server: gRPC Call: RecordJournalEntry(payload, metadata: x-request-context)
     Server->>Interceptor: Invoke AuthInterceptor(policyFunc)
-    Interceptor->>Interceptor: 1. ExtractIdentity(peer.AuthInfo)<br/>Validate SPIFFE URI: spiffe://payment-gateway/ns/production/sa/payment-service
-    Interceptor->>Interceptor: 2. PolicyFunc(identity, fullMethod)<br/>Check S2S Authorization Matrix (Is payment-service allowed to RecordJournalEntry?)
-    Interceptor->>Interceptor: 3. Context Anti-Spoofing Check<br/>Verify x-request-context.caller_service == identity.ServiceName
-    Interceptor->>Interceptor: 4. Business Authorization (RequireMerchant)<br/>Enforce tenant isolation
+    Interceptor->>Interceptor: 1. ExtractIdentity(peer.AuthInfo) & Validate SPIFFE
+    Interceptor->>Interceptor: 2. PolicyFunc: Check S2S Matrix (Allow/Deny)
+    Interceptor->>Interceptor: 3. Context Anti-Spoofing: Verify Caller Service
+    Interceptor->>Interceptor: 4. Business Authorization: RequireMerchant
     alt Authorized
         Interceptor->>Server: Forward to gRPC Handler
         Server-->>Client: 200 OK (Journal Entry Recorded)
@@ -429,26 +429,26 @@ flowchart TD
         end
 
         %% ALB Ingress Routes
-        ALB -->|/api/v1/auth*| AUTH
-        ALB -->|/api/v1/payments*| PAYMENT
-        ALB -->|/api/v1/merchants*| MERCHANT
-        ALB -->|/api/v1/billing*| BILLING
-        ALB -->|/api/v1/dashboard*| DASHBOARD
-        ALB -->|/api/v1/reporting*| REPORTING
-        ALB -->|/api/v1/disputes*| DISPUTE
-        ALB -->|/api/v1/reconciliation*| RECON
-        ALB -->|/api/v1/admin*| ADMIN
+        ALB -->|"/api/v1/auth*"| AUTH
+        ALB -->|"/api/v1/payments*"| PAYMENT
+        ALB -->|"/api/v1/merchants*"| MERCHANT
+        ALB -->|"/api/v1/billing*"| BILLING
+        ALB -->|"/api/v1/dashboard*"| DASHBOARD
+        ALB -->|"/api/v1/reporting*"| REPORTING
+        ALB -->|"/api/v1/disputes*"| DISPUTE
+        ALB -->|"/api/v1/reconciliation*"| RECON
+        ALB -->|"/api/v1/admin*"| ADMIN
 
         %% Internal RPC & Cloud Map
-        Tier1_API -. gRPC / Cloud Map .-> Tier3_Core
+        Tier1_API -. "gRPC / Cloud Map" .-> Tier3_Core
         Tier1_API -.-> CLOUDMAP
         Tier3_Core -.-> CLOUDMAP
         Tier4_Async -.-> CLOUDMAP
 
         %% Outbound egress
-        PROVIDER -->|Direct Outbound| NAT
-        WEBHOOK -->|Webhook Callbacks| NAT
-        NAT -->|Deterministic IP 51.20.39.80| TELCO
+        PROVIDER -->|"Direct Outbound"| NAT
+        WEBHOOK -->|"Webhook Callbacks"| NAT
+        NAT -->|"Deterministic IP: 51.20.39.80"| TELCO
 
         subgraph Private_Data_Subnets ["Private Data Subnets (10.20.20.0/24, 10.20.21.0/24)"]
             RDS[("Amazon RDS PostgreSQL 15\nMulti-Schema Isolation\nKMS Encrypted Storage")]
@@ -481,39 +481,39 @@ The platform manages high-throughput, fault-tolerant traffic distribution throug
 flowchart LR
     subgraph Edge ["1. Edge Tier"]
         CLIENT["Client / Web Browser"]
-        VERCEL["Vercel Serverless Edge\n(Next.js / React SPA)"]
+        VERCEL["Vercel Serverless Edge (Next.js / React SPA)"]
     end
 
     subgraph Perimeter ["2. Perimeter Ingress Tier"]
-        WAF["AWS WAFv2 Web ACL\n(Rate Limiter + OWASP CRS)"]
-        ALB["AWS Application Load Balancer\n(Multi-AZ Public Subnets)"]
+        WAF["AWS WAFv2 Web ACL (Rate Limiter + OWASP CRS)"]
+        ALB["AWS Application Load Balancer (Multi-AZ Public Subnets)"]
     end
 
     subgraph Compute ["3. Private Compute Tier (ECS Fargate)"]
-        AUTH_TG["Target Group: auth-service-tg (:3001)"]
-        PAY_TG["Target Group: payment-service-tg (:8084)"]
-        MERCH_TG["Target Group: merchant-service-tg (:3002)"]
-        BILL_TG["Target Group: billing-service-tg (:3016)"]
-        ADMIN_TG["Target Group: admin-service-tg (:3003)"]
-        DASH_TG["Target Group: dashboard-service-tg (:3009)"]
-        REP_TG["Target Group: reporting-service-tg (:3008)"]
-        DISP_TG["Target Group: dispute-service-tg (:3017)"]
-        RECON_TG["Target Group: recon-service-tg (:3011)"]
+        AUTH_TG["auth-service-tg (:3001)"]
+        PAY_TG["payment-service-tg (:8084)"]
+        MERCH_TG["merchant-service-tg (:3002)"]
+        BILL_TG["billing-service-tg (:3016)"]
+        ADMIN_TG["admin-service-tg (:3003)"]
+        DASH_TG["dashboard-service-tg (:3009)"]
+        REP_TG["reporting-service-tg (:3008)"]
+        DISP_TG["dispute-service-tg (:3017)"]
+        RECON_TG["recon-service-tg (:3011)"]
     end
 
-    CLIENT -->|HTTPS: easy-payment-gateway.vercel.app| VERCEL
-    VERCEL -->|Rewrite /api/* -> ALB DNS| WAF
+    CLIENT -->|"HTTPS: easy-payment-gateway.vercel.app"| VERCEL
+    VERCEL -->|"Rewrite /api/* to ALB DNS"| WAF
     WAF --> ALB
 
-    ALB -->|/api/v1/auth* (Priority 10)| AUTH_TG
-    ALB -->|/api/v1/payments* (Priority 20)| PAY_TG
-    ALB -->|/api/v1/merchants* (Priority 30)| MERCH_TG
-    ALB -->|/api/v1/billing* (Priority 40)| BILL_TG
-    ALB -->|/api/v1/admin* (Priority 50)| ADMIN_TG
-    ALB -->|/api/v1/dashboard* (Priority 60)| DASH_TG
-    ALB -->|/api/v1/reporting* (Priority 70)| REP_TG
-    ALB -->|/api/v1/disputes* (Priority 80)| DISP_TG
-    ALB -->|/api/v1/reconciliation* (Priority 90)| RECON_TG
+    ALB -->|"Priority 10: /api/v1/auth*"| AUTH_TG
+    ALB -->|"Priority 20: /api/v1/payments*"| PAY_TG
+    ALB -->|"Priority 30: /api/v1/merchants*"| MERCH_TG
+    ALB -->|"Priority 40: /api/v1/billing*"| BILL_TG
+    ALB -->|"Priority 50: /api/v1/admin*"| ADMIN_TG
+    ALB -->|"Priority 60: /api/v1/dashboard*"| DASH_TG
+    ALB -->|"Priority 70: /api/v1/reporting*"| REP_TG
+    ALB -->|"Priority 80: /api/v1/disputes*"| DISP_TG
+    ALB -->|"Priority 90: /api/v1/reconciliation*"| RECON_TG
 ```
 
 #### 1. Ingress & Load Balancing Mechanics
@@ -606,18 +606,18 @@ The following trace details the execution and multi-layer protection applied dur
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Customer as Customer / Browser
-    participant Vercel as Vercel Edge<br/>(easy-payment-gateway)
-    participant WAF as AWS WAFv2
-    participant ALB as AWS ALB
-    participant Pay as payment-service<br/>(Tier 1 ECS Task)
-    participant Redis as ElastiCache Redis<br/>(Distributed Lock & Idempotency)
-    participant Risk as risk-service<br/>(Tier 3 gRPC)
-    participant Ledger as ledger-service<br/>(Tier 3 gRPC)
-    participant RDS as RDS PostgreSQL<br/>(KMS Encrypted)
-    participant Prov as provider-service<br/>(Tier 3 gRPC)
-    participant NAT as AWS NAT Gateway<br/>(EIP: 51.20.39.80)
-    participant Telco as External Bank / Telco<br/>(Telebirr / CBE Birr)
+    actor Customer as "Customer / Browser"
+    participant Vercel as "Vercel Edge (easy-payment-gateway)"
+    participant WAF as "AWS WAFv2"
+    participant ALB as "AWS ALB"
+    participant Pay as "payment-service (Tier 1)"
+    participant Redis as "ElastiCache Redis"
+    participant Risk as "risk-service (Tier 3)"
+    participant Ledger as "ledger-service (Tier 3)"
+    participant RDS as "RDS PostgreSQL"
+    participant Prov as "provider-service (Tier 3)"
+    participant NAT as "AWS NAT Gateway"
+    participant Telco as "External Bank / Telco"
 
     %% Step 1: Checkout Initiation
     Customer->>Vercel: POST /api/v1/payments (Payload + Idempotency-Key)
@@ -637,13 +637,13 @@ sequenceDiagram
 
     %% Step 3: mTLS Risk Check
     Pay->>Risk: Layer 4: gRPC EvaluateRisk() via Cloud Map (mTLS)
-    Note over Pay,Risk: Client & Server verify X.509 certs against Root CA.<br/>Risk interceptor validates SPIFFE URI & caller_service
+    Note over Pay,Risk: Both services verify X.509 certs & SPIFFE URI
     Risk->>Risk: Evaluate fraud velocity & limits
     Risk-->>Pay: Risk Score: LOW (Approved)
 
     %% Step 4: mTLS Ledger Pending Entry
     Pay->>Ledger: Layer 4: gRPC RecordJournalEntry() (mTLS)
-    Note over Pay,Ledger: Ledger interceptor checks S2S Matrix:<br/>payment-service is AUTHORIZED to write JournalEntries
+    Note over Pay,Ledger: Ledger interceptor verifies S2S Matrix authorization
     Ledger->>RDS: Layer 5: Post Pending Journal Entry (Debit: Customer Hold, Credit: Escrow)
     RDS-->>Ledger: Commit OK
     Ledger-->>Pay: Journal Entry Recorded (Txn ID: txn_8921)

@@ -76,3 +76,19 @@ add_settings.sql
 /settlement-service/
 /transaction-service/
 /webhook-service/
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*.plan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
